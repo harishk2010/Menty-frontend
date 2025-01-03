@@ -4,8 +4,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MainButton from '../buttons/MainButton';
 import PlainButton from '../buttons/PlainButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import Navbar from "../instructor/Navbar";
 import Link from "next/link";
-export default function Navbar():ReactElement{
+export default function Header():ReactElement{
     const [toggleMenu,setToggleMenu]=useState(false)
     const handleToggleMenu=()=>{
         setToggleMenu(prev=>!prev)
@@ -54,39 +55,7 @@ export default function Navbar():ReactElement{
             
 
         </nav>
-        {toggleMenu?<div className="
-        bg-transparent backdrop-blur-3xl
-        shadow
-        bg-gray-100
-        p-6
-        w-1/2
-        sm:w-1/4
        
-        fixed
-        origin-top-right
-        
-        
-        h-screen   
-        z-20
-        ">
-            
-            <div className="flex justify-center  gap-28">
-
-           <ul className=" flex flex-col justify-center cursor-pointer items-center gap-4 text-purple-700">
-            
-            <Link href={"/home"}><li>Home</li></Link>
-            <li>Courses</li>
-            <li>Mentors</li>
-           </ul>
-            </div>
-            <div className='sm:hidden flex flex-col mt-8 justify-center items-center gap-3'>
-                
-                <Link href={"/login"}><PlainButton name={"Login"}/></Link>
-                <Link href={"/register"}><MainButton name={"Register"}/></Link>
-                
-            </div>
-                
-            </div>:""}
         
              </>
     )
