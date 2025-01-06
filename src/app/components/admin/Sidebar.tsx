@@ -16,7 +16,7 @@ const Sidebar = () => {
   return (
     <div
       className={`h-full bg-gray-800 text-white flex flex-col justify-between  transition-all duration-500 ${
-        isCollapsed ? "w-14" : "w-64"
+        isCollapsed ? "w-14" : "w-44"
       }`}
     >
       
@@ -25,7 +25,7 @@ const Sidebar = () => {
     <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
       <Link href="/admin/dashboard" className="flex w-full">
         <div className="block float-left">
-          <DashboardIcon className="mr-3 bg-gray-300 hover:bg-blue-400 text-gray-800 border-2 border-gray-300 rounded-full" />
+          <DashboardIcon className="mr-3 hover:bg-white text-gray-500  border-gray-300 rounded-full" />
         </div>
         <div
           className={`flex-1 text-base ${
@@ -39,7 +39,7 @@ const Sidebar = () => {
     <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
       <Link href="/admin/users" className="flex w-full">
         <div className="block float-left">
-          <PeopleIcon className="mr-3 bg-gray-300 hover:bg-blue-400 text-gray-800 border-2 border-gray-300 rounded-full" />
+          <PeopleIcon className="mr-3 hover:bg-white hover:text-gray-700 text-gray-500  border-gray-300 rounded-full" />
         </div>
         <div
           className={`flex-1 text-base ${
@@ -53,7 +53,7 @@ const Sidebar = () => {
     <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
       <Link href="/admin/instructors" className="flex w-full">
         <div className="block float-left">
-          <SupervisedUserCircleIcon className="mr-3 bg-gray-300 hover:bg-blue-400 text-gray-800 border-2 border-gray-300 rounded-full" />
+          <SupervisedUserCircleIcon className="mr-3 hover:bg-white text-gray-500  border-gray-300 rounded-full" />
         </div>
         <div
           className={`flex-1 text-base ${
@@ -67,7 +67,7 @@ const Sidebar = () => {
     <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
       <Link href="/admin/about" className="flex w-full">
         <div className="block float-left">
-          <InfoIcon className="mr-3 bg-gray-300 hover:bg-blue-400 text-gray-800 border-2 border-gray-300 rounded-full" />
+          <InfoIcon className="mr-3 hover:bg-white text-gray-500  border-gray-300 rounded-full" />
         </div>
         <div
           className={`flex-1 text-base ${
@@ -81,7 +81,7 @@ const Sidebar = () => {
     <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
       <Link href="/admin/login" className="flex w-full">
         <div className="block float-left">
-          <ExitToAppIcon className="mr-3 bg-gray-300 hover:bg-blue-400 text-gray-800 border-2 border-gray-300 rounded-full" />
+          <ExitToAppIcon className="mr-3 hover:bg-white text-gray-500 size-9  border-gray-300 rounded-full" />
         </div>
         <div
           className={`flex-1 text-base ${
@@ -98,7 +98,7 @@ const Sidebar = () => {
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="  w-full p-2 text-sm ease-in-out"
       >
-        {isCollapsed ? <KeyboardArrowLeftIcon/> : <KeyboardArrowRightIcon/>}
+        {isCollapsed ?<KeyboardArrowRightIcon/> :  <KeyboardArrowLeftIcon/> }
       </button>
 
     </div>
