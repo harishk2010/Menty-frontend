@@ -6,6 +6,17 @@
   --background: #ffffff;
   --foreground: #171717;
 }
+@layer components {
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+}
 
 @media (prefers-color-scheme: dark) {
   :root {

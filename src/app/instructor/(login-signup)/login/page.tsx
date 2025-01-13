@@ -8,7 +8,8 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import InputField from "@/app/components/common/forms/InputField";
 import PasswordField from "@/app/components/common/forms/PasswordField";
-
+import RegisterHeader from "@/app/components/instructor/RegisterHeader";
+import {motion} from "framer-motion"
 // Dynamically import the Player component from Lottie with SSR disabled
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
@@ -42,19 +43,35 @@ export default function LoginPage(): ReactElement {
   };
 
   return (
-    <div className="flex justify-evenly max-h-screen items-center mt-24 py-3 px-5">
+    <div className="flex justify-evenly max-h-screen  items-center mt-10 py-3 px-5">
       {/* Lottie Animation */}
-      <div className="sm:block hidden">
+     
+      
+
+      
+      <motion.div
+          initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
+          animate={{ opacity: 1, x: 0 }} // Moves to its final position
+          transition={{
+            duration: 1, // Duration of the animation
+            ease: "easeOut", // Smooth easing
+          }} className="sm:block hidden">
         <Player
           autoplay
           loop
           style={{ height: "400px", width: "400px" }}
           src="https://lottie.host/be2302b1-71d9-4ba5-ad8c-68b3e4d9923a/VFsZzRBBvQ.json"
         />
-      </div>
+      </motion.div>
 
       {/* Form Section */}
-      <div className="flex flex-col justify-center shadow-md items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8">
+      <motion.div
+          initial={{ opacity: 0, x: 50 }} // Starts slightly below the viewport
+          animate={{ opacity: 1, x: 0 }} // Moves to its final position
+          transition={{
+            duration: 1, // Duration of the animation
+            ease: "easeOut", // Smooth easing
+          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8">
         <h5 className="text-xl font-medium text-gray-900">
           Log In as{" "}
           <span className="text-purple-700 font-semibold">Instructor</span>
@@ -115,7 +132,8 @@ export default function LoginPage(): ReactElement {
             </Form>
           )}
         </Formik>
-      </div>
+      </motion.div>
+      
     </div>
   );
 }

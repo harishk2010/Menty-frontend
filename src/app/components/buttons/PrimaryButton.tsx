@@ -1,10 +1,11 @@
 import { ReactElement } from "react";
 
 
-export default function PrimaryButton({ name }: {
-    name: string
+export default function PrimaryButton({ name ,type="button" }: {
+    name: string,
+    type?:"button" | "submit" | "reset"
 }): ReactElement {
-    return <button className="text-white hover:text-purple-700 
+    return <button type={type} className="text-white hover:text-purple-700 
     h-10  
      bg-purple-700 hover:bg-purple-300
       py-2 px-3 rounded-full     

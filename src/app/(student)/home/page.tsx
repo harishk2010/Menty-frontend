@@ -20,11 +20,7 @@ export default function Home():ReactElement{
             style={{height:"80%" ,width:"80%"}}
             src="https://lottie.host/700d2277-261b-4d21-8e8f-52091c065aba/IfV4AvDFMV.json"/>
             
-            <Player 
-            autoplay
-            loop
-            style={{height:"80%" ,width:"80%"}}
-            src="https://lottie.host/700d2277-261b-4d21-8e8f-52091c065aba/IfV4AvDFMV.json"/>
+            
             
         </div>
         </>
