@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 
 export default function PrimaryButton({ name ,type="button" }: {
     name: string,
-    type?:"button" | "submit" | "reset"
+    type?:"button" | "submit" | "reset" 
 }): ReactElement {
     return <button type={type} className="text-white hover:text-purple-700 
     h-10  

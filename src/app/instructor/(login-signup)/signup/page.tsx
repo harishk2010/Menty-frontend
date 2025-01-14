@@ -9,15 +9,12 @@ import * as Yup from "yup";
 import InputField from "@/app/components/common/forms/InputField";
 import PasswordField from "@/app/components/common/forms/PasswordField";
 import { useRouter } from "next/navigation";
-import Link from "next/link"
-import { findEmailAction } from "@/redux/store/auth/findEmailAction";
-import { useDispatch} from "react-redux"
 import { signup } from "@/api/userAuthentication";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { signUp } from "@/@types/signUpType";
 
-// Dynamically import the Player component from Lottie with SSR disabled
+
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
   {
@@ -43,47 +40,53 @@ const signupSchema = Yup.object().shape({
 });
 
 export default function SignupPage(): ReactElement {
-  const [error,setError]=useState("")
+  const [error, setError] = useState("");
+  const [loader, setLoader] = useState(false);
   const initialValues = {
     email: "",
     password: "",
     confirmPassword: "",
   };
-  const router=useRouter()
+  const router = useRouter();
 
+  const handleSubmit = async (values: signUp) => {
+    try {
+      setLoader((prev) => !prev);
 
-  const handleSubmit = async (values:signUp) => {
-    const {name, email, password,  confirmPassword} = values
-  try {
+      const response = await signup(values);
+      console.log(response, "ressss");
+      if (response.success) {
+       
+        localStorage.setItem("verificationToken",response.token);
+        localStorage.setItem("email",values.email)
+        console.log("sucess");
 
-    const response = await signup(values);
-    console.log(response,"ressss")
-    if (response.success) {
-      toast.success(response.data.message);
-    } 
-
-  } catch (error:any) {
-    if (error.response?.status === 404) {
-      toast.error(error.response.data.message);
-    
-  } else {
-      console.log('error: ', error)
-  }
-  }
-   
-};
-
+        toast.success(response.message);
+        setTimeout(() => {
+          router.push("/instructor/otp");
+          setLoader((prev) => !prev);
+        }, 3000);
+      } else {
+        toast.error(response.message);
+        setLoader((prev) => !prev);
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Unknown Error Occured !");
+    }
+  };
 
   return (
     <div className="flex flex-1 justify-center  max-h-screen items-center mt-4 py-3 px-5">
       {/* Lottie Animation */}
       <motion.div
-          initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
-          animate={{ opacity: 1, x: 0 }} // Moves to its final position
-          transition={{
-            duration: 1, // Duration of the animation
-            ease: "easeOut", // Smooth easing
-          }} className="sm:block hidden mr-24">
+        initial={{ opacity: 0, x: -50 }} 
+        animate={{ opacity: 1, x: 0 }} 
+        transition={{
+          duration: 1, 
+          ease: "easeOut", 
+        }}
+        className="sm:block hidden mr-24 lg:mr-36"
+      >
         <Player
           autoplay
           loop
@@ -94,17 +97,19 @@ export default function SignupPage(): ReactElement {
 
       {/* Form Section */}
       <motion.div
-          initial={{ opacity: 0, x: 50 }} // Starts slightly below the viewport
-          animate={{ opacity: 1, x: 0 }} // Moves to its final position
-          transition={{
-            duration: 1, // Duration of the animation
-            ease: "easeOut", // Smooth easing
-          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8">
+        initial={{ opacity: 0, x: 50 }} 
+        animate={{ opacity: 1, x: 0 }} 
+        transition={{
+          duration: 1, 
+          ease: "easeOut", 
+        }}
+        className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 lg:p-14 lg:mt-24"
+      >
         <h5 className="text-xl font-medium text-gray-900">
           Sign Up as{" "}
           <span className="text-purple-700 font-semibold">Instructor</span>
         </h5>
-        {error&&<p className="text-red-600">{error}</p>}
+        {error && <p className="text-red-600">{error}</p>}
 
         <Formik
           initialValues={initialValues}
@@ -113,17 +118,17 @@ export default function SignupPage(): ReactElement {
         >
           {({ isSubmitting }) => (
             <Form className="space-y-6 my-4 flex flex-col justify-center">
-              {/* Email Field */}
+             
               <div>
                 <InputField type="email" name="email" placeholder="Email" />
               </div>
 
-              {/* Password Field */}
+          
               <div>
                 <PasswordField name="password" placeholder="Password" />
               </div>
 
-              {/* Confirm Password Field */}
+        
               <div>
                 <PasswordField
                   name="confirmPassword"
@@ -131,12 +136,19 @@ export default function SignupPage(): ReactElement {
                 />
               </div>
 
-              {/* Submit Button */}
-              <PrimaryButton type="submit" name="Register Account"  />
+          
+              {!loader ? (
+                <PrimaryButton type="submit" name="Register Account" />
+              ) : (
+                <Loader />
+              )}
 
               <div className="text-sm font-medium text-gray-900 cursor-pointer">
                 Have an account?{" "}
-                <a href="/instructor/login" className="text-purple-700 hover:underline">
+                <a
+                  href="/instructor/login"
+                  className="text-purple-700 hover:underline"
+                >
                   Log In
                 </a>
               </div>

@@ -8,7 +8,12 @@ import Loader from "@/app/components/fallbacks/Loader";
 import dynamic from "next/dynamic";
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
 import RegisterHeader from "@/app/components/instructor/RegisterHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { button, h6, span } from "framer-motion/client";
+import { resendOtp, verifyOtp } from "@/api/userAuthentication";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
   {
@@ -21,11 +26,46 @@ const Player = dynamic(
   }
 );
 export default function OtpPage() {
+
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
+  const [counter, setCounter] = useState<number>(10);
+  const [resendAtive,setResendActive]=useState(false)
+  const [submitActive,setSubmitActive]=useState(false)
+
+  const router=useRouter()
   console.log(otp,"otp")
+  useEffect(()=>{
+    
+     
+    if(counter>0){
+      const timer=setInterval(()=>{
+        setCounter(prev=>prev-1)
+      },1000)
+      return()=>    clearInterval(timer)
+    }else{
+      setResendActive(true)
+    }
+   
+    }
 
+  ,[counter,otp])
+  const handleResend=async()=>{
+    setResendActive(false)
+    setCounter(10)
+
+    let email= localStorage.getItem("email")|| ""
+    const respone=await resendOtp(email)
+
+    if(respone.success){
+      toast.success(respone.message)
+    }else{
+      toast.error(respone.message)
+    }
+    
+    
+  }
   const handleChange=(e:React.ChangeEvent<HTMLInputElement>,index:number)=>{
-
+    
     const value=e.target.value
 
     const newOTP= [...otp]
@@ -48,6 +88,28 @@ export default function OtpPage() {
       document.getElementById(`otpInput-${index-1}`)?.focus()
     }
   }
+  const handleSubmit=async ()=>{
+    let OTP=otp.join("")
+    if(OTP.length==4){
+      console.log("submit Clicked")
+    }else{
+     toast.error("enter full OTP")
+      return 
+    }
+    
+    let response=await verifyOtp(OTP)
+    if(response.success){
+      toast.success(response.message)
+      setTimeout(()=>{
+        router.push('/instructor/login')
+        
+      },1000)
+
+    }else{
+      toast.error(response.message)
+    }
+    
+  }
   
   
   return (
@@ -67,7 +129,7 @@ export default function OtpPage() {
             ease: "easeOut", // Smooth easing
           }}>
       <Player
-      className="sm:block hidden"
+      className="sm:block hidden lg:mr-32"
           autoplay
           loop
           style={{ height: "400px", width: "400px" }}
@@ -87,7 +149,7 @@ export default function OtpPage() {
             ease: "easeOut", // Smooth easing
           }}
           
-          className="flex bg-violet-100 w-[300px] h-[300px] flex-col space-y-3 justify-center backdrop-blur-3xl shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center rounded-lg bg-transparent "
+          className="flex border-black border-2 bg-violet-100 w-[300px] h-[320px] lg:w-[400px] lg:h-[420px] flex-col lg:mt-28  space-y-1 justify-center backdrop-blur-3xl shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center rounded-lg bg-transparent "
         >
           <div className="flex justify-evenly items-center space-4">
             <h1 className="text-black py-3 font-bold text-xl">
@@ -101,19 +163,7 @@ export default function OtpPage() {
             </h6>
           </div>
           <div className="flex space-x-2 p-3">
-            {/* <input
-              maxLength={1}
-              type="number"
-              className="no-spinner appearance-none outline-none hover:shadow-[3px_3px_0px_0px_rgb(88,22,135,0.5)] bg-gray-100 rounded-md w-10 h-10 text-black text-center"
-            />
-            <input
-              type="number"
-              className="no-spinner bg-gray-100 rounded-md w-10 h-10 outline-none hover:shadow-[3px_3px_0px_0px_rgb(88,22,135,0.5)] text-black text-center"
-            />
-            <input
-              type="number"
-              className="no-spinner bg-gray-100 rounded-md w-10 h-10 outline-none hover:shadow-[3px_3px_0px_0px_rgb(88,22,135,0.5)] text-black text-center"
-            /> */}
+            
             {
               otp.map((value,index)=>(
                 <input
@@ -124,14 +174,24 @@ export default function OtpPage() {
               id={`otpInput-${index}`}
               onKeyDown={(e)=>handleKeyDown(e,index)}
               onChange={(e)=>handleChange(e,index)}
-              className="no-spinner bg-gray-100 rounded-md w-10 h-10 outline-none hover:shadow-[3px_3px_0px_0px_rgb(88,22,135,0.5)] text-black text-center"
+              className="no-spinner bg-gray-100 rounded-md w-10 h-10 border-black border-2 outline-1 hover:shadow-[3px_3px_0px_0px_rgb(88,22,135,0.5)] text-black text-center"
             />
               ))
             }
             
           </div>
+      
           <div className="p-3">
-            <PrimaryButton name={"Submit OTP"} />
+          
+            <span onClick={handleSubmit}><PrimaryButton name={"Submit OTP"}  /></span>
+            
+            
+          </div>
+          <div className="">
+            {
+              resendAtive?<button typeof="button" onClick={handleResend} className="text-red-600">Resend OTP</button>:<span className="text-red-500">{counter}</span>
+            }
+            
           </div>
         </motion.div>
 

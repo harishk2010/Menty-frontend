@@ -55,7 +55,7 @@ export default function LoginPage(): ReactElement {
           transition={{
             duration: 1, // Duration of the animation
             ease: "easeOut", // Smooth easing
-          }} className="sm:block hidden">
+          }} className="sm:block hidden  lg:mr-36">
         <Player
           autoplay
           loop
@@ -71,7 +71,7 @@ export default function LoginPage(): ReactElement {
           transition={{
             duration: 1, // Duration of the animation
             ease: "easeOut", // Smooth easing
-          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8">
+          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 lg:p-14 lg:mt-24">
         <h5 className="text-xl font-medium text-gray-900">
           Log In as{" "}
           <span className="text-purple-700 font-semibold">Instructor</span>
