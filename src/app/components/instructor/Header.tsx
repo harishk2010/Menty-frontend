@@ -1,20 +1,18 @@
 
 const Header = () => {
   return (
-    <div className="bg-gray-800 flex justify-between text-white p-3 text-center">
+    <header className="bg-purple-800 flex justify-between w-full text-white p-3 mr-5 text-center">
       <div className=" p-1">
-      <h1 className="text-xl font-bold">Menty-Instructor</h1>
+      <h1 className="text-xl font-bold">Menty- Instructor</h1>
       </div>
-      <div className=" p-1 flex flex-1 gap-3 justify-end">
-        <div>
+      <div className=" p-1 flex flex-1 gap-5 justify-end">
+        {/* <NotificationsNoneIcon/> */}
 
-      
-        </div>
         <div className="w-7 h-7 rounded-full bg-white"></div>
   
       </div>
       
-    </div>
+    </header>
   );
 };
 

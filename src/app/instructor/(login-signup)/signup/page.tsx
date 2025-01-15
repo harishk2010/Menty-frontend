@@ -103,7 +103,7 @@ export default function SignupPage(): ReactElement {
           duration: 1, 
           ease: "easeOut", 
         }}
-        className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 lg:p-14 lg:mt-24"
+        className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 "
       >
         <h5 className="text-xl font-medium text-gray-900">
           Sign Up as{" "}

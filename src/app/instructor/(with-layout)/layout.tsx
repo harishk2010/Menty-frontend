@@ -10,7 +10,7 @@ export const metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     
-        <div className="flex flex-col h-screen" suppressHydrationWarning>
+        <div className="flex flex-col h-screen bg-purple-800 " >
           <Header />
           <div className="flex flex-grow overflow-hidden">
             {/* Sidebar remains fixed */}
@@ -19,7 +19,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
 
             {/* Main content area is scrollable */}
-            <main className="flex-grow overflow-y-auto p-4 bg-gray-100">
+            <main className="flex-grow overflow-y-auto rounded-lg p-4 bg-white">
               {children}
             </main>
           </div>

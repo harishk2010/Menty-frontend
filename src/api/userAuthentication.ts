@@ -41,3 +41,27 @@ export const verifyOtp = async (otp: string): Promise<any> => {
     throw error;
   }
 };
+export const login = async (email: string,password:string): Promise<any> => {
+  try {
+    const response = await API.post(authentictaionRoutes.login_Instructor, {
+      email,password
+    }, {
+      withCredentials: true, // Ensure that cookies are sent with the request
+    });
+    console.log(response.data, "response login");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const logout = async (): Promise<any> => {
+  try {
+    const response = await API.post(authentictaionRoutes.logout_Instructor,{},{withCredentials: true });// 2 parameter is the request part
+    console.log(response.data, "response logout");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+

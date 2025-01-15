@@ -100,6 +100,7 @@ export default function OtpPage() {
     let response=await verifyOtp(OTP)
     if(response.success){
       toast.success(response.message)
+      localStorage.removeItem('verificationToken')
       setTimeout(()=>{
         router.push('/instructor/login')
         

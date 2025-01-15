@@ -10,6 +10,12 @@ import InputField from "@/app/components/common/forms/InputField";
 import PasswordField from "@/app/components/common/forms/PasswordField";
 import RegisterHeader from "@/app/components/instructor/RegisterHeader";
 import {motion} from "framer-motion"
+import { Login } from "@/@types/LoginTypes";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { setUser } from "@/redux/slices/instructorSlice";
+import { useDispatch } from "react-redux";
+import { login } from "@/api/userAuthentication";
 // Dynamically import the Player component from Lottie with SSR disabled
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
@@ -32,14 +38,58 @@ const loginSchema = Yup.object().shape({
 });
 
 export default function LoginPage(): ReactElement {
+
+  const router= useRouter()
+  const dispatch = useDispatch()
+
   const initialValues = {
     email: "",
     password: "",
   };
 
-  const handleSubmit = (values: typeof initialValues) => {
-    console.log("Login Data: ", values);
-    // Add login logic here
+  const onSubmit = async (data: Login) => {
+    try {
+      // Perform the login request
+      // console.log("Response received:",data);
+      const response = await login(data.email,data.password); // Assuming `login` is an API function
+      console.log("Response received:>", response.message);
+
+      const user = response?.user;
+
+      if (user) {
+        // Store user data in localStorage and show success toast
+        localStorage.setItem("user", JSON.stringify(user));
+        toast.success("Welcome to Menty");
+        console.log('user data ___________>', user)
+
+        dispatch((setUser({
+          userId: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.is_blocked
+        })))
+
+        // Redirect to home page after a  delay
+        setTimeout(() => {
+          router.replace(`/instructor/dashboard`);
+        }, 1000);
+      } else {
+        // Log error and handle different error messages
+        console.log("res msg =>>>>", response?.message)
+        if (response?.message == "access denied") {
+          toast.error("Access denied");
+        } else if (response?.message == 'Invalid Password') {
+          toast.error("Invalid Password");
+        } else if (response?.message == 'invalid email id') {
+          toast.error("Invalid email");
+        } else {
+          toast.error('An unexpected error occured')
+        }
+
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -71,7 +121,7 @@ export default function LoginPage(): ReactElement {
           transition={{
             duration: 1, // Duration of the animation
             ease: "easeOut", // Smooth easing
-          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 lg:p-14 lg:mt-24">
+          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 ">
         <h5 className="text-xl font-medium text-gray-900">
           Log In as{" "}
           <span className="text-purple-700 font-semibold">Instructor</span>
@@ -80,7 +130,7 @@ export default function LoginPage(): ReactElement {
         <Formik
           initialValues={initialValues}
           validationSchema={loginSchema}
-          onSubmit={handleSubmit}
+          onSubmit={onSubmit}
         >
           {({ isSubmitting }) => (
             <Form className="space-y-6 my-4 flex flex-col justify-center">
@@ -121,7 +171,7 @@ export default function LoginPage(): ReactElement {
               </div>
 
               {/* Submit Button */}
-              <PrimaryButton name="Login to your account" />
+              <PrimaryButton name="Login to your account" type="submit" />
 
               <div className="text-sm font-medium text-gray-900 cursor-pointer">
                 Not registered?{" "}
