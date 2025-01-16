@@ -20,9 +20,9 @@ export async function middleware(req: NextRequest) {
 
  
  
-    const studentPublicRoutes = ['/login', '/signup'];
+    const studentPublicRoutes = ['/login', '/signup','/forgot-password','/'];
     const instructorProtectedRoutes = ['/instructor/dashboard', '/instructor/courses'];
-    const instructorPublicRoutes = ['/instructor/login', '/instructor/signup'];
+    const instructorPublicRoutes = ['/instructor/login', '/instructor/signup',"/instructor/forgot-password"];
     console.log(req.nextUrl.pathname)
 
     if (studentPublicRoutes.includes(req.nextUrl.pathname)) {

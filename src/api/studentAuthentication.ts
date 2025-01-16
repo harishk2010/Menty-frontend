@@ -6,7 +6,7 @@ import authentictaionRoutes from "@/@types/endPoints/authEndpoints";
 export const signup = async (userData: userData): Promise<any> => {
   try {
     const response = await API.post(
-      authentictaionRoutes.signup_Instructor,
+      authentictaionRoutes.signup_Student,
       userData
     );
     console.log(response.data, "response");
@@ -20,7 +20,7 @@ export const signup = async (userData: userData): Promise<any> => {
 };
 export const resendOtp = async (email: string): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.resendOtp_Instructor, {
+    const response = await API.post(authentictaionRoutes.resendOtp_Student, {
       email,
     });
     console.log(response.data, "response resendOtp");
@@ -32,7 +32,7 @@ export const resendOtp = async (email: string): Promise<any> => {
 
 export const verifyOtp = async (otp: string): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.verifyOtp_Instructor, {
+    const response = await API.post(authentictaionRoutes.verifyOtp_Student, {
       otp,
     });
     console.log(response.data, "response verifyOtp");
@@ -43,7 +43,7 @@ export const verifyOtp = async (otp: string): Promise<any> => {
 };
 export const login = async (email: string,password:string): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.login_Instructor, {
+    const response = await API.post(authentictaionRoutes.login_Student, {
       email,password
     }, {
       withCredentials: true, // Ensure that cookies are sent with the request
@@ -56,7 +56,7 @@ export const login = async (email: string,password:string): Promise<any> => {
 };
 export const logout = async (): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.logout_Instructor,{},{withCredentials: true });// 2 parameter is the request part
+    const response = await API.post(authentictaionRoutes.logout_Student,{},{withCredentials: true });// 2 parameter is the request part
     console.log(response.data, "response logout");
     return response.data;
   } catch (error) {
@@ -66,7 +66,7 @@ export const logout = async (): Promise<any> => {
 
 export const sendResetLink = async (email:string): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.resetPasswordLink_Instructor,{
+    const response = await API.post(authentictaionRoutes.resetPasswordLink_Student,{
       email
     });// 2 parameter is the request part
     console.log(response.data, "response sendRestLink");
@@ -77,7 +77,7 @@ export const sendResetLink = async (email:string): Promise<any> => {
 };
 export const verifyResetOtp = async (email:string,otp:string): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.verifyResetOtp_Instructor,{
+    const response = await API.post(authentictaionRoutes.verifyResetOtp_Student,{
       email,otp
     },{
       withCredentials: true, // Ensure that cookies are sent with the request
@@ -90,7 +90,7 @@ export const verifyResetOtp = async (email:string,otp:string): Promise<any> => {
 };
 export const forgotResendOtp = async (email: string): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.forgotResendOtp_Instructor, {
+    const response = await API.post(authentictaionRoutes.forgotResendOtp_Student, {
       email,
     });
     console.log(response.data, "response resendOtp");
@@ -102,7 +102,7 @@ export const forgotResendOtp = async (email: string): Promise<any> => {
 
 export const resetPassword = async (password:string): Promise<any> => {
   try {
-    const response = await API.post(authentictaionRoutes.resetPassword_Instructor,{
+    const response = await API.post(authentictaionRoutes.resetPassword_Student,{
       password
     },{
       withCredentials:true
@@ -124,9 +124,9 @@ export const test=async ()=>{
     throw error
   }
 }
-export const instructorGoogleLogin = async (loginData:object)=>{
+export const StudentGoogleLogin = async (loginData:object)=>{
   try {
-      const response = await API.post(authentictaionRoutes.googleLogin_instructor, loginData,{
+      const response = await API.post(authentictaionRoutes.googleLogin_Student, loginData,{
         withCredentials:true
       })
       return response.data

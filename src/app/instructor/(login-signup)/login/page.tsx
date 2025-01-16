@@ -8,14 +8,17 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import InputField from "@/app/components/common/forms/InputField";
 import PasswordField from "@/app/components/common/forms/PasswordField";
-import RegisterHeader from "@/app/components/instructor/RegisterHeader";
+import { jwtDecode } from 'jwt-decode';
 import {motion} from "framer-motion"
 import { Login } from "@/@types/LoginTypes";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { setUser } from "@/redux/slices/instructorSlice";
 import { useDispatch } from "react-redux";
-import { login } from "@/api/userAuthentication";
+import { instructorGoogleLogin, login } from "@/api/userAuthentication";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import Link from "next/link";
+import { GOOGLE_CLIENT_ID } from "@/utils/constants";
 // Dynamically import the Player component from Lottie with SSR disabled
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
@@ -46,6 +49,38 @@ export default function LoginPage(): ReactElement {
     email: "",
     password: "",
   };
+  const googleSubmit = async (credentialResponse: any) => {
+
+
+    console.log('gooogle')
+    try {
+      const decoded: any = jwtDecode(credentialResponse.credential)
+      console.log("decoded", decoded);
+      let response = await instructorGoogleLogin({ name: decoded.name, email: decoded.email, password: decoded.sub })
+      console.log(response,"responsee");
+      const user = response?.user;
+      if (response) {
+        // localStorage.setItem('accesToken', response.token.accessToken)
+        // localStorage.setItem('refreshToken', response.token.refreshToken)
+        // localStorage.setItem('role', response.token.role)
+        dispatch((setUser({
+          userId: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.is_blocked
+        })))
+        toast.success(response.message)
+        router.push('/instructor/dashboard')
+
+      } else {
+        const { message } = response.response?.data
+        toast.error(message)
+      }
+      // const user = response.data.user;
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const onSubmit = async (data: Login) => {
     try {
@@ -162,12 +197,11 @@ export default function LoginPage(): ReactElement {
                     Remember me
                   </label>
                 </div>
-                <a
-                  href="#"
-                  className="ms-auto text-sm font-medium text-purple-700 hover:underline"
-                >
+                <Link href="/instructor/forgot_password" className="ms-auto text-sm font-medium text-purple-700 hover:underline">
+                
                   Lost Password?
-                </a>
+                
+                </Link>
               </div>
 
               {/* Submit Button */}
@@ -179,6 +213,14 @@ export default function LoginPage(): ReactElement {
                   Create account
                 </a>
               </div>
+              <GoogleOAuthProvider clientId="292856580461-mikk7ukoeko85e86pls31sg44gjstqad.apps.googleusercontent.com">
+              <div>
+                <GoogleLogin
+                  onSuccess={googleSubmit}
+                  onError={() => console.error("Google Login Failed")}
+                />
+              </div>
+            </GoogleOAuthProvider>
             </Form>
           )}
         </Formik>

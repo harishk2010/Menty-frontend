@@ -7,6 +7,7 @@ export const API = axios.create({
   headers: {
     "Content-Type": "application/json",
     withCredentials: true,
+    credentials: 'include',
     
   },
 });
@@ -14,9 +15,13 @@ export const API = axios.create({
 API.interceptors.request.use(
   (config) => {
     const verificationToken = localStorage.getItem("verificationToken");
+    const verificationTokenStudent = localStorage.getItem("verificationTokenStudent");
 
     if (verificationToken) {
       config.headers["the-verify-token"] = verificationToken;
+    }
+    if (verificationTokenStudent) {
+      config.headers["the-verify-token"] = verificationTokenStudent;
     }
     return config;
   },

@@ -57,13 +57,13 @@ export default function SignupPage(): ReactElement {
       console.log(response, "ressss");
       if (response.success) {
        
-        localStorage.setItem("verificationToken",response.token);
+        localStorage.setItem("verificationTokenStudent",response.token);
         localStorage.setItem("email",values.email)
         console.log("sucess");
 
         toast.success(response.message);
         setTimeout(() => {
-          router.push("/instructor/otp");
+          router.push("/otp");
           setLoader((prev) => !prev);
         }, 3000);
       } else {

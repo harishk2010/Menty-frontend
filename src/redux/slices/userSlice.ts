@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface User {
     userId: string,
-    username: string,
+    name: string,
     email: string,
     role: string
 }
@@ -12,7 +12,7 @@ interface User {
 // Initialize state
 const initialState: User = {
     userId: '',
-    username: '',
+    name: '',
     email: '',
     role: ''
 };
@@ -22,9 +22,9 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<User>) => {
-            const { userId, username, email, role } = action.payload;
+            const { userId, name, email, role } = action.payload;
             state.userId = userId,
-                state.username = username,
+                state.name = name,
                 state.email = email,
                 state.role = role
 
@@ -35,7 +35,7 @@ const userSlice = createSlice({
 
         clearUserDetials: (state) => {
             state.userId = ''
-            state.username = ''
+            state.name = ''
             state.email = ''
             state.role = ''
 
