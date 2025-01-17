@@ -9,7 +9,7 @@ interface inputFieldProps {
   name: string;
 }
 
-const inputField: React.FC<inputFieldProps> = ({
+const  inputField: React.FC<inputFieldProps> = ({
   type,
   placeholder,
   value,

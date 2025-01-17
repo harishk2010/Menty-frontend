@@ -48,7 +48,8 @@ export default function ResetPasswordPage(): ReactElement {
       const response = await resetPassword(data.newPassword); // Replace with your API call
       if (response.success) {
         toast.success("Password reset successfully");
-        router.replace("/instructor/login"); // Redirect to login page
+        localStorage.removeItem("ForgotPassEmail")
+        router.replace("/login"); // Redirect to login page
       } else {
         toast.error(response.message || "Failed to reset password");
       }

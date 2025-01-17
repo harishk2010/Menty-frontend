@@ -5,12 +5,28 @@ import MainButton from '../buttons/MainButton';
 import PlainButton from '../buttons/PlainButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Link from "next/link";
+import { logout } from "@/api/studentAuthentication";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 export default function Navbar():ReactElement{
     const [toggleMenu,setToggleMenu]=useState(false)
+    const router=useRouter()
     const handleToggleMenu=()=>{
         setToggleMenu(prev=>!prev)
 
     }
+    const handleLogout=async()=>{
+        const response=await logout()
+            if(response.success){
+              toast.success(response.message)
+              router.replace("login")
+              
+            }else{
+              toast.error(response.message)
+            }
+          
+    }
+    
 
     return(
         <>
@@ -47,7 +63,7 @@ export default function Navbar():ReactElement{
             </div>
             <div className='hidden sm:flex gap-3'>
             <Link href={"/login"}><PlainButton name={"Login"}/></Link>
-            <Link href={"/Register"}><MainButton name={"register"}/></Link>
+            <span onClick={handleLogout}><MainButton name={"Logout"}/></span>
                 
             </div>
             
@@ -82,7 +98,8 @@ export default function Navbar():ReactElement{
             <div className='sm:hidden flex flex-col mt-8 justify-center items-center gap-3'>
                 
                 <Link href={"/login"}><PlainButton name={"Login"}/></Link>
-                <Link href={"/register"}><MainButton name={"Register"}/></Link>
+                <span onClick={handleLogout}><MainButton name={"Logout"}/></span>
+                
                 
             </div>
                 

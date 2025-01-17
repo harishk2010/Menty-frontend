@@ -2,7 +2,7 @@
 
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
 import Loader from "@/app/components/fallbacks/Loader";
-import dynamic from "next/dynamic";
+
 import { ReactElement, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -10,22 +10,11 @@ import InputField from "@/app/components/common/forms/InputField";
 import PasswordField from "@/app/components/common/forms/PasswordField";
 import { useRouter } from "next/navigation";
 import { signup } from "@/api/studentAuthentication";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { signUp } from "@/@types/signUpType";
 
 
-const Player = dynamic(
-  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
-  {
-    ssr: false,
-    loading: () => (
-      <div>
-        <Loader />
-      </div>
-    ),
-  }
-);
 
 // Validation Schema
 const signupSchema = Yup.object().shape({
@@ -40,7 +29,7 @@ const signupSchema = Yup.object().shape({
 });
 
 export default function SignupPage(): ReactElement {
-  const [error, setError] = useState("");
+
   const [loader, setLoader] = useState(false);
   const initialValues = {
     email: "",
@@ -62,10 +51,11 @@ export default function SignupPage(): ReactElement {
         console.log("sucess");
 
         toast.success(response.message);
-        setTimeout(() => {
-          router.push("/otp");
-          setLoader((prev) => !prev);
-        }, 3000);
+        // setTimeout(() => {
+        //   router.push("/otp");
+        //   setLoader((prev) => !prev);
+        // }, 3000);
+        router.replace("/otp");
       } else {
         toast.error(response.message);
         setLoader((prev) => !prev);
@@ -78,7 +68,7 @@ export default function SignupPage(): ReactElement {
   return (
     <div className="flex flex-1 justify-center  max-h-screen items-center mt-4 py-3 px-5">
       {/* Lottie Animation */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, x: -50 }} 
         animate={{ opacity: 1, x: 0 }} 
         transition={{
@@ -93,14 +83,14 @@ export default function SignupPage(): ReactElement {
           style={{ height: "400px", width: "400px" }}
           src="https://lottie.host/0527ab17-4073-49bd-bc4d-6c17cb7295f9/cRRMSdyI2l.json"
         />
-      </motion.div>
+      </motion.div> */}
 
       {/* Form Section */}
       <motion.div
         initial={{ opacity: 0, x: 50 }} 
         animate={{ opacity: 1, x: 0 }} 
         transition={{
-          duration: 1, 
+          duration: 0.5, 
           ease: "easeOut", 
         }}
         className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 "
@@ -109,7 +99,7 @@ export default function SignupPage(): ReactElement {
           Sign Up as{" "}
           <span className="text-purple-700 font-semibold">Student</span>
         </h5>
-        {error && <p className="text-red-600">{error}</p>}
+
 
         <Formik
           initialValues={initialValues}

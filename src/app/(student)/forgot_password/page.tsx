@@ -47,10 +47,8 @@ export default function ForgotPasswordPage(): ReactElement {
       if (response?.success) {
         localStorage.setItem("ForgotPassEmail", response.data.email);
         toast.success(response.message);
-        setTimeout(() => {
-          router.push("/forgot-password-otp");
-          setLoader((prev) => !prev);
-        }, 1000);
+        
+        router.replace("/forgot-password-otp");
       } else {
         toast.error(
           response?.message || "An error occurred. Please try again."

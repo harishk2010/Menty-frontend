@@ -20,7 +20,7 @@ export const tokenVerify = async (userToken: string, req: NextRequest): Promise<
 
     try {
         const { payload } = await jwtVerify(token.value, new TextEncoder().encode(secret));
-        console.log(payload,"payload")
+        // console.log(payload,"payload")
         const data = payload as unknown as JwtPayload
         return data.role
     } catch (error) {

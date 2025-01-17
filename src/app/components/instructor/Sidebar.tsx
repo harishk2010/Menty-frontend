@@ -11,14 +11,17 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { logout } from "@/api/userAuthentication";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
-
+  const router=useRouter()
   const handleLogout=async ()=>{
     const response=await logout()
     if(response.success){
       toast.success(response.message)
+      // router.replace('/login')
+      
     }else{
       toast.error(response.message)
     }

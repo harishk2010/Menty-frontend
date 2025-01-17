@@ -98,10 +98,11 @@ export default function OtpPage() {
     if(response.success){
       toast.success(response.message)
       // localStorage.removeItem('verificationToken')
-      setTimeout(()=>{
-        router.push('/resetPassword')
+      // setTimeout(()=>{
+      //   router.replace('/resetPassword')
         
-      },1000)
+      // },1000)
+      router.replace('/resetPassword')
 
     }else{
       toast.error(response.message)
@@ -111,7 +112,7 @@ export default function OtpPage() {
   
   
   return (
-    <div className="bg-white  w-full flex  justify-between items-center mt-16">
+    <div className="bg-white  w-full h-screen flex  justify-center items-center ">
       
      
 {/*       
@@ -119,7 +120,7 @@ export default function OtpPage() {
       
         
       </div> */}
-      <motion.div
+      {/* <motion.div
           initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
           animate={{ opacity: 1, x: 0 }} // Moves to its final position
           transition={{
@@ -134,7 +135,7 @@ export default function OtpPage() {
           src="https://lottie.host/cade60f0-bcd4-409a-b821-b36eeb4e8679/uMH9otOft0.json"
         />
 
-      </motion.div>
+      </motion.div> */}
     
         
       
@@ -187,7 +188,7 @@ export default function OtpPage() {
           </div>
           <div className="">
             {
-              resendAtive?<button typeof="button" onClick={handleResend} className="text-red-600">Resend OTP</button>:<span className="text-red-500">{counter}</span>
+              resendAtive?<button typeof="button" onClick={handleResend} className="text-red-600">Resend OTP</button>:<span className="text-red-500">Try again in {counter}</span>
             }
             
           </div>
@@ -195,5 +196,6 @@ export default function OtpPage() {
 
       
     </div>
+    
   );
 }

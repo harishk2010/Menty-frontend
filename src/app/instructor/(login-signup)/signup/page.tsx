@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import InputField from "@/app/components/common/forms/InputField";
 import PasswordField from "@/app/components/common/forms/PasswordField";
 import { useRouter } from "next/navigation";
-import { signup } from "@/api/studentAuthentication";
+import { signup } from "@/api/userAuthentication";
 import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { signUp } from "@/@types/signUpType";
@@ -62,10 +62,11 @@ export default function SignupPage(): ReactElement {
         console.log("sucess");
 
         toast.success(response.message);
-        setTimeout(() => {
-          router.push("/instructor/otp");
-          setLoader((prev) => !prev);
-        }, 3000);
+        // setTimeout(() => {
+        //   router.push("/instructor/otp");
+        //   setLoader((prev) => !prev);
+        // }, 1000);
+        router.push("/instructor/otp");
       } else {
         toast.error(response.message);
         setLoader((prev) => !prev);
@@ -78,7 +79,7 @@ export default function SignupPage(): ReactElement {
   return (
     <div className="flex flex-1 justify-center  max-h-screen items-center mt-4 py-3 px-5">
       {/* Lottie Animation */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, x: -50 }} 
         animate={{ opacity: 1, x: 0 }} 
         transition={{
@@ -93,7 +94,7 @@ export default function SignupPage(): ReactElement {
           style={{ height: "400px", width: "400px" }}
           src="https://lottie.host/0527ab17-4073-49bd-bc4d-6c17cb7295f9/cRRMSdyI2l.json"
         />
-      </motion.div>
+      </motion.div> */}
 
       {/* Form Section */}
       <motion.div
@@ -107,7 +108,7 @@ export default function SignupPage(): ReactElement {
       >
         <h5 className="text-xl font-medium text-gray-900">
           Sign Up as{" "}
-          <span className="text-purple-700 font-semibold">Student</span>
+          <span className="text-purple-700 font-semibold">Instrutor</span>
         </h5>
         {error && <p className="text-red-600">{error}</p>}
 

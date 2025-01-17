@@ -190,7 +190,7 @@ export default function OtpPage() {
           </div>
           <div className="">
             {
-              resendAtive?<button typeof="button" onClick={handleResend} className="text-red-600">Resend OTP</button>:<span className="text-red-500">{counter}</span>
+              resendAtive?<button typeof="button" onClick={handleResend} className="text-red-600">Resend OTP</button>:<span className="text-red-500">Try again in {counter}</span>
             }
             
           </div>

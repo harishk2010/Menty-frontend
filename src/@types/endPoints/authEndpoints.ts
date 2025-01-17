@@ -23,6 +23,11 @@ const  authentictaionRoutes={
     forgotResendOtp_Student:'/auth/student/forgotResendOtp',
     resetPassword_Student:'/auth/student/resetPassword',
     googleLogin_Student:'/auth/student/googleLogin',
+
+    //admin
+    adminLogin:'/auth/admin/login',
+    adminLogout:'/auth/admin/logout'
+
   
 }
 

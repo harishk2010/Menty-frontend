@@ -63,12 +63,12 @@ export default function LoginPage(): ReactElement {
         // localStorage.setItem('accesToken', response.token.accessToken)
         // localStorage.setItem('refreshToken', response.token.refreshToken)
         // localStorage.setItem('role', response.token.role)
-        dispatch((setUser({
-          userId: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.is_blocked
-        })))
+        // dispatch((setUser({
+        //   userId: user._id,
+        //   name: user.name,
+        //   email: user.email,
+        //   role: user.is_blocked
+        // })))
         toast.success(response.message)
         router.push('/instructor/dashboard')
 
@@ -97,12 +97,12 @@ export default function LoginPage(): ReactElement {
         toast.success("Welcome to Menty");
         console.log('user data ___________>', user)
 
-        dispatch((setUser({
-          userId: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.is_blocked
-        })))
+        // dispatch((setUser({
+        //   userId: user._id,
+        //   name: user.name,
+        //   email: user.email,
+        //   role: user.isBlocked
+        // })))
 
         // Redirect to home page after a  delay
         setTimeout(() => {
@@ -134,7 +134,7 @@ export default function LoginPage(): ReactElement {
       
 
       
-      <motion.div
+      {/* <motion.div
           initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
           animate={{ opacity: 1, x: 0 }} // Moves to its final position
           transition={{
@@ -147,7 +147,7 @@ export default function LoginPage(): ReactElement {
           style={{ height: "400px", width: "400px" }}
           src="https://lottie.host/be2302b1-71d9-4ba5-ad8c-68b3e4d9923a/VFsZzRBBvQ.json"
         />
-      </motion.div>
+      </motion.div> */}
 
       {/* Form Section */}
       <motion.div
@@ -213,7 +213,7 @@ export default function LoginPage(): ReactElement {
                   Create account
                 </a>
               </div>
-              <GoogleOAuthProvider clientId="292856580461-mikk7ukoeko85e86pls31sg44gjstqad.apps.googleusercontent.com">
+              <GoogleOAuthProvider clientId="241293973300-q7m09ls0fgqv5u72ft5707edbfnnn1qc.apps.googleusercontent.com">
               <div>
                 <GoogleLogin
                   onSuccess={googleSubmit}

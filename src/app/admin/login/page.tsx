@@ -6,6 +6,9 @@ import PrimaryColorButton from "@/app/components/buttons/PrimaryColorButton";
 import { ReactElement } from "react";
 import InputField from "@/app/components/common/forms/InputField";
 import PasswordField from "@/app/components/common/forms/PasswordField";
+import { adminLogin } from "@/api/adminAuthentication";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage(): ReactElement {
   // Define validation schema using Yup
@@ -14,13 +17,22 @@ export default function LoginPage(): ReactElement {
       .email("Invalid email address")
       .required("Email is required"),
     password: Yup.string()
-      .min(8, "Password must be at least 25 characters")
+      .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
-
+  const router= useRouter()
   // Handle form submission
-  const handleSubmit = (values: { email: string; password: string }) => {
-    console.log("Form Values:", values);
+  const handleSubmit = async(values: { email: string; password: string }) => {
+
+    const response= await adminLogin(values) 
+    if(response.success){
+      toast.success(response.message)
+      router.push('/admin/dashboard')
+     
+    }else{
+      toast.error(response.message)
+    }
+    console.log("Form Values:", response);
     // Add login API logic here
   };
 

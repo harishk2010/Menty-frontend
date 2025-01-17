@@ -114,7 +114,7 @@ export default function OtpPage() {
   
   
   return (
-    <div className="bg-white  w-full flex  justify-between items-center mt-16">
+    <div className="bg-white  w-full h-screen flex  justify-center items-center">
       
      
 {/*       
@@ -122,7 +122,7 @@ export default function OtpPage() {
       
         
       </div> */}
-      <motion.div
+      {/* <motion.div
           initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
           animate={{ opacity: 1, x: 0 }} // Moves to its final position
           transition={{
@@ -139,7 +139,7 @@ export default function OtpPage() {
 
       </motion.div>
     
-        
+         */}
       
         
         <motion.div

@@ -9,9 +9,24 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { adminLogout } from "@/api/adminAuthentication";
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const handleLogout=async ()=>{
+      const response=await adminLogout()
+      if(response.success){
+        toast.success(response.message)
+        // router.replace('/login')
+        
+      }else{
+        toast.error(response.message)
+      }
+    
+  
+    }
 
   return (
     <div
@@ -78,7 +93,7 @@ const Sidebar = () => {
         </div>
       </Link>
     </li>
-    <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
+    <li onClick={handleLogout} className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
       <Link href="/admin/login" className="flex w-full">
         <div className="block float-left">
           <ExitToAppIcon className="mr-3 hover:bg-white text-gray-500 size-9  border-gray-300 rounded-full" />
