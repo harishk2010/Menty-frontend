@@ -1,6 +1,4 @@
 import axios from "axios";
-import { verify } from "crypto";
-
 
 export const API = axios.create({
   baseURL: "http://localhost:5001",

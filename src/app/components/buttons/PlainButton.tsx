@@ -6,11 +6,11 @@ export default function PlainButton({name}:{
     return <button className="
     flex items-center justify-center
     border
-    py-2 px-3
-    rounded-lg
-    border-purple-700
-    hover:bg-purple-100
-    text-purple-700
+    py-2 px-6
+    rounded-md
+    bg-gray-800
+    hover:bg-gray-900
+    text-white
    
     ">{name}</button>
 }

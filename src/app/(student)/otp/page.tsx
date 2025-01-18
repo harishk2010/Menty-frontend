@@ -53,14 +53,22 @@ export default function OtpPage() {
     setResendActive(false)
     setCounter(10)
 
-    let email= localStorage.getItem("email")|| ""
-    const respone=await resendOtp(email)
-
-    if(respone.success){
-      toast.success(respone.message)
+    let email= localStorage.getItem("email")
+    if(email){
+      const respone=await resendOtp(email)
+      if(respone.success){
+        toast.success(respone.message)
+      }else{
+        toast.error(respone.message)
+      }
     }else{
-      toast.error(respone.message)
+      toast.error("Validation Token expired ! Redirecting....")
+     
+      router.replace('/login')
+
     }
+
+    
     
     
   }
@@ -101,6 +109,7 @@ export default function OtpPage() {
     if(response.success){
       toast.success(response.message)
       localStorage.removeItem('verificationTokenStudent')
+      localStorage.removeItem('email')
       setTimeout(()=>{
         router.push('/login')
         

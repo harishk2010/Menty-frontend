@@ -20,17 +20,17 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import Link from "next/link";
 import { GOOGLE_CLIENT_ID } from "@/utils/constants";
 // Dynamically import the Player component from Lottie with SSR disabled
-const Player = dynamic(
-  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
-  {
-    ssr: false,
-    loading: () => (
-      <div>
-        <Loader />
-      </div>
-    ),
-  }
-);
+// const Player = dynamic(
+//   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div>
+//         <Loader />
+//       </div>
+//     ),
+//   }
+// );
 
 // Validation Schema
 const loginSchema = Yup.object().shape({
@@ -41,6 +41,7 @@ const loginSchema = Yup.object().shape({
 });
 
 export default function LoginPage(): ReactElement {
+  console.log(GOOGLE_CLIENT_ID)
 
   const router= useRouter()
   const dispatch = useDispatch()
@@ -157,10 +158,10 @@ export default function LoginPage(): ReactElement {
             duration: 1, // Duration of the animation
             ease: "easeOut", // Smooth easing
           }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 ">
-        <h5 className="text-xl font-medium text-gray-900">
-          Log In as{" "}
-          <span className="text-purple-700 font-semibold">Student</span>
-        </h5>
+        <p className="text-xl font-medium text-gray-900 font-sans">
+          Log In as
+          <span className="text-purple-700 font-semibold"> Student</span>
+        </p>
 
         <Formik
           initialValues={initialValues}
@@ -213,7 +214,7 @@ export default function LoginPage(): ReactElement {
                   Create account
                 </a>
               </div>
-              <GoogleOAuthProvider clientId="241293973300-q7m09ls0fgqv5u72ft5707edbfnnn1qc.apps.googleusercontent.com">
+              <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
               <div>
                 <GoogleLogin
                   onSuccess={googleSubmit}

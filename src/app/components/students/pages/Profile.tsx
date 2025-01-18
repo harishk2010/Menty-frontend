@@ -18,7 +18,7 @@ const ProfilePage = () => {
             </div>
           </div>
           <div className="flex gap-4 mt-6">
-            <button className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+            <button className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-500">
               Edit Profile
             </button>
             <button className="bg-gray-800 text-white px-6 py-2 rounded-md hover:bg-gray-900">

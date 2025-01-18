@@ -1,6 +1,12 @@
+"use client"
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux"
 
 const Header = () => {
+  const Instructor=useSelector((state:RootState)=>state.instructor)
+  console.log(Instructor)
   return (
+  
     <header className="bg-purple-800 flex justify-between w-full text-white p-3 mr-5 text-center">
       <div className=" p-1">
       <h1 className="text-xl font-bold">Menty- Instructor</h1>

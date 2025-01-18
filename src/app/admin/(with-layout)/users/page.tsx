@@ -1,6 +1,4 @@
-import { FaUserCircle } from "react-icons/fa"; // User icon
-import { AiOutlineMail, AiOutlineSearch } from "react-icons/ai"; // Email & search icons
-import MainButton from "@/app/components/buttons/MainButton";
+
 import Table from "@/app/components/admin/Table"
 const Users = () => {
   return (
