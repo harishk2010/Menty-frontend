@@ -16,18 +16,40 @@ export const studentHeader = [
 
 //instructor Sidebar
 export const instructorSidebar = [
-    {
-      name: "Home",
-      href: "/home",
-    },
-    {
-      name: "Profile",
-      href: "/profile",
-     
-    },
-    {
-      name: "About",
-      href: "/About",
-    },
-  ];
-  
+  {
+    name: "Home",
+    href: "/home",
+  },
+  {
+    name: "Profile",
+    href: "/profile",
+  },
+  {
+    name: "About",
+    href: "/About",
+  },
+];
+
+export const profileSidebar = [
+  {
+    name: "Profile",
+    href: "/profile",
+  },
+  {
+    name: "EditProfile",
+    href: "/editProfile",
+  },
+  {
+    name: "Courses",
+    href: "/courses",
+  },
+  {
+    name: "Bookings",
+    href: "/bookings",
+  },
+  {
+    name: "Settings",
+    href: "/settings",
+  },
+];
+
