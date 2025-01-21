@@ -8,23 +8,28 @@ import userReducer from './slices/userSlice';
 import instructorReducer from './slices/instructorSlice';
 
 // Configure persistence
-const persistConfig = {
-  key: 'root',
+const userPersistConfig = {
+  key: 'user',
+  storage,
+};
+// Configure persistence
+const instructorPersistConfig = {
+  key: 'instructor',
   storage,
 };
 
 // Combine reducers (for scalability)
 const rootReducer = combineReducers({
-  user: userReducer,
-  instructor: instructorReducer
+  user: persistReducer(userPersistConfig, userReducer),
+  instructor: persistReducer(instructorPersistConfig, instructorReducer)
 });
 
 // Wrap reducers with persistReducer
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Create store
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // Required for redux-persist to work properly

@@ -24,9 +24,10 @@ export default function Navbar(): ReactElement {
 
   const Student = useSelector((state: RootState) => state.user.email);
   useEffect(() => {
-    if (Student.length > 0) setStudent(true);
+    if (Student) setStudent(true);
     else setStudent(false);
-  }, []);
+    console.log(student, Student);
+  });
 
   console.log(Student);
 
@@ -86,12 +87,15 @@ export default function Navbar(): ReactElement {
           </ul>
         </div>
         <div className="hidden sm:flex gap-3">
-          <Link href={"/login"}>
-            <PlainButton name={"Login"} />
-          </Link>
-          <span onClick={handleLogout}>
-            <MainButton name={"Logout"} />
-          </span>
+          {!student ? (
+            <Link href={"/login"}>
+              <PlainButton name={"Login"} />
+            </Link>
+          ) : (
+            <span onClick={handleLogout}>
+              <MainButton name={"Logout"} />
+            </span>
+          )}
         </div>
       </nav>
       {toggleMenu ? (

@@ -1,11 +1,34 @@
 "use client"
+import { User } from "@/@types/User";
 import { profileSidebar } from "@/app/utils/validationSchemas/constants";
+import { RootState } from "@/redux/store";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const ProfileHeader = () => {
   const pathname = usePathname();
+  const [student,setStudent]=useState<User>({
+    userId: null,
+    name: null,
+    email: null,
+    role: null
+  })
+  const [isLoggedIn,setIsLoggedIn]=useState(true)
+
+  const loggedIn=useSelector((state:RootState)=>state.user.email)
+  const Student=useSelector((state:RootState)=>state.user)
+
+  useEffect(()=>{
+    if(loggedIn){
+      setStudent(Student)
+      
+    }else{
+      setIsLoggedIn(false)
+      
+    }
+  })
   return (
    <>
       {/* Profile Header */}
@@ -20,8 +43,8 @@ const ProfileHeader = () => {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-800">John Doe</h1>
-            <p className="text-gray-600">Frontend Developer | Learner</p>
-            <p className="text-gray-500 mt-2">johndoe@gmail.com</p>
+            <p className="text-gray-600">Frontend Developer | {student.role }</p>
+            <p className="text-gray-500 mt-2">{student.email }</p>
           </div>
         </div>
         <div className="flex gap-4 mt-6">

@@ -58,8 +58,9 @@ export default function LoginPage(): ReactElement {
       const decoded: any = jwtDecode(credentialResponse.credential)
       console.log("decoded", decoded.name);
       let response = await StudentGoogleLogin({ name: decoded.name, email: decoded.email, password: decoded.sub })
-      console.log(response,"responsee");
+      console.log(response.user,"responsee");
       const user = response?.user;
+      console.log(user,"USERRRRR");
       if (response) {
         // localStorage.setItem('accesToken', response.token.accessToken)
         // localStorage.setItem('refreshToken', response.token.refreshToken)
@@ -68,7 +69,7 @@ export default function LoginPage(): ReactElement {
           userId: user._id,
           name: user.name,
           email: user.email,
-          role: user.is_blocked
+          role: user.role
         })))
         toast.success(response.message)
         router.push('/home')
@@ -96,13 +97,13 @@ export default function LoginPage(): ReactElement {
         // Store user data in localStorage and show success toast
         localStorage.setItem("user", JSON.stringify(user));
         toast.success("Welcome to Menty");
-        console.log('user data ___________>', user)
+       
 
         dispatch((setUser({
           userId: user._id,
           name: user.name,
           email: user.email,
-          role: user.is_blocked
+          role: user.role
         })))
 
         // Redirect to home page after a  delay
