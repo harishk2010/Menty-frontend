@@ -171,12 +171,12 @@ export default function LoginPage(): ReactElement {
             <Form className="space-y-6 my-4 flex flex-col justify-center">
               {/* Email Field */}
               <div>
-                <InputField type="email" name="email" placeholder="Email" />
+                <InputField label="email" type="email" name="email" placeholder="Email" />
               </div>
 
               {/* Password Field */}
               <div>
-                <PasswordField name="password" placeholder="Password" />
+                <PasswordField label="password" name="password" placeholder="Password" />
               </div>
 
               {/* Remember Me */}

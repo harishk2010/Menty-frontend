@@ -52,13 +52,15 @@ export default function LoginPage(): ReactElement {
             <Form className="space-y-6 my-4 flex flex-col justify-center">
               <div>
                 
-                <InputField  type="email"
+                <InputField
+                label="email"
+                type="email"
                   name="email"
-                  placeholder="Email"/>
+                  placeholder="Enter Email"/>
               </div>
 
               <div>
-                <PasswordField name="password" placeholder="Password"  />
+                <PasswordField label="password" name="password" placeholder="Enter Password"  />
               </div>
 
               <PrimaryColorButton

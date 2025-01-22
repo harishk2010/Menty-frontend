@@ -7,12 +7,14 @@ interface PasswordFieldProps {
   name: string;
   placeholder: string;
   value?: string;
+  label:string
 }
 
 const PasswordField: React.FC<PasswordFieldProps> = ({
   name,
   placeholder,
   value,
+  label
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -30,7 +32,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
     <>
       <div>
         <label htmlFor={name} className="block text-black text-xs font-semibold ">
-          {placeholder.toUpperCase()}
+          {label.toUpperCase()}
         </label>
       </div>
       <div className="flex items-center relative">

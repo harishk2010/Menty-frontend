@@ -87,7 +87,7 @@ export default function LoginPage(): ReactElement {
   const onSubmit = async (data: Login) => {
     try {
       // Perform the login request
-      // console.log("Response received:",data);
+       console.log("Response received:",data);
       const response = await login(data.email,data.password); // Assuming `login` is an API function
       console.log("Response received:>", response.message);
 
@@ -101,7 +101,7 @@ export default function LoginPage(): ReactElement {
 
         dispatch((setUser({
           userId: user._id,
-          name: user.name,
+          name: user.username,
           email: user.email,
           role: user.role
         })))
@@ -173,12 +173,12 @@ export default function LoginPage(): ReactElement {
             <Form className="space-y-6 my-4 flex flex-col justify-center">
               {/* Email Field */}
               <div>
-                <InputField type="email" name="email" placeholder="Email" />
+                <InputField type="email" label="Email" name="email" placeholder="Enter Email" />
               </div>
 
               {/* Password Field */}
               <div>
-                <PasswordField name="password" placeholder="Password" />
+                <PasswordField name="password" label="Password" placeholder="Password"  />
               </div>
 
               {/* Remember Me */}

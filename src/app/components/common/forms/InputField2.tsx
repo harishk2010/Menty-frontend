@@ -7,16 +7,18 @@ interface inputFieldProps {
   value?: string;
   name: string;
   label: string;
- 
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-const inputField: React.FC<inputFieldProps > = ({
+const inputField2: React.FC<inputFieldProps > = ({
   type,
   placeholder,
   value,
   name,
   label,
- 
+  onBlur,
+  onChange,
 }) => {
   return (
     <>
@@ -34,7 +36,8 @@ const inputField: React.FC<inputFieldProps > = ({
               
            border-transparent text-black  text-sm focus:outline-none focus:border-2 focus:outline bg-gray-100`}
           type={type}
-          
+          onChange={onChange}
+          onBlur={onBlur}
           placeholder={placeholder}
           value={value}
           id={name}
@@ -48,4 +51,4 @@ const inputField: React.FC<inputFieldProps > = ({
     </>
   );
 };
-export default inputField;
+export default inputField2;

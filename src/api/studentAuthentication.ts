@@ -43,10 +43,12 @@ export const verifyOtp = async (otp: string): Promise<any> => {
 };
 export const login = async (email: string,password:string): Promise<any> => {
   try {
+    //authentictaionRoutes.login_Student
+    console.log(email, "_____________", password)
     const response = await API.post(authentictaionRoutes.login_Student, {
       email,password
-    }, {
-      withCredentials: true, // Ensure that cookies are sent with the request
+    },{
+      withCredentials:true
     });
     console.log(response.data, "response login");
     return response.data;

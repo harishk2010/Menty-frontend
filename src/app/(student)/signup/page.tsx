@@ -24,6 +24,8 @@ const PasswordField = dynamic(
 
 // Validation Schema
 const signupSchema = Yup.object().shape({
+  username:Yup.string().min(5,"Username must be atleast 5 characters")
+  .required("Username is Required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
     .matches(/^\S*$/, "Password must not contain spaces")
@@ -96,17 +98,21 @@ export default function SignupPage(): ReactElement {
           validateOnChange={false} // Optimize validation
         >
           {() => (
-            <Form className="space-y-6 my-4 flex flex-col justify-center">
+            <Form className="space-y-4 my-4 flex flex-col justify-center">
               <div>
-                <InputField type="email" name="email" placeholder="Email" />
+                <InputField type="username" name="username" label="Username" placeholder="Enter Your Name" />
               </div>
               <div>
-                <PasswordField name="password" placeholder="Password" />
+                <InputField type="email" label="Email" name="email" placeholder="Enter Email" />
+              </div>
+              <div>
+                <PasswordField name="password" label="Password" placeholder="Password" />
               </div>
               <div>
                 <PasswordField
+                label="confirm password"
                   name="confirmPassword"
-                  placeholder="Confirm Password"
+                  placeholder="Enter Confirm Password"
                 />
               </div>
               {!loader ? (
