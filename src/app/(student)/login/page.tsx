@@ -19,20 +19,7 @@ import { StudentGoogleLogin, login } from "@/api/studentAuthentication";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import Link from "next/link";
 import { GOOGLE_CLIENT_ID } from "@/utils/constants";
-// Dynamically import the Player component from Lottie with SSR disabled
-// const Player = dynamic(
-//   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
-//   {
-//     ssr: false,
-//     loading: () => (
-//       <div>
-//         <Loader />
-//       </div>
-//     ),
-//   }
-// );
 
-// Validation Schema
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
@@ -69,7 +56,8 @@ export default function LoginPage(): ReactElement {
           userId: user._id,
           name: user.name,
           email: user.email,
-          role: user.role
+          role: user.role,
+          profilePicUrl:user.profilePicUrl
         })))
         toast.success(response.message)
         router.push('/home')
@@ -103,7 +91,8 @@ export default function LoginPage(): ReactElement {
           userId: user._id,
           name: user.username,
           email: user.email,
-          role: user.role
+          role: user.role,
+          profilePicUrl:user.profilePicUrl
         })))
 
         // Redirect to home page after a  delay
@@ -131,25 +120,6 @@ export default function LoginPage(): ReactElement {
 
   return (
     <div className="flex justify-evenly max-h-screen  items-center mt-10 py-3 px-5">
-      {/* Lottie Animation */}
-     
-      
-
-      
-      {/* <motion.div
-          initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
-          animate={{ opacity: 1, x: 0 }} // Moves to its final position
-          transition={{
-            duration: 1, // Duration of the animation
-            ease: "easeOut", // Smooth easing
-          }} className="sm:block hidden  lg:mr-36">
-        <Player
-          autoplay
-          loop
-          style={{ height: "400px", width: "400px" }}
-          src="https://lottie.host/be2302b1-71d9-4ba5-ad8c-68b3e4d9923a/VFsZzRBBvQ.json"
-        />
-      </motion.div> */}
 
       {/* Form Section */}
       <motion.div
@@ -215,7 +185,7 @@ export default function LoginPage(): ReactElement {
                   Create account
                 </a>
               </div>
-              <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
+              <GoogleOAuthProvider clientId="241293973300-q7m09ls0fgqv5u72ft5707edbfnnn1qc.apps.googleusercontent.com">
               <div>
                 <GoogleLogin
                   onSuccess={googleSubmit}

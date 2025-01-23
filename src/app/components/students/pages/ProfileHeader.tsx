@@ -15,6 +15,7 @@ const ProfileHeader = () => {
     username: null,
     email: null,
     role: null,
+    profilePicUrl:null
   }); // Initially set to null
 
 
@@ -45,7 +46,7 @@ const ProfileHeader = () => {
         <div className="flex  items-center gap-6">
           <div className="w-28 h-28 rounded-full overflow-hidden">
             <img
-              src="https://via.placeholder.com/150"
+              src={studentData.profilePicUrl||'https://via.placeholder.com/150/ccc/aaa?text=User'}
               alt="Profile"
               className="w-full h-full object-cover"
             />

@@ -5,12 +5,9 @@ import authentictaionRoutes from "@/@types/endPoints/authEndpoints";
 
 export const adminLogin = async (userData: userData): Promise<any> => {
   try {
-    const response = await API.post(
-      authentictaionRoutes.adminLogin,
-      userData,{
-        withCredentials:true
-      }
-    );
+    const response = await API.post(authentictaionRoutes.adminLogin, userData, {
+      withCredentials: true,
+    });
     console.log(response.data, "admin response");
 
     return response.data;
@@ -23,11 +20,15 @@ export const adminLogin = async (userData: userData): Promise<any> => {
 };
 
 export const adminLogout = async (): Promise<any> => {
-    try {
-      const response = await API.post(authentictaionRoutes.adminLogout,{},{withCredentials: true });// 2 parameter is the request part
-      console.log(response.data, "response logout");
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  };
+  try {
+    const response = await API.post(
+      authentictaionRoutes.adminLogout,
+      {},
+      { withCredentials: true }
+    ); // 2 parameter is the request part
+    console.log(response.data, "response logout");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
