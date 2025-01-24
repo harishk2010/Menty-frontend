@@ -26,3 +26,15 @@ export const updateProfile = async (formData: FormData): Promise<any> => {
     console.error("Error in updateProfile API call:", error);
   }
 };
+
+export const updatePassword = async (data: any): Promise<any> => {
+  try {
+    const response = await API.patch(StudentRoutes.updatePassword, data, {
+      withCredentials: true,
+    });
+    console.log(response,"response updatePassword")
+    return response.data;
+  } catch (error) {
+    console.error("Error in updateProfile API call:", error);
+  }
+};

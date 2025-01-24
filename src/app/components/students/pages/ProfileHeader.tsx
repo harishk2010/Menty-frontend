@@ -53,7 +53,7 @@ const ProfileHeader = () => {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-800">{studentData.username}</h1>
-            <p className="text-gray-600">Frontend Developer | {studentData.role}</p>
+            <p className="text-gray-600">{studentData.mobile} | {studentData.role}</p>
             <p className="text-gray-500 mt-2">{studentData.email}</p>
           </div>
         </div>

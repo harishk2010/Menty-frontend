@@ -40,8 +40,8 @@ export const profileSidebar = [
     href: "/editProfile",
   },
   {
-    name: "Courses",
-    href: "/courses",
+    name: "ChangePassword",
+    href: "/changePassword",
   },
   {
     name: "Bookings",
