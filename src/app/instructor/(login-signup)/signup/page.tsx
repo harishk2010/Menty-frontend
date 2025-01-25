@@ -29,6 +29,8 @@ const Player = dynamic(
 
 // Validation Schema
 const signupSchema = Yup.object().shape({
+  username:Yup.string().min(5,"Username must be atleast 5 characters")
+    .required("Username is Required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
     .matches(/^\S*$/, "Password must not contain spaces")
@@ -62,10 +64,6 @@ export default function SignupPage(): ReactElement {
         console.log("sucess");
 
         toast.success(response.message);
-        // setTimeout(() => {
-        //   router.push("/instructor/otp");
-        //   setLoader((prev) => !prev);
-        // }, 1000);
         router.push("/instructor/otp");
       } else {
         toast.error(response.message);
@@ -78,24 +76,7 @@ export default function SignupPage(): ReactElement {
 
   return (
     <div className="flex flex-1 justify-center  max-h-screen items-center mt-4 py-3 px-5">
-      {/* Lottie Animation */}
-      {/* <motion.div
-        initial={{ opacity: 0, x: -50 }} 
-        animate={{ opacity: 1, x: 0 }} 
-        transition={{
-          duration: 1, 
-          ease: "easeOut", 
-        }}
-        className="sm:block hidden mr-24 lg:mr-36"
-      >
-        <Player
-          autoplay
-          loop
-          style={{ height: "400px", width: "400px" }}
-          src="https://lottie.host/0527ab17-4073-49bd-bc4d-6c17cb7295f9/cRRMSdyI2l.json"
-        />
-      </motion.div> */}
-
+ 
       {/* Form Section */}
       <motion.div
         initial={{ opacity: 0, x: 50 }} 
@@ -118,22 +99,25 @@ export default function SignupPage(): ReactElement {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form className="space-y-6 my-4 flex flex-col justify-center">
-             
+            <Form className="space-y-2 my-1 flex flex-col justify-center">
+             <div>
+                <InputField type="username" name="username" label="Username" placeholder="Enter Your Name" />
+              </div>
               <div>
-                <InputField type="email" name="email" placeholder="Email" />
+                <InputField label="email" type="email" name="email" placeholder="Email" />
               </div>
 
           
               <div>
-                <PasswordField name="password" placeholder="Password" />
+                <PasswordField label="password" name="password" placeholder="Password" />
               </div>
 
         
               <div>
                 <PasswordField
+                label="Confirm Password"
                   name="confirmPassword"
-                  placeholder="Confirm Password"
+                  placeholder="Confirm Password..."
                 />
               </div>
 

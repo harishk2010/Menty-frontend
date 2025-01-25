@@ -38,3 +38,49 @@ export const updatePassword = async (data: any): Promise<any> => {
     console.error("Error in updateProfile API call:", error);
   }
 };
+
+export const getAllStudents = async (): Promise<any> => {
+  try {
+    console.log("response getAllStudents11")
+    const response = await API.get(StudentRoutes.adminGetStudents,{
+      headers:{
+        "Content-Type":"application/json"
+      },
+      withCredentials:true
+    });
+    console.log(response.data.users,"response getAllStudents")
+    return response?.data?.users;
+  } catch (error) {
+    console.error("Error in updateProfile API call:", error);
+  }
+};
+export const getAllInstructors = async (): Promise<any> => {
+  try {
+    console.log("response getAllStudents11")
+    const response = await API.get(StudentRoutes.adminGetInstructors);
+    console.log(response.data.users,"response getAllStudents")
+    return response?.data?.users;
+  } catch (error) {
+    console.error("Error in updateProfile API call:", error);
+  }
+};
+
+
+export const blockStudent = async (email: string | null): Promise<any> => {
+  try {
+    const response = await API.get(`${StudentRoutes.adminBlockStudent}${email}`);
+    // console.log(response.data,"setstudent respone")
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const blockInstructor = async (email: string | null): Promise<any> => {
+  try {
+    const response = await API.get(`${StudentRoutes.adminBlockInstructor}${email}`);
+    // console.log(response.data,"setstudent respone")
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

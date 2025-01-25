@@ -1,8 +1,6 @@
 "use client";
 
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
-import Loader from "@/app/components/fallbacks/Loader";
-import dynamic from "next/dynamic";
 import { ReactElement } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -16,9 +14,13 @@ import { useRouter } from "next/navigation";
 import { setUser } from "@/redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { StudentGoogleLogin, login } from "@/api/studentAuthentication";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+const GoogleLogin = dynamic(() => import('@react-oauth/google').then(mod => mod.GoogleLogin), { ssr: false });
+// const MotionDiv = dynamic(() => import('framer-motion').then(mod => mod.motion.div), { ssr: false });
+
 import Link from "next/link";
 import { GOOGLE_CLIENT_ID } from "@/utils/constants";
+import dynamic from "next/dynamic";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -85,8 +87,7 @@ export default function LoginPage(): ReactElement {
         // Store user data in localStorage and show success toast
         localStorage.setItem("user", JSON.stringify(user));
         toast.success("Welcome to Menty");
-       
-
+      
         dispatch((setUser({
           userId: user._id,
           name: user.username,
@@ -94,23 +95,14 @@ export default function LoginPage(): ReactElement {
           role: user.role,
           profilePicUrl:user.profilePicUrl
         })))
-
-        // Redirect to home page after a  delay
-        setTimeout(() => {
-          router.replace(`/home`);
-        }, 1000);
+        // Redirect to home page after a  delay 
+        router.replace(`/home`);
+        
       } else {
         // Log error and handle different error messages
+        toast.error(response.message)
         console.log("res msg =>>>>", response?.message)
-        if (response?.message == "access denied") {
-          toast.error("Access denied");
-        } else if (response?.message == 'Invalid Password') {
-          toast.error("Invalid Password");
-        } else if (response?.message == 'invalid email id') {
-          toast.error("Invalid email");
-        } else {
-          toast.error('An unexpected error occured')
-        }
+        
 
       }
     } catch (error) {

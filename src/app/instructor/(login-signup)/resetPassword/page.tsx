@@ -95,12 +95,12 @@ export default function ResetPasswordPage(): ReactElement {
             <Form className="space-y-6 my-4 flex flex-col justify-center">
               {/* New Password Field */}
               <div>
-                <PasswordField name="newPassword" placeholder="New Password" />
+                <PasswordField label="new password" name="newPassword" placeholder="New Password" />
               </div>
 
               {/* Confirm Password Field */}
               <div>
-                <PasswordField name="confirmPassword" placeholder="Confirm Password" />
+                <PasswordField label="confirm password" name="confirmPassword" placeholder="Confirm Password" />
               </div>
 
               {/* Submit Button */}

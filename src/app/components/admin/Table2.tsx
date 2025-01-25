@@ -1,5 +1,5 @@
 "use client";
-import { blockStudent, getAllStudents } from "@/api/studentApi";
+import { blockInstructor, blockStudent, getAllInstructors, getAllStudents } from "@/api/studentApi";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -10,7 +10,7 @@ const UsersTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedData = await getAllStudents();
+        const fetchedData = await getAllInstructors();
         // console.log(fetchedData)
         setStudents(fetchedData || []); // Set fetched data or empty object
       } catch (error) {
@@ -22,7 +22,7 @@ const UsersTable = () => {
   const handleBlock=async(email:string)=>{
     try {
       console.log(email)
-      const response=await blockStudent(email)
+      const response=await blockInstructor(email)
       if(response.success){
         toast.success(response.message)
         setStudents((prevStudents:any[])=>
@@ -43,7 +43,7 @@ const UsersTable = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="w-full bg-gray-800 px-6 py-4 rounded-lg">
-        <h1 className="text-2xl text-white font-semibold">User Listing</h1>
+        <h1 className="text-2xl text-white font-semibold">Instructor Listing</h1>
       </div>
       <div className="overflow-x-auto mt-6">
         <table className="min-w-full table-auto border-collapse bg-gray-800 rounded-lg">

@@ -3,18 +3,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface instructor {
-    userId: string,
-    name: string,
-    email: string,
-    role: string
+    userId: string | null,
+    name: string | null,
+    email: string | null,
+    role: string | null,
+    profilePicUrl: string | null
 }
 
 // Initialize state
 const initialState: instructor = {
-    userId: '',
-    name: '',
-    email: '',
-    role: ''
+    userId: null,
+    name: null,
+    email: null,
+    role: null,
+    profilePicUrl:null
 };
 
 const instructorSlice = createSlice({
@@ -22,26 +24,24 @@ const instructorSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<instructor>) => {
-            console.log('Previous State:', state); // Log previous state
-            console.log('Action Payload:', action.payload); // Log action payload
-            const { userId, name, email, role } = action.payload;
+             const { userId, name, email, role ,profilePicUrl} = action.payload;
             state.userId = userId,
                 state.name = name,
                 state.email = email,
                 state.role = role
-                
-            console.log('Updated State:', state); // Log updated state
-            
+                state.profilePicUrl=profilePicUrl
+
             if (typeof window !== 'undefined') {
                 localStorage.setItem('instructor', JSON.stringify(state));
             }
         },
 
         clearUserDetials: (state) => {
-            state.userId = ''
-            state.name = ''
-            state.email = ''
-            state.role = ''
+            state.userId = null
+            state.name = null
+            state.email = null
+            state.role = null
+            state.profilePicUrl=null
 
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('instructor');

@@ -26,7 +26,8 @@ const  authentictaionRoutes={
 
     //admin
     adminLogin:'/auth/admin/login',
-    adminLogout:'/auth/admin/logout'
+    adminLogout:'/auth/admin/logout',
+   
 
   
 }

@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
-import { getStudentData, updateProfile } from "@/api/studentApi";
+import { getAllStudents, getStudentData, updateProfile } from "@/api/studentApi";
 import { toast } from "react-toastify";
 import Loader from "@/app/components/fallbacks/Loader";
 
@@ -37,6 +37,7 @@ export default function PersonalDetailsForm() {
       if (loggedIn && Student?.email) {
         try {
           const fetchedData = await getStudentData(Student.email);
+          const fetchedDataa = await getAllStudents();
           setStudentData(fetchedData || {}); // Set fetched data or empty object
         } catch (error) {
           console.error("Error fetching student data:", error);

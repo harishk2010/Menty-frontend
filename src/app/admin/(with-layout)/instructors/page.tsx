@@ -1,10 +1,7 @@
-import React from 'react'
-
+import Table2 from "@/app/components/admin/Table2"
 const instructors = () => {
   return (
-    <div>
-      <h1>Instructors</h1>
-    </div>
+    <Table2/>
   )
 }
 

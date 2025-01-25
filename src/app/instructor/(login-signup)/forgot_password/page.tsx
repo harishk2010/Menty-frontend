@@ -104,6 +104,7 @@ export default function ForgotPasswordPage(): ReactElement {
               {/* Email Field */}
               <div>
                 <InputField
+                label="email"
                   type="email"
                   name="email"
                   placeholder="Enter your email"

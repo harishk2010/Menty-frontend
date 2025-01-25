@@ -67,7 +67,8 @@ export default function LoginPage(): ReactElement {
           userId: user._id,
           name: user.name,
           email: user.email,
-          role: user.is_blocked
+          role: user.role,
+          profilePicUrl:user.profilePicUrl
         })))
         toast.success(response.message)
         router.push('/instructor/dashboard')
@@ -101,25 +102,16 @@ export default function LoginPage(): ReactElement {
           userId: user._id,
           name: user.name,
           email: user.email,
-          role: user.isBlocked
+          role: user.role,
+          profilePicUrl:user.profilePicUrl
         })))
 
-        // Redirect to home page after a  delay
-        setTimeout(() => {
+        // Redirect to home page after a  delay     
           router.replace(`/instructor/dashboard`);
-        }, 1000);
+       
       } else {
         // Log error and handle different error messages
-        console.log("res msg =>>>>", response?.message)
-        if (response?.message == "access denied") {
-          toast.error("Access denied");
-        } else if (response?.message == 'Invalid Password') {
-          toast.error("Invalid Password");
-        } else if (response?.message == 'invalid email id') {
-          toast.error("Invalid email");
-        } else {
-          toast.error('An unexpected error occured')
-        }
+        toast.error(response.message);
 
       }
     } catch (error) {
