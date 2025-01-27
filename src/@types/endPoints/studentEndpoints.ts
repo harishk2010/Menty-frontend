@@ -1,4 +1,4 @@
-const StudentRoutes={
+const studentRoutes={
     getStudentData:"/user/student/",
     updateProfile:'/user/student/updateProfile',
     updatePassword:'/user/student/updatePassword',
@@ -8,6 +8,7 @@ const StudentRoutes={
     
     adminGetInstructors:'/user/instructors/getInstructors',
     adminBlockInstructor:'/user/instructors/blockInstructor/',
+ 
 }
 
-export default StudentRoutes
+export default studentRoutes

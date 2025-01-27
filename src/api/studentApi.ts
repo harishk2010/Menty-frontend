@@ -54,6 +54,7 @@ export const getAllStudents = async (): Promise<any> => {
     console.error("Error in updateProfile API call:", error);
   }
 };
+
 export const getAllInstructors = async (): Promise<any> => {
   try {
     console.log("response getAllStudents11")

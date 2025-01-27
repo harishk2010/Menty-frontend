@@ -59,6 +59,7 @@ export default function LoginPage(): ReactElement {
       let response = await instructorGoogleLogin({ name: decoded.name, email: decoded.email, password: decoded.sub })
       console.log(response,"responsee");
       const user = response?.user;
+      console.log("userrr",user)
       if (response) {
         // localStorage.setItem('accesToken', response.token.accessToken)
         // localStorage.setItem('refreshToken', response.token.refreshToken)
@@ -100,7 +101,7 @@ export default function LoginPage(): ReactElement {
 
         dispatch((setUser({
           userId: user._id,
-          name: user.name,
+          name: user.username,
           email: user.email,
           role: user.role,
           profilePicUrl:user.profilePicUrl

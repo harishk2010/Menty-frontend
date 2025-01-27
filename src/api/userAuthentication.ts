@@ -19,10 +19,10 @@ export const signup = async (userData: userData): Promise<any> => {
   }
 };
 
-export const resendOtp = async (email: string): Promise<any> => {
+export const resendOtp = async (email: string,username:string): Promise<any> => {
   try {
     const response = await API.post(authentictaionRoutes.resendOtp_Instructor, {
-      email,
+      email,username
     });
     console.log(response.data, "response resendOtp");
     return response.data;

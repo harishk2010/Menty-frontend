@@ -54,8 +54,9 @@ export default function OtpPage() {
     setCounter(10)
 
     let email= localStorage.getItem("email")
-    if(email){
-      const respone=await resendOtp(email)
+    let username= localStorage.getItem("username")
+    if(email && username){
+      const respone=await resendOtp(email,username)
       if(respone.success){
         toast.success(respone.message)
       }else{

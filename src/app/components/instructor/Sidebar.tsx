@@ -6,9 +6,9 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import InfoIcon from '@mui/icons-material/Info';
 import PeopleIcon from '@mui/icons-material/People';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { logout } from "@/api/userAuthentication";
 import { toast } from "react-toastify";
 import { useRouter , usePathname } from "next/navigation";
@@ -77,16 +77,16 @@ const Sidebar = () => {
       </Link>
     </li>
     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/instructors" className="flex w-full">
+      <Link href="/instructor/profile" className="flex w-full">
         <div className="block float-left">
-          <SupervisedUserCircleIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+          <AccountCircleIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
         </div>
         <div
           className={`flex-1 text-base ${
             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
           } ease-out transition-all duration-700`}
         >
-          Instructors
+          Profile
         </div>
       </Link>
     </li>

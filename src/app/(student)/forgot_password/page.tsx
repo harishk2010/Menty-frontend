@@ -14,17 +14,17 @@ import { sendResetLink } from "@/api/studentAuthentication";
 // import { sendResetLink } from "@/api/userAuthentication"; // Assuming this is the API function
 
 // Dynamically import the Player component from Lottie with SSR disabled
-const Player = dynamic(
-  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
-  {
-    ssr: false,
-    loading: () => (
-      <div>
-        <Loader />
-      </div>
-    ),
-  }
-);
+// const Player = dynamic(
+//   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div>
+//         <Loader />
+//       </div>
+//     ),
+//   }
+// );
 
 // Validation Schema
 const emailSchema = Yup.object().shape({
@@ -43,16 +43,19 @@ export default function ForgotPasswordPage(): ReactElement {
     try {
       // Perform the request to send reset link
       const response = await sendResetLink(data.email);
+      setLoader(true)
       console.log(response.message);
       if (response?.success) {
         localStorage.setItem("ForgotPassEmail", response.data.email);
         toast.success(response.message);
         
         router.replace("/forgot-password-otp");
+        setLoader(false)
       } else {
         toast.error(
           response?.message || "An error occurred. Please try again."
         );
+        setLoader(false)
       }
     } catch (error) {
       console.error(error);

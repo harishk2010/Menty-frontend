@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
 
     if (studentPublicRoutes.includes(req.nextUrl.pathname)) {
       
-        if (role === 'instructor') {
+        if (role === 'instructor' ) {
             url.pathname = '/instructor/dashboard';
             return NextResponse.redirect(url);
         }

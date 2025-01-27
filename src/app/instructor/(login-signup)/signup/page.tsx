@@ -64,7 +64,7 @@ export default function SignupPage(): ReactElement {
         console.log("sucess");
 
         toast.success(response.message);
-        router.push("/instructor/otp");
+        router.replace("/instructor/otp");
       } else {
         toast.error(response.message);
         setLoader((prev) => !prev);
