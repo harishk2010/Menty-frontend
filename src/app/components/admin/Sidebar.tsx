@@ -82,7 +82,7 @@ const Sidebar = () => {
       </Link>
     </li>
     <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
-      <Link href="/admin/about" className="flex w-full">
+      <Link href="/admin/verifyInstructors" className="flex w-full">
         <div className="block float-left">
           <InfoIcon className="mr-3 hover:bg-white text-gray-500  border-gray-300 rounded-full" />
         </div>

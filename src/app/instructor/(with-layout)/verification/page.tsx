@@ -12,7 +12,9 @@ import { toast } from "react-toastify";
 import Loader from "@/app/components/fallbacks/Loader";
 import { getInstructorData, updateProfile } from "@/api/instructorApi";
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
-import { sendVerification } from "@/api/verificationApi";
+import { getRequestData, sendVerification } from "@/api/verificationApi";
+import { getRequestMeta } from "next/dist/server/request-meta";
+import { useRouter } from "next/navigation";
 
 const VerificationSchema = Yup.object().shape({
   username: Yup.string()
@@ -25,7 +27,9 @@ const VerificationSchema = Yup.object().shape({
 });
 
 export default function VerificationForm() {
+  const router=useRouter()
   const [userData, setUserData] = useState<any>(null);
+
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [degreePreview, setDegreePreview] = useState<string | null>(null);
   const [resumePreview, setResumePreview] = useState<string | null>(null);
@@ -39,6 +43,7 @@ export default function VerificationForm() {
         try {
           const fetchedData = await getInstructorData(User.email);
           setUserData(fetchedData || {});
+         
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -48,7 +53,7 @@ export default function VerificationForm() {
     };
 
     fetchData();
-  }, [loggedIn, User]);
+  }, [loggedIn, User ]);
 
   if (userData === null) {
     return <Loader />;
@@ -74,6 +79,8 @@ export default function VerificationForm() {
     if (response) {
       toast.success(response.message);
       setUserData(response.user);
+      router.replace('/instructor/profile')
+      
     }
   };
 
