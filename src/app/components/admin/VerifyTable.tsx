@@ -1,5 +1,5 @@
 "use client";
-import { getAllRequests } from "@/api/verificationApi";
+import { approveRequest, getAllRequests } from "@/api/verificationApi";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -20,21 +20,43 @@ const VerifyTable = () => {
     };
     fetchData();
   }, []);
-  const handleBlock=async(email:string)=>{
+  const handleVerify=async(email:string)=>{
     try {
       console.log(email)
-    //   const response=await blockInstructor(email)
-    //   if(response.success){
-    //     toast.success(response.message)
-    //     setRequests((prevStudents:any[])=>
-    //       prevStudents.map((student)=>
-    //         student.email===email?{...student,isBlocked:!student.isBlocked}:student
-    //       )
-    //     )
+      const status="approved"
+      const response=await approveRequest(email,status)
+      if(response.success){
+        toast.success(response.message)
+        setRequests((prevInstructor:any[])=>
+          prevInstructor.map((instructor)=>
+            instructor.email===email?{...instructor,status:"approved"}:instructor
+          )
+        )
         
-    //   }else{
-    //     toast.error(response.message)
-    //   }
+      }else{
+        toast.error(response.message)
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleReject=async(email:string)=>{
+    try {
+      console.log(email)
+      const status="rejected"
+      const response=await approveRequest(email,status)
+      if(response.success){
+        toast.success(response.message)
+        setRequests((prevInstructor:any[])=>
+          prevInstructor.map((instructor)=>
+            instructor.email===email?{...instructor,status:"rejected"}:instructor
+          )
+        )
+        
+      }else{
+        toast.error(response.message)
+      }
       
     } catch (error) {
       console.log(error)
@@ -76,7 +98,7 @@ const VerifyTable = () => {
                 <td className="px-6 py-3">{user.username}</td>
                 <td className="px-6 py-3">{user.email}</td>
                 <td className="px-6 py-3">
-                  {user.status==="verified" ? (
+                  {user.status==="approved" ? (
                     <span
                       className={` rounded-full text-sm text-white font-medium px-3 py-1 text-left bg-green-400 uppercase`}
                     >
@@ -103,16 +125,20 @@ const VerifyTable = () => {
 
                 </td>
                 <td className="px-6 py-3 text-center flex gap-2">
-                  {user.status==="verified"  ? (
-                    <button onClick={()=>handleBlock(user.email)} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
+                  {user.status==="appraoved"  ? (
+                    <button onClick={()=>{}} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
                       Verified
+                    </button>
+                  ) :user.status==="rejectaed"  ? (
+                    <button onClick={()=>{}} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
+                      Rejected
                     </button>
                   ) : (
                     <>
-                    <button onClick={()=>handleBlock(user.email)} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
-                      Verify
+                    <button onClick={()=>handleVerify(user.email)} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
+                      Approve
                     </button>
-                    <button onClick={()=>handleBlock(user.email)} className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-md">
+                    <button onClick={()=>handleReject(user.email)} className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-md">
                       Reject
                     </button>
                     </>

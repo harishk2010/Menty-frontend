@@ -28,7 +28,7 @@ const VerificationSchema = Yup.object().shape({
 
 export default function VerificationForm() {
   const router=useRouter()
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<any>({});
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [degreePreview, setDegreePreview] = useState<string | null>(null);
@@ -42,7 +42,9 @@ export default function VerificationForm() {
       if (loggedIn && User?.email) {
         try {
           const fetchedData = await getInstructorData(User.email);
-          setUserData(fetchedData || {});
+          const fetchRequest=await getRequestData(User.email)
+          console.log("req===>",fetchRequest.data)
+          setUserData(fetchRequest.data || {});
          
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -54,12 +56,13 @@ export default function VerificationForm() {
 
     fetchData();
   }, [loggedIn, User ]);
-
+console.log("userData",userData)
   if (userData === null) {
     return <Loader />;
   }
 
   const handleSubmit = async (data: typeof userData) => {
+    console.log(data,"formData")
     const formData = new FormData();
 
     // Append degree certificate and resume to form data
@@ -89,7 +92,7 @@ export default function VerificationForm() {
       const fileUrl = URL.createObjectURL(file);
       setPreview(fileUrl);
     } else {
-      setPreview(null);
+      // setPreview(null);
     }
   };
 
@@ -105,8 +108,8 @@ export default function VerificationForm() {
       <Formik
         initialValues={{
           username: userData?.username || "",
-          degreeCertificate: null,
-          resume: null,
+          degreeCertificate:userData?.degreeCertificateUrl || null,
+          resume: userData?.resumeUrl ||null,
         }}
         enableReinitialize
         validationSchema={VerificationSchema}
@@ -155,6 +158,17 @@ export default function VerificationForm() {
                   <div
                     style={{
                         backgroundImage: `url(${degreePreview})`,
+                      }}
+                    className="w-64 h-64 bg-cover border rounded-lg"
+                    title="Degree Certificate Preview"
+                  />
+                </div>
+              ):userData.resumeUrl? (
+                <div className="mt-2">
+                  <p className="text-sm text-gray-600">Preview:</p>
+                  <div
+                    style={{
+                        backgroundImage: `url(${userData.resumeUrl})`,
                       }}
                     className="w-64 h-64 bg-cover border rounded-lg"
                     title="Degree Certificate Preview"

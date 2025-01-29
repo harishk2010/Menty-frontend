@@ -38,3 +38,14 @@ export const getAllRequests=async ()=>{
         console.log(error)
     }
 }
+export const approveRequest=async (email:string,status:string)=>{
+    try {
+        console.log("insideeeee getAllRequests")
+        const response=await API.post(InstructorRoutes.approveRequestsUrl,{email,status})
+        console.log(response.data,"response approveRequest...")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
