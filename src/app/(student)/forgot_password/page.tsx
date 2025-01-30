@@ -28,7 +28,9 @@ import { sendResetLink } from "@/api/studentAuthentication";
 
 // Validation Schema
 const emailSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: Yup.string().email("Invalid email")
+  .transform(value => value?.trim())
+  .required("Email is required"),
 });
 
 export default function ForgotPasswordPage(): ReactElement {

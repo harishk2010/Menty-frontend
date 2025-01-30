@@ -3,6 +3,8 @@ import { approveRequest, getAllRequests } from "@/api/verificationApi";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import VerifiedBadge from "../common/badges/VerifiedBadge";
+import RejectedBadge from "../common/badges/RejectedBadge";
 
 const VerifyTable = () => {
   const [requests, setRequests] = useState<any>([]);
@@ -125,14 +127,10 @@ const VerifyTable = () => {
 
                 </td>
                 <td className="px-6 py-3 text-center flex gap-2">
-                  {user.status==="appraoved"  ? (
-                    <button onClick={()=>{}} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
-                      Verified
-                    </button>
-                  ) :user.status==="rejectaed"  ? (
-                    <button onClick={()=>{}} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
-                      Rejected
-                    </button>
+                  {user.status==="approved"  ? (
+                    <VerifiedBadge/>
+                  ) :user.status==="rejected"  ? (
+                    <RejectedBadge/>
                   ) : (
                     <>
                     <button onClick={()=>handleVerify(user.email)} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">

@@ -27,20 +27,35 @@ export default function UpdatePasswordForm() {
   if (!isLoggedIn) {
     return <p>Please log in to update your password.</p>;
   }
-
+  const passwordSchema = Yup.string()
+    .trim()
+    .matches(/^\S*$/, "Password must not contain spaces")
+    .min(6, "Password must be at least 6 characters")
+    .matches(/[A-Z]/, "Password must have at least one uppercase letter")
+    .matches(/[a-z]/, "Password must have at least one lowercase letter")
+    .matches(/\d/, "Password must have at least one number")
+    .matches(
+      /[@$!%*?&]/,
+      "Password must have at least one special character (@$!%*?&)"
+    )
+    .required("Password is required");
   const PasswordSchema = Yup.object().shape({
     currentPassword: Yup.string()
       .min(6, "Password must be at least 6 characters")
+      .matches(/^\S*$/, "Spaces are not allowed")
       .required("Current password is required"),
-    newPassword: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("New password is required"),
+
+    newPassword: passwordSchema,
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("newPassword")], "Passwords must match")
+      .matches(/^\S*$/, "Spaces are not allowed")
       .required("Confirm password is required"),
   });
 
-  const handleSubmit = async (data: { currentPassword: string; newPassword: string }) => {
+  const handleSubmit = async (data: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
     try {
       const response = await updatePassword(data);
       if (response?.success) {

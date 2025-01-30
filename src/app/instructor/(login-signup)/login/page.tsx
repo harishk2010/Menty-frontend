@@ -61,8 +61,9 @@ export default function LoginPage(): ReactElement {
       const user = response?.user;
       console.log("userrr",user)
       if (response) {
-        // localStorage.setItem('accesToken', response.token.accessToken)
-        // localStorage.setItem('refreshToken', response.token.refreshToken)
+        console.log(response,user,"ll")
+        localStorage.setItem('accesToken', response.token.accessToken)
+        localStorage.setItem('refreshToken', response.token.refreshToken)
         // localStorage.setItem('role', response.token.role)
         dispatch((setUser({
           userId: user._id,
@@ -96,6 +97,9 @@ export default function LoginPage(): ReactElement {
       if (user) {
         // Store user data in localStorage and show success toast
         localStorage.setItem("user", JSON.stringify(user));
+        console.log(response,user,"ll")
+        localStorage.setItem('accesToken', response.token.accesstoken)
+        localStorage.setItem('refreshToken', response.token.refreshToken)
         toast.success("Welcome to Menty");
         console.log('user data ___________>', user)
 

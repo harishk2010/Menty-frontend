@@ -14,6 +14,7 @@ import Loader from "@/app/components/fallbacks/Loader";
 
 const PersonalDetailsSchema = Yup.object().shape({
   username: Yup.string()
+  .trim()
     .min(5, "Username must be at least 5 characters")
     .required("Full Name is required"),
 

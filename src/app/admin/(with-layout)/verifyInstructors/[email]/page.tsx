@@ -5,56 +5,51 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function InstructorDocumentsPage() {
-  const { email } = useParams<{email:string}>();
-  const [data, setData] = useState<any>({});
+  const { email } = useParams<{ email: string }>();
+  const [data, setData] = useState({ username: "", resumeUrl: "", degreeCertificateUrl: "" ,email:"" });
 
   useEffect(() => {
-    if (email) {
-      const fetch = async () => {
-        const fetchedData = await getRequestData(email);
-        console.log(fetchedData)
-        setData(fetchedData.data);
-      };
-      fetch();
-    }
+    const fetchData = async () => {
+      if (email) {
+        const response = await getRequestData(email);
+        setData(response.data);
+      }
+    };
+    fetchData();
   }, [email]);
 
-  console.log(email);
   return (
-    <div className=" h-screen px-4 py-2 rounded-md bg-">
-      <div className="grid sm:grid-cols-2 rounded-md grid-cols-1 bg-gray-900 text-center gap-2">
-        <div className="p-3">
-          <h1 className="text-start">Name :</h1>
-          <h1>{data?.username}</h1>
+    <div className="min-h-screen bg-white p-4">
+      <div className="rounded-lg bg-gray-900 p-6 text-white">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <h2 className="text-left text-sm font-medium text-gray-400">Name</h2>
+            <p className="mt-1 text-lg">{data.username}</p>
+          </div>
+          <div>
+            <h2 className="text-left text-sm font-medium text-gray-400">Email</h2>
+            <p className="mt-1 text-lg">{data.email}</p>
+          </div>
         </div>
-        <div className="p-3">
-          <h1 className="text-start">Email:</h1>
-          <h1>{email}</h1>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2">
 
-       
-        <div className="mt-2">
-                  <p className="text-sm text-gray-600">Resume:</p>
-                  <div
-                    style={{
-                        backgroundImage: `url(${data.resumeUrl})`,
-                      }}
-                    className="w-64 h-64 bg-cover border rounded-lg"
-                    title="Degree Certificate Preview"
-                  />
-                </div>
-        <div className="mt-2">
-                  <p className="text-sm text-gray-600">Degree Certificate:</p>
-                  <div
-                    style={{
-                        backgroundImage: `url(${data.degreeCertificateUrl})`,
-                      }}
-                    className="w-64 h-64 bg-cover border rounded-lg"
-                    title="Degree Certificate Preview"
-                  />
-                </div>
-                </div>
+        <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <div>
+            <h2 className="mb-4 text-sm font-medium text-gray-400">Resume</h2>
+            <div
+              className="h-64 w-64 rounded-lg border border-gray-700 bg-cover"
+              style={{ backgroundImage: `url(${data.resumeUrl})` }}
+              title="Resume Preview"
+            />
+          </div>
+          <div>
+            <h2 className="mb-4 text-sm font-medium text-gray-400">Degree Certificate</h2>
+            <div
+              className="h-64 w-64 rounded-lg border border-gray-700 bg-cover"
+              style={{ backgroundImage: `url(${data.degreeCertificateUrl})` }}
+              title="Degree Certificate Preview"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

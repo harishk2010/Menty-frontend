@@ -6,6 +6,7 @@ const InstructorRoutes={
 
     //verification
     sendVerification:'/verification/verificationRequest',
+    sendReVerifyRequest:'/verification/reVerifyRequest',
     getRequestDataUrl:'/verification/request/',
     getAllRequestsUrl:'/verification/requests',
     approveRequestsUrl:'/verification/approveRequest'

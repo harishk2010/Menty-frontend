@@ -27,6 +27,8 @@ const Sidebar = () => {
   const handleLogout=async ()=>{
     const response=await logout()
     if(response.success){
+      // localStorage.removeItem('accestoken')
+      // localStorage.removeItem('refreshToken')
       toast.success(response.message)
       dispatch((clearUserDetials()))
       

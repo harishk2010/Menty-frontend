@@ -9,7 +9,21 @@ export const sendVerification=async (formData:FormData)=>{
                 "Content-Type":"multipart/form-data"
             }
         })
-        console.log(response,"response verification...")
+        console.log(response.data,"response verification...")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const reVerifyRequest=async (formData:FormData)=>{
+    try {
+        const response=await API.post(InstructorRoutes.sendReVerifyRequest,formData,{
+            headers:{
+                "Content-Type":"multipart/form-data"
+            }
+        })
+        console.log(response.data,"response verification...")
         return response.data
         
     } catch (error) {

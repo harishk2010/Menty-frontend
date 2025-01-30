@@ -23,9 +23,15 @@ import { GOOGLE_CLIENT_ID } from "@/utils/constants";
 import dynamic from "next/dynamic";
 
 const loginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: Yup.string()
+    .email("Invalid email")
+    .transform(value => value?.trim())
+    .required("Email is required"),
+    
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
+    .transform(value => value?.replace(/\s+/g, ''))
+    .matches(/^\S*$/, "Spaces are not allowed")
     .required("Password is required"),
 });
 

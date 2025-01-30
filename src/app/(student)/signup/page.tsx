@@ -22,19 +22,35 @@ const PasswordField = dynamic(
   () => import("@/app/components/common/forms/PasswordField")
 );
 
+const passwordSchema = Yup.string()
+  .trim()
+  .matches(/^\S*$/, "Password must not contain spaces") // No spaces allowed
+  .min(6, "Password must be at least 6 characters") // Minimum length check
+  .matches(/[A-Z]/, "Password must have at least one uppercase letter") // At least one uppercase letter
+  .matches(/[a-z]/, "Password must have at least one lowercase letter") // At least one lowercase letter
+  .matches(/\d/, "Password must have at least one number") // At least one digit
+  .matches(/[@$!%*?&]/, "Password must have at least one special character (@$!%*?&)") // At least one special character
+  .required("Password is required");
 // Validation Schema
 const signupSchema = Yup.object().shape({
-  username:Yup.string().min(5,"Username must be atleast 5 characters")
-  .required("Username is Required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string()
-    .matches(/^\S*$/, "Password must not contain spaces")
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+  username: Yup.string()
+    .trim()
+    .min(5, "Username must be at least 5 characters")
+    .required("Username is required"),
+
+  email: Yup.string()
+    .trim()
+    .email("Invalid email")
+    .required("Email is required"),
+
+  password: passwordSchema,
+
   confirmPassword: Yup.string()
+    .trim()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm password is required"),
 });
+
 
 export default function SignupPage(): ReactElement {
   const [loader, setLoader] = useState(false);

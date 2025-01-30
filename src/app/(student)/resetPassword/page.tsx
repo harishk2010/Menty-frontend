@@ -24,12 +24,18 @@ const Player = dynamic(
     ),
   }
 );
-
+const passwordSchema = Yup.string()
+  .trim()
+  .matches(/^\S*$/, "Password must not contain spaces") // No spaces allowed
+  .min(6, "Password must be at least 6 characters") // Minimum length check
+  .matches(/[A-Z]/, "Password must have at least one uppercase letter") // At least one uppercase letter
+  .matches(/[a-z]/, "Password must have at least one lowercase letter") // At least one lowercase letter
+  .matches(/\d/, "Password must have at least one number") // At least one digit
+  .matches(/[@$!%*?&]/, "Password must have at least one special character (@$!%*?&)") // At least one special character
+  .required("Password is required");
 // Validation Schema
 const resetPasswordSchema = Yup.object().shape({
-  newPassword: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("New password is required"),
+  newPassword:passwordSchema,
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("newPassword")], "Passwords must match")
     .required("Confirm password is required"),
