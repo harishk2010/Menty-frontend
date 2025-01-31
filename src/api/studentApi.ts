@@ -69,7 +69,7 @@ export const getAllInstructors = async (): Promise<any> => {
 
 export const blockStudent = async (email: string | null): Promise<any> => {
   try {
-    const response = await API.get(`${StudentRoutes.adminBlockStudent}${email}`);
+    const response = await API.patch(`${StudentRoutes.adminBlockStudent}${email}`);
     // console.log(response.data,"setstudent respone")
     return response?.data;
   } catch (error) {
@@ -78,7 +78,7 @@ export const blockStudent = async (email: string | null): Promise<any> => {
 };
 export const blockInstructor = async (email: string | null): Promise<any> => {
   try {
-    const response = await API.get(`${StudentRoutes.adminBlockInstructor}${email}`);
+    const response = await API.patch(`${StudentRoutes.adminBlockInstructor}${email}`);
     // console.log(response.data,"setstudent respone")
     return response?.data;
   } catch (error) {

@@ -20,11 +20,11 @@ export async function middleware(req: NextRequest) {
 
  
         const adminPublicRoutes=['/admin/login']
-        const adminProctectedRoutes=['/admin/dashboard','/admin/users','/admin/instructors']
+        const adminProctectedRoutes=['/admin/dashboard','/admin/users','/admin/instructors','/admin/verifyInstructors','/admin/addMentorshipPlans']
  
     const studentPublicRoutes = ['/login', '/signup','/forgot-password','/'];
-    const studentProtectedRoutes = ['/home', '/profile'];
-    const instructorProtectedRoutes = ['/instructor/dashboard', '/instructor/courses'];
+    const studentProtectedRoutes = ['/home', '/profile','/editProfile','changePassword'];
+    const instructorProtectedRoutes = ['/instructor/dashboard', '/instructor/courses','/instructor/profile','/instructor/editProfile','/instructor/verification'];
     const instructorPublicRoutes = ['/instructor/login', '/instructor/signup',"/instructor/forgot-password"];
     console.log(req.nextUrl.pathname)
 

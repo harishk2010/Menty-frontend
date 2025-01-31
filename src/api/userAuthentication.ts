@@ -148,9 +148,9 @@ export const resetPassword = async (password: string): Promise<any> => {
 
 export const test = async () => {
   try {
-    const response = await API.post(
+    const response = await API.get(
       authentictaionRoutes.test_route,
-      {},
+      
       {
         withCredentials: true,
       }

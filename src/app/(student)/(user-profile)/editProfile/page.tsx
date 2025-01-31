@@ -8,15 +8,20 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
-import { getAllStudents, getStudentData, updateProfile } from "@/api/studentApi";
+import {
+  getAllStudents,
+  getStudentData,
+  updateProfile,
+} from "@/api/studentApi";
 import { toast } from "react-toastify";
 import Loader from "@/app/components/fallbacks/Loader";
+import AlertDialog2 from "@/app/components/common/alertBoxes/AlertDialogBox2";
 
 const PersonalDetailsSchema = Yup.object().shape({
   username: Yup.string()
-  .trim()
     .min(5, "Username must be at least 5 characters")
-    .required("Full Name is required"),
+    .matches(/^\S.*\S$|^\S$/, "Username cannot start or end with a space")
+    .required("Username is Required"),
 
   mobile: Yup.string()
     .matches(/^\+?[0-9]{10,14}$/, "Invalid phone number")
@@ -53,7 +58,7 @@ export default function PersonalDetailsForm() {
 
   // Check if studentData is null and show a loading state
   if (studentData === null) {
-    return <Loader/>;
+    return <Loader />;
   }
   const handleImagePreview = (file: File | null) => {
     if (file) {
@@ -88,7 +93,6 @@ export default function PersonalDetailsForm() {
     for (const [key, value] of formData.entries()) {
       if (key == "profile") console.log(`${key}:`, value);
     }
-
 
     const response = await updateProfile(formData);
     console.log("response:", response.user);
@@ -147,7 +151,7 @@ export default function PersonalDetailsForm() {
                 placeholder="Enter your Phone No"
               />
             </div>
-        
+
             <div className="flex flex-col items-center col-span-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Profile Picture
@@ -174,36 +178,42 @@ export default function PersonalDetailsForm() {
                   </div>
                 )}
               </div>
-                <div className="flex w-full space-x-3 justify-center items-center">
-
-              <input
-                type="file"
-                name="profile"
-                accept="image/*"
-                onChange={(event) => {
-                  const file = event.target.files?.[0] || null;
-                  setFieldValue("profile", file);
-                  handleImagePreview(file);
-                }}
-                className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500"
-              />
-              <button className="bg-red-600 p-3 rounded-full w-1 h-1 text-center flex items-center justify-center"
-               type="button"
-              onClick={()=>{
-                setFieldValue("profile",null)
-                handleImagePreview(null)
-              }
-               
-            }
-            >x</button>
-            </div>
+              <div className="flex w-full space-x-3 justify-center items-center">
+                <input
+                  type="file"
+                  name="profile"
+                  accept="image/*"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0] || null;
+                    setFieldValue("profile", file);
+                    handleImagePreview(file);
+                  }}
+                  className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500"
+                />
+                <button
+                  className="bg-red-600 p-3 rounded-full w-1 h-1 text-center flex items-center justify-center"
+                  type="button"
+                  onClick={() => {
+                    setFieldValue("profile", null);
+                    handleImagePreview(null);
+                  }}
+                >
+                  x
+                </button>
+              </div>
             </div>
 
             <div className="col-span-full">
-              <PrimaryButton
-                type="submit"
-                name={isSubmitting ? "Saving..." : "Save Changes"}
-              />
+              <AlertDialog2
+                title="Confirm Changes"
+                alert="Are you sure you want to update your details?"
+                onConfirm={() => handleSubmit(values)}
+              >
+                <PrimaryButton
+                  type="button"
+                  name={isSubmitting ? "Saving..." : "Save Changes"}
+                />
+              </AlertDialog2>
             </div>
           </Form>
         )}

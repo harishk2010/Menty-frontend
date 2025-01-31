@@ -18,7 +18,7 @@ export const updateProfile = async (formData: FormData): Promise<any> => {
   try {
     console.log("Inside updateProfile API call");
 
-    const response = await API.patch(InstructorRoutes.updateProfile, formData, {
+    const response = await API.post(InstructorRoutes.updateProfile, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

@@ -1,8 +1,6 @@
 "use client";
 
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
-import Loader from "@/app/components/fallbacks/Loader";
-import dynamic from "next/dynamic";
 import { ReactElement } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -10,28 +8,17 @@ import PasswordField from "@/app/components/common/forms/PasswordField";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { resetPassword } from "@/api/studentAuthentication"; // Replace with your API call
+import { resetPassword } from "@/api/studentAuthentication"; 
 
-// Dynamically import the Player component from Lottie with SSR disabled
-const Player = dynamic(
-  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
-  {
-    ssr: false,
-    loading: () => (
-      <div>
-        <Loader />
-      </div>
-    ),
-  }
-);
+
 const passwordSchema = Yup.string()
   .trim()
-  .matches(/^\S*$/, "Password must not contain spaces") // No spaces allowed
-  .min(6, "Password must be at least 6 characters") // Minimum length check
-  .matches(/[A-Z]/, "Password must have at least one uppercase letter") // At least one uppercase letter
-  .matches(/[a-z]/, "Password must have at least one lowercase letter") // At least one lowercase letter
-  .matches(/\d/, "Password must have at least one number") // At least one digit
-  .matches(/[@$!%*?&]/, "Password must have at least one special character (@$!%*?&)") // At least one special character
+  .matches(/^\S*$/, "Password must not contain spaces") 
+  .min(6, "Password must be at least 6 characters") 
+  .matches(/[A-Z]/, "Password must have at least one uppercase letter")
+  .matches(/[a-z]/, "Password must have at least one lowercase letter") 
+  .matches(/\d/, "Password must have at least one number") 
+  .matches(/[@$!%*?&]/, "Password must have at least one special character (@$!%*?&)") 
   .required("Password is required");
 // Validation Schema
 const resetPasswordSchema = Yup.object().shape({
@@ -55,7 +42,7 @@ export default function ResetPasswordPage(): ReactElement {
       if (response.success) {
         toast.success("Password reset successfully");
         localStorage.removeItem("ForgotPassEmail")
-        router.replace("/login"); // Redirect to login page
+        router.replace("/login"); 
       } else {
         toast.error(response.message || "Failed to reset password");
       }
@@ -67,22 +54,7 @@ export default function ResetPasswordPage(): ReactElement {
 
   return (
     <div className="flex justify-evenly max-h-screen items-center mt-10 py-3 px-5">
-      {/* Lottie Animation */}
-      {/* <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="sm:block hidden lg:mr-36"
-      >
-        <Player
-          autoplay
-          loop
-          style={{ height: "400px", width: "400px" }}
-          src="https://lottie.host/be2302b1-71d9-4ba5-ad8c-68b3e4d9923a/VFsZzRBBvQ.json"
-        />
-      </motion.div> */}
-
-      {/* Form Section */}
+    
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}

@@ -61,9 +61,9 @@ export default function LoginPage(): ReactElement {
       const user = response?.user;
       console.log("userrr",user)
       if (response) {
-        console.log(response,user,"ll")
-        localStorage.setItem('accesToken', response.token.accessToken)
-        localStorage.setItem('refreshToken', response.token.refreshToken)
+        // console.log(response,user,"ll")
+        // localStorage.setItem('accesToken', response.token.accessToken)
+        // localStorage.setItem('refreshToken', response.token.refreshToken)
         // localStorage.setItem('role', response.token.role)
         dispatch((setUser({
           userId: user._id,
@@ -73,13 +73,13 @@ export default function LoginPage(): ReactElement {
           profilePicUrl:user.profilePicUrl
         })))
         toast.success(response.message)
-        router.push('/instructor/dashboard')
+        router.push('/instructor/profile')
 
       } else {
         const { message } = response.response?.data
         toast.error(message)
       }
-      // const user = response.data.user;
+      
     } catch (error) {
       console.log(error)
     }
@@ -87,15 +87,14 @@ export default function LoginPage(): ReactElement {
 
   const onSubmit = async (data: Login) => {
     try {
-      // Perform the login request
-      // console.log("Response received:",data);
-      const response = await login(data.email,data.password); // Assuming `login` is an API function
+      
+      const response = await login(data.email,data.password); 
       console.log("Response received:>", response.message);
 
       const user = response?.user;
 
       if (user) {
-        // Store user data in localStorage and show success toast
+      
         localStorage.setItem("user", JSON.stringify(user));
         console.log(response,user,"ll")
         localStorage.setItem('accesToken', response.token.accesstoken)
@@ -111,11 +110,11 @@ export default function LoginPage(): ReactElement {
           profilePicUrl:user.profilePicUrl
         })))
 
-        // Redirect to home page after a  delay     
-          router.replace(`/instructor/dashboard`);
+            
+          router.replace(`/instructor/profile`);
        
       } else {
-        // Log error and handle different error messages
+      
         toast.error(response.message);
 
       }
@@ -153,7 +152,7 @@ export default function LoginPage(): ReactElement {
           transition={{
             duration: 1, // Duration of the animation
             ease: "easeOut", // Smooth easing
-          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 ">
+          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] h-s w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 ">
         <h5 className="text-xl font-medium text-gray-900">
           Log In as{" "}
           <span className="text-purple-700 font-semibold">Instructor</span>

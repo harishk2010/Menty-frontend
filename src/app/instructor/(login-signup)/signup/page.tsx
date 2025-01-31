@@ -13,6 +13,8 @@ import { signup } from "@/api/userAuthentication";
 import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { signUp } from "@/@types/signUpType";
+import Link from "next/link";
+import { UsernameSchema } from "@/lib/validationSchemas";
 
 
 const Player = dynamic(
@@ -28,14 +30,24 @@ const Player = dynamic(
 );
 
 // Validation Schema
+const passwordSchema = Yup.string()
+  .trim()
+  .matches(/^\S*$/, "Password must not contain spaces") 
+  .min(6, "Password must be at least 6 characters") 
+  .matches(/[A-Z]/, "Password must have at least one uppercase letter")
+  .matches(/[a-z]/, "Password must have at least one lowercase letter") 
+  .matches(/\d/, "Password must have at least one number") 
+  .matches(/[@$!%*?&]/, "Password must have at least one special character (@$!%*?&)") 
+  .required("Password is required");
+
+
 const signupSchema = Yup.object().shape({
-  username:Yup.string().min(5,"Username must be atleast 5 characters")
-    .required("Username is Required"),
+  username: Yup.string()
+  .min(5, "Username must be at least 5 characters")
+  .matches(/^\S.*\S$|^\S$/, "Username cannot start or end with a space")
+  .required("Username is Required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string()
-    .matches(/^\S*$/, "Password must not contain spaces")
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+  password: passwordSchema,
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm password is required"),
@@ -130,12 +142,12 @@ export default function SignupPage(): ReactElement {
 
               <div className="text-sm font-medium text-gray-900 cursor-pointer">
                 Have an account?{" "}
-                <a
-                  href="/login"
+                <Link
+                  href={"/instructor/login"}
                   className="text-purple-700 hover:underline"
                 >
                   Log In
-                </a>
+                </Link>
               </div>
             </Form>
           )}

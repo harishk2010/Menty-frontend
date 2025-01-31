@@ -17,8 +17,9 @@ import { useRouter } from "next/navigation";
 
 const VerificationSchema = Yup.object().shape({
   username: Yup.string()
-    .min(5, "Username must be at least 5 characters")
-    .required("Full Name is required"),
+  .min(5, "Username must be at least 5 characters")
+  .matches(/^\S.*\S$|^\S$/, "Username cannot start or end with a space")
+  .required("Username is Required"),
   degreeCertificate: Yup.mixed().required("Degree Certificate is required"),
   resume: Yup.mixed().nullable().required("Resume is required"),
 });
@@ -56,36 +57,36 @@ export default function VerificationForm() {
     return <Loader />;
   }
 
+ 
   const handleSubmit = async (data: any) => {
     console.log(data, User.email, "formData");
     const email = User.email;
     const formData = new FormData();
-
+  
     if (data.degreeCertificate) {
       formData.append("degreeCertificate", data.degreeCertificate);
     }
-
+  
     if (data.resume) {
       formData.append("resume", data.resume);
     }
-
+  
     formData.append("username", data.username);
     if (email) {
       formData.append("email", email);
     }
-
+  
     try {
       const response = await sendVerification(formData);
       console.log("API Response:", response);
-
-      if (response && response.message && response.user) {
+  
+      if (response && response.success) {
         toast.success(response.message);
-        setUserData(response.user);
+        setUserData(response.data); // Use response.data instead of response.user
         router.replace("/instructor/profile");
       } else {
         console.error("Invalid response:", response);
-        router.replace("/instructor/profile");
-        toast.success("Verification failed. Please try again.");
+        toast.error("Verification failed. Please try again.");
       }
     } catch (error) {
       console.error("Error in handleSubmit:", error);
@@ -212,12 +213,12 @@ export default function VerificationForm() {
                       title="Degree Certificate Preview"
                     />
                   </div>
-                ) : userData.resumeUrl ? (
+                ) : userData.degreeCertificateUrl ? (
                   <div className="mt-2">
                     <p className="text-sm text-gray-600">Preview:</p>
                     <div
                       style={{
-                        backgroundImage: `url(${userData.resumeUrl})`,
+                        backgroundImage: `url(${userData.degreeCertificateUrl})`,
                       }}
                       className="w-64 h-64 bg-cover border rounded-lg"
                       title="Degree Certificate Preview"
@@ -268,7 +269,7 @@ export default function VerificationForm() {
                       title="Degree Certificate Preview"
                     />
                   </div>
-                ) : userData.degreeCertificateUrl ? (
+                ) : userData.resumeUrl ? (
                   <div className="mt-2">
                     <p className="text-sm text-gray-600">Preview:</p>
                     <div

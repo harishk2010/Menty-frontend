@@ -13,14 +13,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     
     <div className="bg-white h-screen w-full flex flex-col  items-center">
-      <CustomHeader PropHeader={RegisterHeader}/>
+      {/* <CustomHeader PropHeader={RegisterHeader}/> */}
       
       
       <main className="">
             
               {children}
             </main>
-            <CustomFooter PropHeader={RegisterFooter}/>
+            {/* <CustomFooter PropHeader={RegisterFooter}/> */}
 
       
     </div>

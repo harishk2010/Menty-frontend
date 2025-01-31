@@ -1,37 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import otp from '@/lottie/otp.json'
-import Lottie from "lottie-react"
-import Loader from "@/app/components/fallbacks/Loader";
-import dynamic from "next/dynamic";
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
-
 import { useEffect, useState } from "react";
-import { button, h6, span } from "framer-motion/client";
 import { resendOtp, verifyOtp } from "@/api/studentAuthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-const Player = dynamic(
-  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
-  {
-    ssr: false,
-    loading: () => (
-      <div>
-        <Loader />
-      </div>
-    ),
-  }
-);
+
 export default function OtpPage() {
 
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
   const [counter, setCounter] = useState<number>(10);
   const [resendAtive,setResendActive]=useState(false)
-  const [submitActive,setSubmitActive]=useState(false)
-
+ 
   const router=useRouter()
   console.log(otp,"otp")
   useEffect(()=>{
@@ -124,33 +106,8 @@ export default function OtpPage() {
   
   
   return (
-    <div className="bg-white  w-full h-screen flex  justify-center items-center">
-      
-     
-{/*       
-      <div className="flex justify-center items-center ">
-      
-        
-      </div> */}
-      {/* <motion.div
-          initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
-          animate={{ opacity: 1, x: 0 }} // Moves to its final position
-          transition={{
-            duration: 1, // Duration of the animation
-            ease: "easeOut", // Smooth easing
-          }}>
-      <Player
-      className="sm:block hidden lg:mr-32"
-          autoplay
-          loop
-          style={{ height: "400px", width: "400px" }}
-          src="https://lottie.host/cade60f0-bcd4-409a-b821-b36eeb4e8679/uMH9otOft0.json"
-        />
-
-      </motion.div>
-    
-         */}
-      
+    <div className="bg-white  w-full min-h-screen flex  justify-center items-center">
+           
         
         <motion.div
           initial={{ opacity: 0, x: 50 }} // Starts slightly below the viewport
@@ -160,7 +117,7 @@ export default function OtpPage() {
             ease: "easeOut", // Smooth easing
           }}
           
-          className="flex border-black border-2 bg-violet-100 w-[300px] h-[320px] lg:w-[400px] lg:h-[420px] flex-col lg:mt-28  space-y-1 justify-center backdrop-blur-3xl shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center rounded-lg bg-transparent "
+          className="flex border-black border-2 bg-violet-100 w-[300px] h-[320px] lg:w-[400px] lg:h-[420px] flex-col   space-y-1 justify-center backdrop-blur-3xl shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center rounded-lg bg-transparent "
         >
           <div className="flex justify-evenly items-center space-4">
             <h1 className="text-black py-3 font-bold text-xl">

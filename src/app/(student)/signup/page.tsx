@@ -34,9 +34,9 @@ const passwordSchema = Yup.string()
 // Validation Schema
 const signupSchema = Yup.object().shape({
   username: Yup.string()
-    .trim()
-    .min(5, "Username must be at least 5 characters")
-    .required("Username is required"),
+  .min(5, "Username must be at least 5 characters")
+  .matches(/^\S.*\S$|^\S$/, "Username cannot start or end with a space")
+  .required("Username is Required"),
 
   email: Yup.string()
     .trim()

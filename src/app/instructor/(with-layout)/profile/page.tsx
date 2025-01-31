@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import IsVerified from "@/app/components/common/badges/IsVerified";
 import GetVerified from "@/app/components/common/badges/GetVerified";
 import { getRequestData } from "@/api/verificationApi";
+import IsPending from "@/app/components/common/badges/IsPending";
 
 const ProfileHeader = () => {
   const pathname = usePathname();
@@ -67,7 +68,7 @@ const ProfileHeader = () => {
                 {instructorData.username}
               </h1>
 
-              {instructorData.isVerified ? <IsVerified /> : <GetVerified />}
+              {instructorData.isVerified ? <IsVerified /> :instructorData.verificationStatus==="pending"?<IsPending/>: <GetVerified />}
 
               <p className="text-gray-600">
                 {instructorData.mobile} | {instructorData.role}
@@ -106,7 +107,7 @@ const ProfileHeader = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6 max-w-8xl mx-auto">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6 max-w-8xl mx-auto">
           <div className="bg-purple-200 shadow rounded-lg p-6 text-center">
             <h2 className="text-2xl font-bold text-gray-800">12</h2>
             <p className="text-gray-600 mt-2">Enrolled Courses</p>
@@ -119,10 +120,9 @@ const ProfileHeader = () => {
             <h2 className="text-2xl font-bold text-gray-800">98%</h2>
             <p className="text-gray-600 mt-2">Completion Rate</p>
           </div>
-        </div>
-        <div className="min-h-screen bg-gray-100 p-6">
-          {/* Stats Section  */}
-          {/* Enrolled Courses */}
+        </div> */}
+        {/* <div className="min-h-screen bg-gray-100 p-6">
+    
           <div className="bg-white shadow rounded-lg p-6 mt-6 max-w-7xl mx-auto">
             <h2 className="text-xl font-bold text-gray-800">
               Enrolled Courses
@@ -149,7 +149,7 @@ const ProfileHeader = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

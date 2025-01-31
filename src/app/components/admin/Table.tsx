@@ -2,6 +2,7 @@
 import { blockStudent, getAllStudents } from "@/api/studentApi";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import AlertDialog from "../common/alertBoxes/AlertDialogBox";
 
 const UsersTable = () => {
   const [students, setStudents] = useState<any>([]);
@@ -88,13 +89,22 @@ const UsersTable = () => {
                 </td>
                 <td className="px-6 py-3 text-center">
                   {user.isBlocked ? (
-                    <button onClick={()=>handleBlock(user.email)} className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
+                    <AlertDialog onConfirm={() => handleBlock(user.email)}
+                    alert={"Do you want to unBlock the Student?"}
+                    >
+
+                    <button className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md">
                       Unblock
                     </button>
+                    </AlertDialog>
                   ) : (
+                    <AlertDialog onConfirm={() => handleBlock(user.email)}
+                    alert={"Do you want to Block th Student?"}
+                    >
                     <button onClick={()=>handleBlock(user.email)} className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-md">
                       Block
                     </button>
+                      </AlertDialog>
                   )}
                 </td>
               </tr>

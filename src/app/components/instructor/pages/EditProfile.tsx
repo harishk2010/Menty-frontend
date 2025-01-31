@@ -1,6 +1,6 @@
 "use client";
 
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import InputField from "@/app/components/common/forms/InputField2";
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
@@ -8,37 +8,52 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
-import {  getInstructorData, updateProfile } from "@/api/instructorApi";
+import { getInstructorData, updateProfile } from "@/api/instructorApi";
 import { toast } from "react-toastify";
 import Loader from "@/app/components/fallbacks/Loader";
+import { useRouter } from "next/navigation";
 
 const PersonalDetailsSchema = Yup.object().shape({
   username: Yup.string()
-    .min(5, "Username must be at least 5 characters")
-    .required("Full Name is required"),
+      .min(5, "Username must be at least 5 characters")
+      .matches(/^\S.*\S$|^\S$/, "Username cannot start or end with a space")
+      .required("Username is Required"),
 
   mobile: Yup.string()
     .matches(/^\+?[0-9]{10,14}$/, "Invalid phone number")
     .required("Phone is required"),
 
-  profile: Yup.mixed().nullable(),
-  expertise:Yup.string().required('Expertised is Required'),
-  skills:Yup.string().required('Skills is important')
+  profile: Yup.mixed().nullable()
+  .test(
+    "profile-required",
+    "Profile Image is needed!",
+    function (value) {
+      // If profilePicUrl exists, no need for a new file
+      if (this.parent.profilePicUrl) return true;
+      // Otherwise, a file is required
+      return !!value;
+    }
+  ),
+  expertise: Yup.string().min(3, "expertise must be at least 3 characters").required("Expertised is Required"),
+  skills: Yup.string().min(3, "skill must be at least 3 characters").required("Skills is important"),
 });
 
 export default function PersonalDetailsForm() {
+  
   const [studentData, setStudentData] = useState<any>(null); // Initially set to null
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const loggedIn = useSelector((state: RootState) => state.instructor.email);
-  const Student = useSelector((state: RootState) => state.instructor);
+  const Instructor = useSelector((state: RootState) => state.instructor);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (loggedIn && Student?.email) {
+      if (loggedIn && Instructor?.email) {
         try {
-          const fetchedData = await getInstructorData(Student.email);
+          const fetchedData = await getInstructorData(Instructor.email);
           setStudentData(fetchedData || {}); // Set fetched data or empty object
         } catch (error) {
           console.error("Error fetching student data:", error);
@@ -49,11 +64,11 @@ export default function PersonalDetailsForm() {
     };
 
     fetchData();
-  }, [loggedIn, Student]);
+  }, [loggedIn, Instructor]);
 
   // Check if studentData is null and show a loading state
   if (studentData === null) {
-    return <Loader/>;
+    return <Loader />;
   }
   const handleImagePreview = (file: File | null) => {
     if (file) {
@@ -68,7 +83,7 @@ export default function PersonalDetailsForm() {
   };
 
   const handleSubmit = async (data: typeof studentData) => {
-    // console.log('data: ', data)
+    console.log('data: ', data)
 
     const formData = new FormData();
 
@@ -88,13 +103,14 @@ export default function PersonalDetailsForm() {
     for (const [key, value] of formData.entries()) {
       if (key == "profile") console.log(`${key}:`, value);
     }
-
+    
 
     const response = await updateProfile(formData);
     console.log("response:", response.user);
     if (response) {
       toast.success(response.message);
       setStudentData(response.user);
+      router.replace("/instructor/profile");
     }
   };
 
@@ -112,7 +128,7 @@ export default function PersonalDetailsForm() {
           ...studentData,
           profilePicUrl: studentData?.profilePicUrl || "",
         }}
-        enableReinitialize // Reinitialize Formik when studentData is updated
+        // enableReinitialize // Reinitialize Formik when studentData is updated
         validationSchema={PersonalDetailsSchema}
         onSubmit={handleSubmit}
       >
@@ -122,6 +138,7 @@ export default function PersonalDetailsForm() {
           handleChange,
           handleBlur,
           setFieldValue,
+          touched
         }) => (
           <Form className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
@@ -169,7 +186,7 @@ export default function PersonalDetailsForm() {
                 placeholder="Enter your skills ..."
               />
             </div>
-        
+
             <div className="flex flex-col items-center col-span-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Profile Picture
@@ -196,29 +213,34 @@ export default function PersonalDetailsForm() {
                   </div>
                 )}
               </div>
-                <div className="flex w-full space-x-3 justify-center items-center">
-
-              <input
-                type="file"
-                name="profile"
-                accept="image/*"
-                onChange={(event) => {
-                  const file = event.target.files?.[0] || null;
-                  setFieldValue("profile", file);
-                  handleImagePreview(file);
-                }}
-                className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500"
-              />
-              <button className="bg-red-600 p-3 rounded-full w-1 h-1 text-center flex items-center justify-center"
-               type="button"
-              onClick={()=>{
-                setFieldValue("profile",null)
-                handleImagePreview(null)
-              }
-               
-            }
-            >x</button>
-            </div>
+              <div className="flex w-full space-x-3 justify-center items-center">
+                <input
+                  type="file"
+                  name="profile"
+                  accept="image/*"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0] || null;
+                    setFieldValue("profile", file);
+                    handleImagePreview(file);
+                  }}
+                  className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500"
+                />
+                <ErrorMessage
+                                  name="profile"
+                                  component="div"
+                                  className="text-red-500 text-xs mt-1"
+                                />
+                <button
+                  className="bg-red-600 p-3 rounded-full w-1 h-1 text-center flex items-center justify-center"
+                  type="button"
+                  onClick={() => {
+                    setFieldValue("profile", null);
+                    handleImagePreview(null);
+                  }}
+                >
+                  x
+                </button>
+              </div>
             </div>
 
             <div className="col-span-full">
