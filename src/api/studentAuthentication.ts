@@ -6,7 +6,10 @@ export const signup = async (userData: userData): Promise<any> => {
   try {
     const response = await API.post(
       authentictaionRoutes.signup_Student,
-      userData
+      userData,
+      {
+        withCredentials: true, 
+      }
     );
     console.log(response.data, "response");
     return response.data;
@@ -23,6 +26,9 @@ export const resendOtp = async (email: string,username:string): Promise<any> => 
     const response = await API.post(authentictaionRoutes.resendOtp_Student, {
       email,
       username
+    },
+    {
+      withCredentials: true, 
     });
     console.log(response.data, "response resendOtp");
     return response.data;
@@ -35,6 +41,9 @@ export const verifyOtp = async (otp: string): Promise<any> => {
   try {
     const response = await API.post(authentictaionRoutes.verifyOtp_Student, {
       otp,
+    },
+    {
+      withCredentials: true, 
     });
     console.log(response.data, "response verifyOtp");
     return response.data;
@@ -89,6 +98,9 @@ export const sendResetLink = async (email: string): Promise<any> => {
       authentictaionRoutes.resetPasswordLink_Student,
       {
         email,
+      },
+      {
+        withCredentials: true, 
       }
     ); // 2 parameter is the request part
     console.log(response.data, "response sendRestLink");
@@ -125,6 +137,9 @@ export const forgotResendOtp = async (email: string): Promise<any> => {
       authentictaionRoutes.forgotResendOtp_Student,
       {
         email,
+      },
+      {
+        withCredentials: true, 
       }
     );
     console.log(response.data, "response resendOtp");

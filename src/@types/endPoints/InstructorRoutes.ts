@@ -5,10 +5,10 @@ const InstructorRoutes={
     
 
     //verification
-    sendVerification:'/verification/verificationRequest',
-    sendReVerifyRequest:'/verification/reVerifyRequest',
-    getRequestDataUrl:'/verification/request/',
-    getAllRequestsUrl:'/verification/requests',
-    approveRequestsUrl:'/verification/approveRequest'
+    sendVerification:'/user/verification/verificationRequest',
+    sendReVerifyRequest:'/user/verification/reVerifyRequest',
+    getRequestDataUrl:'/user/verification/request/',
+    getAllRequestsUrl:'/user/verification/requests',
+    approveRequestsUrl:'/user/verification/approveRequest'
 }
 export default InstructorRoutes 

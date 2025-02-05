@@ -3,7 +3,9 @@ import { API } from "@/service/axios";
 
 export const getStudentData = async (email: string | null): Promise<any> => {
   try {
-    const response = await API.get(`${StudentRoutes.getStudentData}${email}`);
+    const response = await API.get(`${StudentRoutes.getStudentData}${email}`,{
+      withCredentials: true,
+    });
     // console.log(response.data,"setstudent respone")
     return response?.data;
   } catch (error) {
@@ -58,7 +60,9 @@ export const getAllStudents = async (): Promise<any> => {
 export const getAllInstructors = async (): Promise<any> => {
   try {
     console.log("response getAllStudents11")
-    const response = await API.get(StudentRoutes.adminGetInstructors);
+    const response = await API.get(StudentRoutes.adminGetInstructors,{
+      withCredentials: true,
+    });
     console.log(response.data.users,"response getAllStudents")
     return response?.data?.users;
   } catch (error) {
@@ -69,7 +73,9 @@ export const getAllInstructors = async (): Promise<any> => {
 
 export const blockStudent = async (email: string | null): Promise<any> => {
   try {
-    const response = await API.patch(`${StudentRoutes.adminBlockStudent}${email}`);
+    const response = await API.patch(`${StudentRoutes.adminBlockStudent}${email}`,{
+      withCredentials: true,
+    });
     // console.log(response.data,"setstudent respone")
     return response?.data;
   } catch (error) {
@@ -78,7 +84,9 @@ export const blockStudent = async (email: string | null): Promise<any> => {
 };
 export const blockInstructor = async (email: string | null): Promise<any> => {
   try {
-    const response = await API.patch(`${StudentRoutes.adminBlockInstructor}${email}`);
+    const response = await API.patch(`${StudentRoutes.adminBlockInstructor}${email}`,{
+      withCredentials: true,
+    });
     // console.log(response.data,"setstudent respone")
     return response?.data;
   } catch (error) {

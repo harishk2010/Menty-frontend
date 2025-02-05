@@ -1,8 +1,10 @@
 "use client";
 
 import { getRequestData } from "@/api/verificationApi";
+import { RootState } from "@/redux/store";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function InstructorDocumentsPage() {
   const { email } = useParams<{ email: string }>();
@@ -17,6 +19,7 @@ export default function InstructorDocumentsPage() {
     };
     fetchData();
   }, [email]);
+  // const admin=useSelector((state:RootState)=>state.admin)
 
   return (
     <div className="min-h-screen bg-white p-4">

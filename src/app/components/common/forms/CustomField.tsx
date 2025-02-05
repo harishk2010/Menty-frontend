@@ -7,17 +7,17 @@ interface inputFieldProps {
   value?: string;
   name: string;
   label: string;
-  
+  defaultValue:string
  
 }
 
-const inputField: React.FC<inputFieldProps > = ({
+const CustomField: React.FC<inputFieldProps > = ({
   type,
   placeholder,
   value,
   name,
   label,
-
+  defaultValue
  
 }) => {
   return (
@@ -40,7 +40,7 @@ const inputField: React.FC<inputFieldProps > = ({
           placeholder={placeholder}
           value={value}
           id={name}
-          
+          defaultValue={defaultValue}
         />
         <ErrorMessage
           className="text-xs font-semibold text-red-500 ml-3"
@@ -51,4 +51,4 @@ const inputField: React.FC<inputFieldProps > = ({
     </>
   );
 };
-export default inputField;
+export default CustomField;

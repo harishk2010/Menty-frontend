@@ -20,11 +20,11 @@ export async function middleware(req: NextRequest) {
 
  
         const adminPublicRoutes=['/admin/login']
-        const adminProctectedRoutes=['/admin/dashboard','/admin/users','/admin/instructors','/admin/verifyInstructors','/admin/addMentorshipPlans']
+        const adminProctectedRoutes=['/admin/dashboard','/admin/users','/admin/instructors','/admin/verifyInstructors','/admin/addMentorshipPlans','/admin/verifyInstructors/[email]']
  
     const studentPublicRoutes = ['/login', '/signup','/forgot-password','/'];
     const studentProtectedRoutes = ['/home', '/profile','/editProfile','changePassword'];
-    const instructorProtectedRoutes = ['/instructor/dashboard', '/instructor/courses','/instructor/profile','/instructor/editProfile','/instructor/verification'];
+    const instructorProtectedRoutes = ['/instructor/dashboard','/instructor/users', '/instructor/courses','/instructor/profile','/instructor/editProfile','/instructor/verification'];
     const instructorPublicRoutes = ['/instructor/login', '/instructor/signup',"/instructor/forgot-password"];
     console.log(req.nextUrl.pathname)
 
@@ -133,7 +133,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        // "/admin/:path*",       // Admin routes
+        "/admin/:path*",       // Admin routes
         "/:path*",        // Student routes
         "/instructor/:path*",  // Instructor routes
     ],

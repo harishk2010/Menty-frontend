@@ -6,7 +6,9 @@ export const getInstructorData = async (email: string | null): Promise<any> => {
     console.log("getInsssss")
     const response = await API.get(
       // `/user/instructors/${email}`
-      `${InstructorRoutes.getInstructorData}${email}`
+      `${InstructorRoutes.getInstructorData}${email}`,{
+        withCredentials:true
+      }
     );
     console.log(response.data,"getInsssss")
     return response?.data;

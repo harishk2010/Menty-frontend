@@ -12,6 +12,10 @@ export const studentHeader = [
     name: "About",
     href: "/About",
   },
+  {
+    name: "course",
+    href: "/courseDetails",
+  },
 ];
 
 //instructor Sidebar

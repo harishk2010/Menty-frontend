@@ -10,24 +10,24 @@ interface JwtPayload {
     exp: number;
 }
 
-// export const tokenVerify = async (userToken: string, req: NextRequest): Promise<string | null> => {
-//     const secret = JWT_SECRET
-//     const token = req.cookies.get(userToken)
+export const tokenVerify = async (userToken: string, req: NextRequest): Promise<string | null> => {
+    const secret = JWT_SECRET
+    const token = req.cookies.get(userToken)
     
-//     if (!token?.value) {
-//         return null
-//     }
+    if (!token?.value) {
+        return null
+    }
 
-//     try {
-//         const { payload } = await jwtVerify(token.value, new TextEncoder().encode(secret));
-//         // console.log(payload,"payload")
-//         const data = payload as unknown as JwtPayload
-//         return data.role
-//     } catch (error) {
-//         console.error('Token verification failed:', error);
-//         return null;
-//     }
-// }
+    try {
+        const { payload } = await jwtVerify(token.value, new TextEncoder().encode(secret));
+        // console.log(payload,"payload")
+        const data = payload as unknown as JwtPayload
+        return data.role
+    } catch (error) {
+        console.error('Token verification failed:', error);
+        return null;
+    }
+}
 
 
 // export const tokenVerify = async (userToken: string, req: NextRequest): Promise<string | null> => {
@@ -99,64 +99,64 @@ interface JwtPayload {
 //     role: string;
 // }
 
-export const tokenVerify = async (userToken: string, req: NextRequest): Promise<string | null> => {
-    const secret = new TextEncoder().encode(JWT_SECRET);
+// export const tokenVerify = async (userToken: string, req: NextRequest): Promise<string | null> => {
+//     const secret = new TextEncoder().encode(JWT_SECRET);
 
-    // Function to verify a JWT token
-    const verifyToken = async (token: string | undefined) => {
-        if (!token) return null;
-        try {
-            const { payload } = await jwtVerify(token, secret);
-            return payload as unknown as JwtPayload;
-        } catch (error) {
-            console.error("Token verification failed:", error);
-            return null;
-        }
-    };
+//     // Function to verify a JWT token
+//     const verifyToken = async (token: string | undefined) => {
+//         if (!token) return null;
+//         try {
+//             const { payload } = await jwtVerify(token, secret);
+//             return payload as unknown as JwtPayload;
+//         } catch (error) {
+//             console.error("Token verification failed:", error);
+//             return null;
+//         }
+//     };
 
-    // Step 1: Verify Access Token
-    const accessToken = req.cookies.get("accessToken")?.value;
-    let tokenData = await verifyToken(accessToken);
+//     // Step 1: Verify Access Token
+//     const accessToken = req.cookies.get("accessToken")?.value;
+//     let tokenData = await verifyToken(accessToken);
 
-    if (tokenData) {
-        return tokenData.role; // Access token is valid, return the role
-    }
+//     if (tokenData) {
+//         return tokenData.role; // Access token is valid, return the role
+//     }
 
-    // Step 2: If Access Token is expired or missing, verify Refresh Token
-    const refreshToken = req.cookies.get("refreshToken")?.value;
-    if (!refreshToken) {
-        console.error("No refresh token available");
-        return null;
-    }
+//     // Step 2: If Access Token is expired or missing, verify Refresh Token
+//     const refreshToken = req.cookies.get("refreshToken")?.value;
+//     if (!refreshToken) {
+//         console.error("No refresh token available");
+//         return null;
+//     }
 
-    tokenData = await verifyToken(refreshToken);
-    if (!tokenData) {
-        return null; // Refresh token is also invalid
-    }
+//     tokenData = await verifyToken(refreshToken);
+//     if (!tokenData) {
+//         return null; // Refresh token is also invalid
+//     }
 
-    // Step 3: Request new access token
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/refresh-token`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ refreshToken }),
-        });
+//     // Step 3: Request new access token
+//     try {
+//         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/refresh-token`, {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({ refreshToken }),
+//         });
 
-        if (!response.ok) {
-            console.error("Failed to refresh access token");
-            return null;
-        }
+//         if (!response.ok) {
+//             console.error("Failed to refresh access token");
+//             return null;
+//         }
 
-        const { accessToken: newAccessToken } = await response.json();
-        const newTokenData = await verifyToken(newAccessToken);
-        if (!newTokenData) {
-            return null;
-        }
+//         const { accessToken: newAccessToken } = await response.json();
+//         const newTokenData = await verifyToken(newAccessToken);
+//         if (!newTokenData) {
+//             return null;
+//         }
 
-        // Step 4: Return the role from the new access token
-        return newTokenData.role;
-    } catch (error) {
-        console.error("Error refreshing access token:", error);
-        return null;
-    }
-};
+//         // Step 4: Return the role from the new access token
+//         return newTokenData.role;
+//     } catch (error) {
+//         console.error("Error refreshing access token:", error);
+//         return null;
+//     }
+// };

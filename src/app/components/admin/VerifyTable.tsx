@@ -125,11 +125,11 @@ const VerifyTable = () => {
                     <RejectedBadge />
                   ) : (
                     <>
-                    <AlertDialog onConfirm={() => handleReject(user.email)}
+                    <AlertDialog onConfirm={() => handleVerify(user.email)}
                         alert={"Do you want to Approve the Request?"}
                         >
                       <button
-                        onClick={() => handleVerify(user.email)}
+                        
                         className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md"
                       >
                         Approve

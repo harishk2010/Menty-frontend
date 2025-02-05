@@ -210,7 +210,7 @@ export default function PersonalDetailsForm() {
                 onConfirm={() => handleSubmit(values)}
               >
                 <PrimaryButton
-                  type="button"
+                  type="submit"
                   name={isSubmitting ? "Saving..." : "Save Changes"}
                 />
               </AlertDialog2>

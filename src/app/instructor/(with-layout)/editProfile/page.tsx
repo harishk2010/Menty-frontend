@@ -13,34 +13,34 @@ import { getInstructorData } from "@/api/instructorApi";
 
 const ProfileHeader = () => {
   const pathname = usePathname();
-  const [instructorData, setInstructorData] = useState<any>({
-    userId: null,
-    username: null,
-    email: null,
-    role: null,
-    profilePicUrl:null
-  }); // Initially set to null
+  // const [instructorData, setInstructorData] = useState<any>({
+  //   userId: null,
+  //   username: null,
+  //   email: null,
+  //   role: null,
+  //   profilePicUrl:null
+  // }); // Initially set to null
 
 
-  const loggedIn = useSelector((state: RootState) => state.instructor.email);
-  const Instructor = useSelector((state: RootState) => state.instructor);
+  // const loggedIn = useSelector((state: RootState) => state.instructor.email);
+  // const Instructor = useSelector((state: RootState) => state.instructor);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (loggedIn && Instructor?.email) {
-        try {
-          const fetchedData = await getInstructorData(Instructor.email);
-          setInstructorData(fetchedData || {}); // Set fetched data or empty object
-        } catch (error) {
-          console.error("Error fetching student data:", error);
-        }
-      } else {
-        // setIsLoggedIn(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (loggedIn && Instructor?.email) {
+  //       try {
+  //         const fetchedData = await getInstructorData(Instructor.email);
+  //         setInstructorData(fetchedData || {}); // Set fetched data or empty object
+  //       } catch (error) {
+  //         console.error("Error fetching student data:", error);
+  //       }
+  //     } else {
+  //       // setIsLoggedIn(false);
+  //     }
+  //   };
 
-    fetchData();
-  },[loggedIn,Instructor]);
+  //   fetchData();
+  // },[loggedIn,Instructor]);
 
   return (
     <>

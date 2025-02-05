@@ -19,6 +19,8 @@ interface Student {
 
 export default function Navbar(): ReactElement {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const [student, setStudent] = useState(false);
   const router = useRouter();
 
@@ -50,99 +52,69 @@ export default function Navbar(): ReactElement {
   };
 
   return (
-    <>
-      <nav
-        className="bg-transparent backdrop-blur-xl black shadow-md w-full flex sm:justify-evenly justify-self-stretch items-center
-        py-3 px-5 sticky top-0 z-10"
-      >
-        <div className=" flex justify-start">
-          <button onClick={handleToggleMenu}>
-            {toggleMenu ? (
-              <ChevronLeftIcon className="text-black" />
-            ) : (
-              <MenuIcon className="text-purple-400" />
-            )}
-          </button>
-        </div>
-        <div className="flex ">
-          <h1 className="text-violet-700 font-bold text-2xl">Menty</h1>
-        </div>
-        <div>
-          <ul className="hidden cursor-pointer sm:flex gap-11">
+    <nav className="bg-white shadow-md sticky top-0 z-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          {/* Left - Mobile Menu Button */}
+          <div className="md:hidden">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 hover:text-gray-900">
+              {isMenuOpen ? <ChevronLeftIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+            </button>
+          </div>
+
+          {/* Center - Brand Logo */}
+          <Link href="/">
+            <h1 className="text-purple-600 font-bold text-2xl">Menty</h1>
+          </Link>
+
+          {/* Right - Desktop Navigation */}
+          <div className="hidden md:flex space-x-8 items-center">
             {studentHeader.map((link) => {
               const isActive = pathname.startsWith(link.href);
               return (
-                <Link
-                  href={link.href}
-                  className={`${
-                    isActive ? "text-purple-700 font-bold" : "text-black"
-                  } hover:text-purple-700`}
-                  key={link.name}
-                  prefetch={true}
-                >
-                  <li>{link.name}</li>
+                <Link key={link.name} href={link.href} className={`${isActive ? "text-purple-600 font-bold" : "text-gray-600"} hover:text-purple-600`}>
+                  {link.name}
                 </Link>
               );
             })}
-          </ul>
-        </div>
-        <div className="hidden sm:flex gap-3">
-          {!student ? (
-            <Link href={"/login"}>
-              <PlainButton name={"Login"} />
-            </Link>
-          ) : (
-            <span onClick={handleLogout}>
-              <MainButton name={"Logout"} />
-            </span>
-          )}
-        </div>
-      </nav>
-      {toggleMenu ? (
-        <div
-          className="
-        bg-transparent backdrop-blur-3xl
-        shadow
-        bg-gray-100
-        p-6
-        w-1/2
-        sm:w-1/4
-       
-        fixed
-        origin-top-right
-        
-        
-        h-screen   
-        z-20
-        "
-        >
-          <div className="flex justify-center  gap-28">
-            <ul className=" flex flex-col justify-center cursor-pointer items-center gap-4 text-purple-700">
-              <Link href={"/home"}>
-                <li>Home</li>
-              </Link>
-              <Link href={"/profile"}>
-                <li>Profile</li>
-              </Link>
-              <li>Courses</li>
-              <li>Mentors</li>
-            </ul>
           </div>
-          <div className="sm:hidden flex flex-col mt-8 justify-center items-center gap-3">
-            {student && (
-              <Link href={"/login"}>
-                <PlainButton name={"Login"} />
-              </Link>
-            )}
 
-            <span onClick={handleLogout}>
-              <MainButton name={"Logout"} />
-            </span>
+          {/* Right - Authentication Buttons */}
+          <div className="hidden md:flex gap-3">
+            {!student ? (
+              <Link href="/login">
+                <PlainButton name="Login" />
+              </Link>
+            ) : (
+              <span onClick={handleLogout}>
+                <MainButton name="Logout" />
+              </span>
+            )}
           </div>
         </div>
-      ) : (
-        ""
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white shadow-lg absolute w-full left-0 top-16 z-10">
+          <div className="px-4 py-3 space-y-2">
+            {studentHeader.map((link) => (
+              <Link key={link.name} href={link.href} className="block px-3 py-2 text-gray-600 hover:text-purple-600">
+                {link.name}
+              </Link>
+            ))}
+            {!student ? (
+              <Link href="/login" className="block text-center">
+                <PlainButton name="Login" />
+              </Link>
+            ) : (
+              <span onClick={handleLogout} className="block text-center">
+                <MainButton name="Logout" />
+              </span>
+            )}
+          </div>
+        </div>
       )}
-    </>
+    </nav>
   );
 }

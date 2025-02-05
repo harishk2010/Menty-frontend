@@ -45,12 +45,14 @@ function AlertDialog2(props: AlertDialogProps) {
             
             <div className="flex justify-end gap-4">
               <button
+              type="button"
                 onClick={handleClose}
                 className="px-4 py-2 text-black border border-gray-300 rounded hover:bg-gray-100"
               >
                 No
               </button>
               <button
+              type="button"
                 onClick={handleConfirm}
                 className="px-4 py-2 text-white bg-purple-600 rounded hover:bg-purple-700"
               >
