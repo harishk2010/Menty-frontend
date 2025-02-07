@@ -3,17 +3,17 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Upload } from "lucide-react";
 import { getCategories } from "@/api/adminApi";
-import { addCouse } from "@/api/courseApi";
+import { addCouse, getCourse } from "@/api/courseApi";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface CourseData {
   courseName: string;
   description: string;
-  price: string ;
+  price: string;
   category: string;
   level: string;
-  duration: string ;
+  duration: string;
   thumbnail: FileList | null;
   demoVideos: FileList | null;
 }
@@ -21,18 +21,22 @@ interface ICategory {
   categoryName: string;
 }
 const CourseCreation: React.FC = () => {
+  const { courseId } = useParams<{ courseId: string }>();
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<CourseData>();
-  const router=useRouter()
+  const router = useRouter();
 
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [demoVideoPreview, setDemoVideoPreview] = useState<string | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [demoVideoUrl, setDemoVideoUrl] = useState<string | null>(null);
 
   const handleDemoVideoChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -68,43 +72,60 @@ const CourseCreation: React.FC = () => {
         setCategories(response || "[]");
       };
       fetchCategories();
+
+      const fetchCourse = async () => {
+        const response = await getCourse(courseId);
+        if (response) {
+          const fetchedCourse = response;
+          console.log(fetchedCourse, "fetcheddd");
+          setValue("courseName", fetchedCourse.courseName);
+          setValue("description", fetchedCourse.description);
+          setValue("category", fetchedCourse.category);
+          setValue("level", fetchedCourse.level);
+          setValue("duration", fetchedCourse.duration);
+          setValue("price", fetchedCourse.price);
+          setThumbnailPreview(fetchedCourse.thumbnailUrl);
+          setDemoVideoPreview(fetchedCourse.demoVideo?.url);
+        }
+      };
+      fetchCourse();
     } catch (error) {}
   }, []);
 
   const onSubmit = async (data: CourseData) => {
     console.log("Submitting Data:", data);
     setIsSubmitting(true);
-  
+
     try {
       const formData = new FormData();
-  
+
       if (data.thumbnail && data.thumbnail.length > 0) {
         formData.append("thumbnail", data.thumbnail[0]);
       }
       if (data.demoVideos && data.demoVideos.length > 0) {
         formData.append("demoVideos", data.demoVideos[0]);
       }
-  
+
       // Append all other fields dynamically (including price and duration)
       for (const key of Object.keys(data)) {
         if (key !== "thumbnail" && key !== "demoVideos") {
           formData.append(key, data[key as keyof CourseData] as string);
         }
       }
-  
+
       // Debugging: Check FormData
       for (const pair of formData.entries()) {
         console.log(`${pair[0]}:`, pair[1]);
       }
-  
+
       // Send request
       const response = await addCouse(formData);
       console.log("Server Response:", response);
-  
+
       if (response.success) {
         toast.success(response.message);
         setIsSubmitting(false);
-        router.replace('/instructor/courses');
+        router.replace("/instructor/courses");
       }
     } catch (error: unknown) {
       // Type-check the error
@@ -124,9 +145,7 @@ const CourseCreation: React.FC = () => {
     <div className="min-h-screen rounded-md p-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Create New Course
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">Edit Course</h1>
           <p className="text-gray-600 mt-2">
             Share your knowledge by creating a comprehensive course
           </p>
@@ -177,7 +196,9 @@ const CourseCreation: React.FC = () => {
                       Duration (Hours)
                     </label>
                     <input
-                      {...register("duration", { required: "Duration is required" })}
+                      {...register("duration", {
+                        required: "Duration is required",
+                      })}
                       type="text"
                       className=" p-2 border rounded-lg"
                     />

@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useRouter , usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { clearUserDetials } from "@/redux/slices/instructorSlice";
+import { Book } from 'lucide-react'
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -103,6 +104,20 @@ const Sidebar = () => {
           } ease-out transition-all duration-700`}
         >
           About
+        </div>
+      </Link>
+    </li>
+    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+      <Link href="/instructor/courses" className="flex w-full">
+        <div className="block float-left">
+          <Book className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+        </div>
+        <div
+          className={`flex-1 text-base ${
+            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+          } ease-out transition-all duration-700`}
+        >
+          Courses
         </div>
       </Link>
     </li>

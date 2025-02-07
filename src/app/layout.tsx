@@ -1,5 +1,5 @@
 import "./globals.css"; // Import global Tailwind CSS
-import { ToastContainer, toast } from "react-toastify";
+import {ToastContainer, toast, Slide, Flip, Zoom, Bounce } from "react-toastify";
 import { StoreProvider } from "./storeProvider";
 export const metadata = {
   title: "Menty",
@@ -12,7 +12,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body className="bg-gray-100">
         <StoreProvider>
           {children}
-          <ToastContainer />
+          <ToastContainer 
+          autoClose={2000}
+          pauseOnHover={false}
+          transition={Slide}
+          hideProgressBar={false}
+          closeOnClick={false}
+          pauseOnFocusLoss={true}
+          />
         </StoreProvider>
       </body>
     </html>

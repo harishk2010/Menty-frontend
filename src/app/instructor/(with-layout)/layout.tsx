@@ -19,7 +19,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
 
             {/* Main content area is scrollable */}
-            <main className="flex-grow overflow-y-auto rounded-lg p-4 bg-white">
+            <main className="flex-grow overflow-y-auto rounded-lg p-4 bg-gray-100">
               {children}
             </main>
           </div>
