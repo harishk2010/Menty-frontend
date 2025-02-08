@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Upload } from "lucide-react";
 import { getCategories } from "@/api/adminApi";
-import { addCouse, getCourse } from "@/api/courseApi";
+import { addCouse, getCourse, updateCourse } from "@/api/courseApi";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
+import AlertDialog2 from "@/app/components/common/alertBoxes/AlertDialogBox2";
+import AlertDialog from "@/app/components/common/alertBoxes/AlertDialogBox";
 
 interface CourseData {
   courseName: string;
@@ -95,52 +97,52 @@ const CourseCreation: React.FC = () => {
   const onSubmit = async (data: CourseData) => {
     console.log("Submitting Data:", data);
     setIsSubmitting(true);
-
+  
     try {
       const formData = new FormData();
-
+  
+      // ✅ Append files if they exist
       if (data.thumbnail && data.thumbnail.length > 0) {
         formData.append("thumbnail", data.thumbnail[0]);
       }
       if (data.demoVideos && data.demoVideos.length > 0) {
         formData.append("demoVideos", data.demoVideos[0]);
       }
-
-      // Append all other fields dynamically (including price and duration)
-      for (const key of Object.keys(data)) {
+  
+      // ✅ Append all other fields dynamically
+      for (const key in data) {
         if (key !== "thumbnail" && key !== "demoVideos") {
           formData.append(key, data[key as keyof CourseData] as string);
         }
       }
-
-      // Debugging: Check FormData
+  
+      // 🔍 Debug: Log FormData entries
+      console.log("FormData Before Sending:");
       for (const pair of formData.entries()) {
         console.log(`${pair[0]}:`, pair[1]);
       }
-
-      // Send request
-      const response = await addCouse(formData);
+  
+      // ✅ Send API request
+      const response = await updateCourse(courseId, formData);
       console.log("Server Response:", response);
-
-      if (response.success) {
+  
+      if (response?.success) {
         toast.success(response.message);
-        setIsSubmitting(false);
         router.replace("/instructor/courses");
       }
-    } catch (error: unknown) {
-      // Type-check the error
-      if (error instanceof Error) {
-        console.error("Error submitting course:", error.message);
-        toast.error(`Error: ${error.message}`);
-      } else {
-        console.error("Unknown error submitting course:", error);
-        toast.error("An unknown error occurred.");
-      }
+    } catch (error) {
+      console.error("Error updating course:", error);
+      toast.error("Failed to update course.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleConfirmSubmission = () => {
+    handleSubmit(onSubmit)();  // Call the form submission function
+  };
+
+  
   return (
     <div className="min-h-screen rounded-md p-8">
       <div className="max-w-6xl mx-auto">
@@ -156,7 +158,7 @@ const CourseCreation: React.FC = () => {
             <h3 className="text-2xl font-semibold">Course Information</h3>
           </div>
           <div className="p-6">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form  onSubmit={e=>e.preventDefault()} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">
@@ -277,8 +279,9 @@ const CourseCreation: React.FC = () => {
                   </p>
                 )}
               </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 space-x-3 ">
 
-              <div className="space-y-2">
+              <div className="space-y-2 w-[400px] ">
                 <label className="text-sm font-medium text-gray-700">
                   Thumbnail
                 </label>
@@ -290,6 +293,7 @@ const CourseCreation: React.FC = () => {
                 >
                   {thumbnailPreview ? (
                     <img
+                    onContextMenu={(e)=>e.preventDefault()}
                       src={thumbnailPreview}
                       className="mx-auto h-full w-full"
                     ></img>
@@ -300,7 +304,7 @@ const CourseCreation: React.FC = () => {
                     id="thumbnailInput"
                     {...register("thumbnail", {
                       onChange: handleThumbnailPreview,
-                      required: "Thumbnail is required",
+                     
                     })}
                     type="file"
                     className="hidden"
@@ -313,7 +317,7 @@ const CourseCreation: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 w-[400px] ">
                 <label className="text-sm font-medium text-gray-700">
                   DemoVideo
                 </label>
@@ -326,6 +330,8 @@ const CourseCreation: React.FC = () => {
                 >
                   {demoVideoPreview ? (
                     <video
+                    controlsList="nodownload"
+                    onContextMenu={(e)=>e.preventDefault()}
                       src={demoVideoPreview}
                       controls
                       className="mx-auto "
@@ -337,7 +343,7 @@ const CourseCreation: React.FC = () => {
                   <input
                     id="demoVideoInput"
                     {...register("demoVideos", {
-                      required: "DemoVideos is required",
+                     
                       onChange: handleDemoVideoChange,
                     })}
                     type="file"
@@ -351,14 +357,22 @@ const CourseCreation: React.FC = () => {
                   )}
                 </div>
               </div>
+              </div>
+              <AlertDialog2
+              title="Confirm Changes"
+              alert="Are you sure you want to update your details?"
+              onConfirm={handleConfirmSubmission}
+              >
+
 
               <button
-                type="submit"
+                // type="submit"
                 className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
                 disabled={isSubmitting}
-              >
+                >
                 {isSubmitting ? "Saving..." : "Save & Continue"}
               </button>
+                </AlertDialog2>
             </form>
           </div>
         </div>

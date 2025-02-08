@@ -44,7 +44,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`h-full bg-purple-800 text-white flex flex-col justify-between  transition-all duration-500 ${
+      className={`h-full z-100 bg-purple-800 text-white flex flex-col justify-between  transition-all duration-500 ${
         isCollapsed ? "w-14" : "w-44"
       }`}
     >
