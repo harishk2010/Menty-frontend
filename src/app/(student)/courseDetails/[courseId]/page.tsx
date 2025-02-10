@@ -21,6 +21,7 @@ import { getCourse } from "@/api/courseApi";
 import { useParams } from "next/navigation";
 import ReactPlayer from "react-player";
 import { motion } from "framer-motion";
+import Link from "next/link";
 // Mock course data - would be replaced with actual API data
 const mockCourse = {
   id: "course123",
@@ -334,9 +335,11 @@ const CourseDetails: React.FC = () => {
                 <h2 className="text-2xl font-bold text-gray-900">
                   ₹{course?.price}
                 </h2>
+                <Link href={`/checkout/${courseId}`}>
                 <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                   Enroll Now
                 </button>
+                </Link>
               </div>
               <div className="space-y-2">
                 <h3 className="font-semibold text-gray-800 mb-2">

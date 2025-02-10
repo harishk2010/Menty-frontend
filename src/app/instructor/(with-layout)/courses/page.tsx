@@ -131,7 +131,11 @@ const InstructorCourseTable = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-500">
-                    {new Date(course.lastUpdated).toLocaleDateString()}
+                    <Link href={`/instructor/chapters/${course._id}`}>
+                  <button className="text-white-600  bg-purple-300 p-1 rounded-md  hover:text-purple-900">
+                        Manage Chapters
+                      </button>
+                    </Link>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
