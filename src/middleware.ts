@@ -4,13 +4,17 @@ import { cookies } from "next/headers";
 
 export async function middleware(req: NextRequest) {
 
-    const url = req.nextUrl.clone();
+    // const url = req.nextUrl.clone();
+    const url = new URL(req.url); // ✅ Correct way to modify URLs
+
     // console.log(req.cookies.get('accessToken'))
     
     if (
         req.nextUrl.pathname.startsWith("/_next/") || // Static files
         /\.(.*)$/.test(req.nextUrl.pathname)         // File extensions
     ) {
+        console.log('mw', req.nextUrl);
+
         return NextResponse.next();
     }
 
