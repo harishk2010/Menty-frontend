@@ -31,6 +31,7 @@ interface Courses {
   demoVideo: {
     url: string;
   };
+  isPublished:boolean;
   price: string;
 }
 
@@ -197,55 +198,57 @@ export default function Home(): ReactElement {
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {popularCourses.map((course, index) => (
-             <Link  key={course?._id} href={`/courseDetails/${course._id}`}>
-             <div
-               
-                className="  flex flex-col rounded-lg shadow-lg overflow-hidden"
-              >
-                {/* <div className="group  flex-shrink-0" >
-                  <img className="h-48  w-full group-hover: object-cover" alt="original" src={course.thumbnailUrl} alt={course.courseName} />
-                  <img className="h-48  w-full object-cover group-hover:" alt="hover" src={course.thumbnailUrl} alt={course.courseName} />
-                </div> */}
-               
-                <div className="group relative  flex-shrink-0">
-                  <img
-                    src={course.thumbnailUrl}
-                    alt="Original"
-                    className="w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
-                  />
+                course.isPublished &&(<Link  key={course?._id} href={`/courseDetails/${course._id}`}>
+                <div
+                  
+                   className="  flex flex-col rounded-lg shadow-lg overflow-hidden"
+                 >
+                   {/* <div className="group  flex-shrink-0" >
+                     <img className="h-48  w-full group-hover: object-cover" alt="original" src={course.thumbnailUrl} alt={course.courseName} />
+                     <img className="h-48  w-full object-cover group-hover:" alt="hover" src={course.thumbnailUrl} alt={course.courseName} />
+                   </div> */}
+                  
+                   <div className="group relative  flex-shrink-0">
+                     <img
+                       src={course.thumbnailUrl}
+                       alt="Original"
+                       className="w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
+                     />
+   
+                     <video
+                       muted
+                       autoPlay
+                       loop
+                       playsInline
+                       src={course.demoVideo.url}
+                       className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+                       />
+                   </div>
+                   <div className="flex-1 bg-white p-6 flex flex-col justify-between">
+                     <div className="flex-1">
+                       <h3 className="text-xl font-semibold text-gray-900">
+                         {course.courseName}
+                       </h3>
+                       <div className="mt-3 flex items-center text-sm text-gray-500">
+                         <Users className="flex-shrink-0 mr-1.5 h-5 w-5" />
+                         <span>{course.price} students</span>
+                       </div>
+                       <div className="mt-2 flex items-center text-sm text-gray-500">
+                         <PlayCircle className="flex-shrink-0 mr-1.5 h-5 w-5" />
+                         <span>{course.duration} Hrs</span>
+                       </div>
+                     </div>
+                     <div className="mt-6">
+                       <button className="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                         Enroll Now
+                       </button>
+                     </div>
+         
+                   </div>
+                 </div>
+                 </Link>)
 
-                  <video
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                    src={course.demoVideo.url}
-                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
-                    />
-                </div>
-                <div className="flex-1 bg-white p-6 flex flex-col justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      {course.courseName}
-                    </h3>
-                    <div className="mt-3 flex items-center text-sm text-gray-500">
-                      <Users className="flex-shrink-0 mr-1.5 h-5 w-5" />
-                      <span>{course.price} students</span>
-                    </div>
-                    <div className="mt-2 flex items-center text-sm text-gray-500">
-                      <PlayCircle className="flex-shrink-0 mr-1.5 h-5 w-5" />
-                      <span>{course.duration} Hrs</span>
-                    </div>
-                  </div>
-                  <div className="mt-6">
-                    <button className="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-                      Enroll Now
-                    </button>
-                  </div>
-      
-                </div>
-              </div>
-              </Link>
+             
             ))}
           </div>
         </div>

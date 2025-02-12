@@ -10,6 +10,13 @@ const CourseRoutes={
     GET_ALL_CHAPTERS:'/course/chapter/chapters/',
     UPDATE_CHAPTER:'/course/chapter/updateChapter/',
     GET_CHAPTER:'/course/chapter/chapter/',
+
+    //payment
+    PAYMENT:'/course/course/payment',
+
+    //bought courses
+    GET_BOUGHT_COURSES:'/course/course/boughtCourses/',
+    GET_Play_COURSE_DETAILS:'/course/course/playCourseDetails/'
 }
 
 export default CourseRoutes

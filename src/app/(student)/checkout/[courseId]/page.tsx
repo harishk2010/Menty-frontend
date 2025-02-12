@@ -82,8 +82,8 @@ const path = '/payment/paymentFailure';
       return;
     }
 
-    const surl = `${window.location.origin}/payment/paymentSuccess`;
-    const furl = `${window.location.origin}/payment/paymentFailure`;
+    const surl = `${window.location.origin}/api/payment-success`;
+    const furl = `${window.location.origin}/api/payment-failure`;
     if (paymentMethod === 'PayU') {
       const formData = {
         key: 'O5ouUQ',
@@ -92,6 +92,7 @@ const path = '/payment/paymentFailure';
         amount: course?.price,
         email: email,
         firstname: name,
+        lastname: course?.courseName,
         phone: phone,
         // surl: fullUrl,
         // surl: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/paymentFailure`,

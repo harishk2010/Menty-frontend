@@ -1,8 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
+import { toast } from 'react-toastify';
+import { payCourse } from '@/api/courseApi';
+// import { cookies } from 'next/headers';
 
 const PaymentSuccess = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -11,15 +14,39 @@ const PaymentSuccess = () => {
 
     const txnid = searchParams.get('txnid');
     const amountPaid = searchParams.get('amountPaid');
+    const courseId=searchParams.get('courseId')
     const courseName = searchParams.get('courseName');
+    const hasPaid = useRef(false); // Track if payment API was already called
+
+
+    // Use useCallback to prevent unnecessary re-renders
+    const processPayment = useCallback(async () => {
+        if (!courseId || hasPaid.current) return; // Prevent duplicate API calls
+
+        hasPaid.current = true; // Mark API as called before making the request
+
+        try {
+            console.log("inside try")
+            const response = await payCourse(
+                String(courseId),
+                String(txnid),
+                Number(amountPaid),
+                String(courseName)
+            );
+            console.log("done pay")
+            if (response) {
+                toast.success('You have purchased the course');
+            }
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [courseId, txnid, amountPaid, courseName]);
 
     useEffect(() => {
-        // Simulate loading state
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1500);
-        return () => clearTimeout(timer);
-    }, []);
+        processPayment(); // Run only once when `courseId` is available
+    }, [processPayment]);
 
     const handleNavigateToCourses = () => {
         router.replace('/courses');

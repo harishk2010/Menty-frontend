@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
         req.nextUrl.pathname.startsWith("/_next/") || // Static files
         /\.(.*)$/.test(req.nextUrl.pathname)         // File extensions
     ) {
-        console.log('mw', req.nextUrl);
+        // console.log('mw', req.nextUrl);
 
         return NextResponse.next();
     }
@@ -24,7 +24,7 @@ export async function middleware(req: NextRequest) {
 
  
         const adminPublicRoutes=['/admin/login']
-        const adminProctectedRoutes=['/admin/dashboard','/admin/users','/admin/instructors','/admin/verifyInstructors','/admin/addMentorshipPlans','/admin/verifyInstructors/[email]']
+        const adminProctectedRoutes=['/admin/dashboard','/admin/users','/admin/instructors','/admin/verifyInstructors','/admin/addMentorshipPlans','/admin/verifyInstructors/']
  
     const studentPublicRoutes = ['/login', '/signup','/forgot-password','/'];
     const studentProtectedRoutes = ['/home', '/profile','/editProfile','changePassword'];

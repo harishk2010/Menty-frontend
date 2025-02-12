@@ -154,3 +154,46 @@ export const getAllChapter=async(courseId:string)=>{
         console.log(error)
     }
 }
+export const getAllBoughtCourses=async(userId:string)=>{
+    try {
+
+        const response=await API.get(`${CourseRoutes.GET_BOUGHT_COURSES}${userId}`,{
+            
+            withCredentials:true
+        })
+        console.log(response,"response from getAllBoughtCourses")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const getPlayCourse=async(courseId:string)=>{
+    try {
+
+        const response=await API.get(`${CourseRoutes.GET_Play_COURSE_DETAILS}${courseId}`,{
+            
+            withCredentials:true
+        })
+        console.log(response,"response from getAllBoughtCourses")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const payCourse=async(courseId: string, txnid: string, amount: number, courseName: string)=>{
+    try {
+        const data = { courseId, txnid, amount, courseName }
+        const response=await API.post(CourseRoutes.PAYMENT,data,{
+            
+            withCredentials:true
+        })
+        console.log(response,"response from payment")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
