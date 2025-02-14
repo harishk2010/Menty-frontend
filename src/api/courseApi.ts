@@ -95,10 +95,41 @@ export const getAllCourses=async()=>{
         console.log(error)
     }
 }
+export const getAllInstructorCourses=async(userId:string)=>{
+    try {
+
+        const response=await API.get(`${CourseRoutes.GET_ALL_Instructor_COURSES}${userId}`,{
+           
+            withCredentials:true
+        })
+        console.log(response.data,"response from getAllCourses")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const getCourse=async(coureId:string)=>{
     try {
 
         const response=await API.get(`${CourseRoutes.GET_COURSE}${coureId}`,{
+           
+            withCredentials:true
+        })
+        console.log(response,"response from getCourse")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const submitResult=async(coureId:string,{score ,total}:{
+    score:number,
+    total:number
+})=>{
+    try {
+
+        const response=await API.put(`${CourseRoutes.SUBMIT_QUIZZ_RESULT}${coureId}`,{score,total},{
            
             withCredentials:true
         })
@@ -168,6 +199,20 @@ export const getAllBoughtCourses=async(userId:string)=>{
         console.log(error)
     }
 }
+export const chapterCompleted=async(chapterId:string)=>{
+    try {
+
+        const response=await API.put(`${CourseRoutes.CHAPTER_COMPLETED}${chapterId}`,{
+            
+            withCredentials:true
+        })
+        console.log(response.data,"response from chapterCompleted")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const getPlayCourse=async(courseId:string)=>{
     try {
 
@@ -194,6 +239,47 @@ export const payCourse=async(courseId: string, txnid: string, amount: number, co
         return response.data
         
     } catch (error) {
+       
+    }
+}
+
+export const addQuizz=async(quizData:object)=>{
+    try {
+        console.log(quizData)
+        const response=await API.post(CourseRoutes.ADD_QUIZZ,quizData,{
+            withCredentials:true
+        })
+
+        return response.data
+    } catch (error) {
         console.log(error)
+        
+    }
+}
+export const editQuiz=async(id:string,quizData:object)=>{
+    try {
+        console.log(quizData)
+        const response=await API.put(`${CourseRoutes.EDIT_QUIZZ}${id}`,quizData,{
+            withCredentials:true
+        })
+
+        return response.data
+    } catch (error) {
+        console.log(error)
+        
+    }
+}
+export const getQuizData=async(id:string)=>{
+    try {
+        console.log(id)
+        const response=await API.get(`${CourseRoutes.GET_QUIZZ}${id}`,{
+            withCredentials:true
+        })
+        console.log(response,"getQuizData")
+
+        return response.data
+    } catch (error) {
+        console.log(error)
+        
     }
 }

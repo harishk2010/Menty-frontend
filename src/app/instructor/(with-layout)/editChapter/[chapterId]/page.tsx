@@ -35,7 +35,7 @@ const EditChapter: React.FC = () => {
       try {
         const response = await getChapter( chapterId);
         if (response) {
-          const chapter = response;
+          const chapter = response.data;
           setCourseId(chapter.courseId ||"")
           
           setValue('title', chapter.chapterTitle);

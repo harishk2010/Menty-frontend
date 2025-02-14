@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllCourses, handlePublish } from "@/api/courseApi";
+import { getAllCourses, getAllInstructorCourses, handlePublish } from "@/api/courseApi";
 import { toast } from "react-toastify";
 import AlertDialog2 from "@/app/components/common/alertBoxes/AlertDialogBox2";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface ICourse {
   _id: string;
@@ -15,21 +17,27 @@ interface ICourse {
   isListed: boolean;
   lastUpdated: string;
   rating: number;
+  quizId:string;
 }
 
 const InstructorCourseTable = () => {
-  // Sample data - replace with your actual data fetching logic
+  const Instructor = useSelector((state: RootState) => state.instructor);
   const [courses, setCourses] = useState<ICourse[]>([]);
 
   useEffect(() => {
     try {
       const fetchCourses = async () => {
-        const response = await getAllCourses();
-        setCourses(response || []);
+        if(!Instructor.userId){
+          toast.error("No instructor Id")
+          return
+        }
+        const response = await getAllInstructorCourses(Instructor.userId);
+        console.log(response,"response")
+        setCourses(response.data || []);
       };
       fetchCourses();
     } catch (error) {}
-  }, [courses]);
+  }, []);
 
   const togglePublish = async (id: string) => {
     try {
@@ -137,6 +145,24 @@ const InstructorCourseTable = () => {
                       </button>
                     </Link>
                   </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {
+                    !course.quizId?<div className="text-sm text-gray-500">
+                    <Link href={`/instructor/addQuizz/${course._id}`}>
+                  <button className="text-white-600  bg-purple-300 p-1 rounded-md  hover:text-purple-900">
+                        Add Quizz
+                      </button>
+                    </Link>
+                  </div>:<div className="text-sm text-gray-500">
+                    <Link href={`/instructor/editQuizz/${course.quizId}`}>
+                  <button className="text-white-600  bg-purple-300 p-1 rounded-md  hover:text-purple-900">
+                        Edit Quizz
+                      </button>
+                    </Link>
+                  </div>
+                  }
+                  
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <Link href={`/instructor/editCourse/${course._id}`}>

@@ -22,11 +22,12 @@ const PaymentSuccess = () => {
     // Use useCallback to prevent unnecessary re-renders
     const processPayment = useCallback(async () => {
         if (!courseId || hasPaid.current) return; // Prevent duplicate API calls
-
+        
         hasPaid.current = true; // Mark API as called before making the request
-
+        
         try {
             console.log("inside try")
+            console.log(txnid,amountPaid,courseId)
             const response = await payCourse(
                 String(courseId),
                 String(txnid),

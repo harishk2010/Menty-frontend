@@ -55,8 +55,8 @@ const CourseCheckout: React.FC = () => {
 
   useEffect(() => {
     if (!txnid || !course) return;
-    const key = 'O5ouUQ';
-    const salt = '36I1YEpHRRaMRcsRI4iglOgoUUHB6KfB';
+    const key = 't4VOu4';
+    const salt = 'h1r2JIjnHkpgtJrfBkfqKOS02hi3B0UB';
     const productinfo = courseId || "";
     const firstname = name || '';
     const userEmail = email || '';
@@ -71,7 +71,7 @@ const CourseCheckout: React.FC = () => {
     setHash(CryptoJS.SHA512(hashString).toString());
   }, [txnid, course]);
   console.log("hash,hash",hash)
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Ensure this includes the protocol, e.g., 'http://localhost:3000'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const path = '/payment/paymentFailure';
 
   const fullUrl = new URL(path, baseUrl);
@@ -86,7 +86,7 @@ const path = '/payment/paymentFailure';
     const furl = `${window.location.origin}/api/payment-failure`;
     if (paymentMethod === 'PayU') {
       const formData = {
-        key: 'O5ouUQ',
+        key: 't4VOu4',
         txnid: txnid,
         productinfo: courseId,
         amount: course?.price,

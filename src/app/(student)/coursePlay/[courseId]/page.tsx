@@ -476,7 +476,7 @@
 // export default CourseStudyPage;
 "use client"
 import React, { useEffect, useRef, useState } from 'react';
-import { getPlayCourse } from '@/api/courseApi';
+import { chapterCompleted, getPlayCourse } from '@/api/courseApi';
 import { 
   Check, Play, Clock, BarChart, BookOpen, Star, Users,
   ChevronRight, PlayCircle, Pause, RotateCcw, VolumeOff,
@@ -484,6 +484,7 @@ import {
 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { motion } from "framer-motion";
+import { toast } from 'react-toastify';
 
 // Your existing interfaces remain the same
 interface PurchasedCourse {
@@ -548,6 +549,7 @@ const CourseStudyPage = () => {
   const [duration, setDuration] = useState(0);
   const [muted, setMuted] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [currentChapterIndex, setCurrentChapterIndex] = useState<number>(0);
   const MainVideo = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -555,6 +557,7 @@ const CourseStudyPage = () => {
       try {
         const response = await getPlayCourse(courseId);
         setCourse(response.data);
+        // setPurchasedCourse(data.purchasedCourse);
         // Set initial active chapter to first chapter
         if (response.data?.chapters?.length > 0) {
           setActiveChapter(response.data.chapters[0]);
@@ -565,7 +568,7 @@ const CourseStudyPage = () => {
     };
     fetchCourse();
   }, [courseId]);
-
+console.log("coursee",course,"coursee")
   // Video control functions
   const handlePlayPause = () => {
     if (MainVideo.current) {
@@ -577,7 +580,32 @@ const CourseStudyPage = () => {
       setIsPlaying(!isPlaying);
     }
   };
-
+ const handleChapterCompletion=async(chapterId:string)=>{
+try {
+  const response=await chapterCompleted(chapterId)
+  console.log(response,"ress")
+  if (response.success) {
+    toast.success(response.message);
+    setCourse((prevCourse) => {
+      if (!prevCourse) return prevCourse; // Handle case when prevCourse is undefined
+  
+      return {
+        ...prevCourse,
+        purchasedCourse: {
+          ...prevCourse.purchasedCourse,
+          completedChapters: prevCourse.purchasedCourse.completedChapters.map(ch =>
+            ch.chapterId === chapterId ? { ...ch, isCompleted: !ch.isCompleted } : ch
+          )
+        }
+      };
+    });
+  }
+  
+  
+} catch (error:any) {
+  toast.error(error.message)
+}
+ }
   const toggleMute = () => {
     if (MainVideo.current) {
       MainVideo.current.muted = !muted;
@@ -619,14 +647,62 @@ const CourseStudyPage = () => {
 
   // Handle chapter change
   const handleChapterChange = (chapter: Chapter) => {
-    setActiveChapter(chapter);
-    setIsPlaying(false);
-    setCurrentTime(0);
-    setProgress(0);
-    if (MainVideo.current) {
-      MainVideo.current.currentTime = 0;
+    console.log("chap",chapter)
+    const index = course?.purchasedCourse.completedChapters.findIndex(ch => ch.chapterId === chapter._id);
+    if (!index) return; // Prevent errors if chapter is not found.
+
+    const currentChapter = course?.purchasedCourse?.completedChapters[currentChapterIndex];
+    const clickedChapter = course?.purchasedCourse?.completedChapters.find(ch => ch.chapterId === chapter._id);
+
+    if (
+        index === currentChapterIndex || // Allow replaying the current chapter.
+        clickedChapter?.isCompleted || // Allow access to completed chapters.
+        (index === currentChapterIndex + 1 && currentChapter?.isCompleted) // Allow next chapter if current one is completed.
+    ) {
+        setCurrentChapterIndex(index);
+        setActiveChapter(chapter);
+        setIsPlaying(false);
+        setCurrentTime(0);
+        setProgress(0);
+        if (MainVideo.current) {
+            MainVideo.current.currentTime = 0;
+        }
     }
-  };
+};
+// const handleChapterChange = (chapter: Chapter) => {
+//   const clickedChapter = course?.purchasedCourse?.completedChapters.find(ch => ch.chapterId === chapter._id);
+  
+//   // Always allow navigation to completed chapters
+//   if (clickedChapter?.isCompleted) {
+//       setActiveChapter(chapter);
+//       setIsPlaying(false);
+//       setCurrentTime(0);
+//       setProgress(0);
+//       if (MainVideo.current) {
+//           MainVideo.current.currentTime = 0;
+//       }
+//       return;
+//   }
+
+//   // Find last completed chapter dynamically
+//   const completedChapters = course?.purchasedCourse?.completedChapters.filter(ch => ch.isCompleted) || [];
+//   const lastCompletedChapter = completedChapters[completedChapters.length - 1];
+//   if(!course)return 
+//   // Allow only the next chapter if the last completed one is right before it
+//   if (!lastCompletedChapter || 
+//       course?.chapters.findIndex(ch => ch._id === chapter._id) === 
+//       course.chapters.findIndex(ch => ch._id === lastCompletedChapter.chapterId) + 1) {
+      
+//       setActiveChapter(chapter);
+//       setIsPlaying(false);
+//       setCurrentTime(0);
+//       setProgress(0);
+//       if (MainVideo.current) {
+//           MainVideo.current.currentTime = 0;
+//       }
+//   }
+// };
+
 
   return (
     <div className="flex h-screen">
@@ -643,22 +719,32 @@ const CourseStudyPage = () => {
         
         {isMenuOpen && (
           <nav className="overflow-y-auto h-[calc(100vh-4rem)]">
-            {course?.chapters.map(chapter => (
-              <div 
+            {course?.chapters.map((chapter,index )=> {
+
+              const isChapterCompleted=course.purchasedCourse.completedChapters.find(
+                (ch) => ch.chapterId === chapter._id
+            )
+            
+              return (
+                <div 
                 key={chapter._id}
                 className={`flex justify-between p-3 items-center cursor-pointer hover:bg-purple-50 ${
                   chapter._id === activeChapter?._id ? 'bg-purple-50 border-l-2 border-purple-500' : ''
                 }`}
-                onClick={() => handleChapterChange(chapter)}
+                onClick={() => {handleChapterChange(chapter)
+                  setCurrentChapterIndex(index)}
+
+                }
               >
                 <div className="p-3 pl-6 text-sm">
                   {chapter.chapterTitle}
                 </div>
                 <div>
-                  <Check className="text-sm size-5 p-1 bg-purple-500 text-white rounded-full"/>
+                  <Check className={`text-sm size-5 p-1 ${isChapterCompleted?.isCompleted?"bg-green-500":"bg-purple-500"}  text-white rounded-full`}/>
                 </div>
               </div>
-            ))}
+              )
+})}
           </nav>
         )}
       </aside>
@@ -676,6 +762,7 @@ const CourseStudyPage = () => {
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             onContextMenu={(e) => e.preventDefault()}
+            onEnded={()=>handleChapterCompletion(activeChapter?._id || "")}
           />
           
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-4">
@@ -753,6 +840,9 @@ const CourseStudyPage = () => {
               </p>
             </div>
             <div className="flex items-center space-x-4">
+              <button className='p'>
+
+              </button>
               <button 
                 className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
                 disabled={!course?.chapters[0] || activeChapter?._id === course?.chapters[0]._id}

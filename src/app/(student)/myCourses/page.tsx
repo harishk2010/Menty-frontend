@@ -19,6 +19,7 @@ interface Course {
       courseName: string;
       level: string;
       thumbnailUrl: string;
+      quizId:string;
     };
     userId: string;
     instructorId: string;
@@ -28,6 +29,7 @@ interface Course {
     purchasedAt: string;
     createdAt: string;
     updatedAt: string;
+    
   }
   
 const PurchasedCoursesPage = () => {
@@ -61,45 +63,7 @@ const PurchasedCoursesPage = () => {
     fetchCourses();
   }, []);
 
-  // Sample data - replace with your actual data
-  //   const purchasedCourses = [
-  //     {
-  //       id: 1,
-  //       courseName: "Complete Web Development Bootcamp",
-  //       progress: 65,
-  //       totalHours: 42,
-  //       completedHours: 27.3,
-  //       lessons: 156,
-  //       completedLessons: 98,
-  //       instructor: "Sarah Johnson",
-  //       thumbnailUrl: "/api/placeholder/320/180",
-  //       lastAccessed: "2024-02-10"
-  //     },
-  //     {
-  //       id: 2,
-  //       courseName: "Advanced JavaScript Mastery",
-  //       progress: 30,
-  //       totalHours: 28,
-  //       completedHours: 8.4,
-  //       lessons: 85,
-  //       completedLessons: 25,
-  //       instructor: "Michael Chen",
-  //       thumbnailUrl: "/api/placeholder/320/180",
-  //       lastAccessed: "2024-02-11"
-  //     },
-  //     {
-  //       id: 3,
-  //       courseName: "UI/UX Design Fundamentals",
-  //       progress: 90,
-  //       totalHours: 18,
-  //       completedHours: 16.2,
-  //       lessons: 64,
-  //       completedLessons: 58,
-  //       instructor: "Emma Davis",
-  //       thumbnailUrl: "/api/placeholder/320/180",
-  //       lastAccessed: "2024-02-12"
-  //     }
-  //   ];
+console.log(purchasedCourses[0],"purcourse")
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -149,6 +113,15 @@ const PurchasedCoursesPage = () => {
                     <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                       <Play size={20} />
                       Continue Learning
+                    </button>
+                    </Link>
+                    {
+
+                    }
+                    <Link href={`/attendQuiz/${course.courseDetails?.quizId}`}>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                      <Play size={20} />
+                     Attend Quiz
                     </button>
                     </Link>
                   </div>
