@@ -163,7 +163,7 @@ const QuizAttempt = () => {
 
           <div className="mt-8 flex justify-center">
             <button
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push('/myCourses')}
               className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
               Back to Dashboard
@@ -178,7 +178,7 @@ const QuizAttempt = () => {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">{quiz.title}</h1>
+          <h1 className="text-3xl text-purple-700 font-bold">{quiz.title}</h1>
         </div>
 
         <div className="mb-6">

@@ -1,7 +1,7 @@
 
 "use client"
 import React, { useEffect, useState } from "react";
-import { Clock, BookOpen, Award, Play } from "lucide-react";
+import { Clock, BookOpen, Award, Play, AwardIcon } from "lucide-react";
 import { getAllBoughtCourses } from "@/api/courseApi";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
@@ -105,6 +105,11 @@ console.log(purchasedCourses[0],"purcourse")
                       <h2 className="text-xl font-semibold text-gray-900 mb-2">
                         {course.courseDetails.courseName}
                       </h2>
+                      {
+                        course.isCourseCompleted&&<p className="text-white px-3 rounded-md py-1 w-44 bg-green-600 text-wrap">
+                        Course Completed
+                      </p>
+                      }
                       <p className="text-gray-600">
                         Instructor: {course.instructorId}
                       </p>
@@ -116,14 +121,18 @@ console.log(purchasedCourses[0],"purcourse")
                     </button>
                     </Link>
                     {
-
-                    }
-                    <Link href={`/attendQuiz/${course.courseDetails?.quizId}`}>
+                      course.isCourseCompleted?<button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                      <AwardIcon size={20} />
+                     Get Certificate
+                    </button>:<Link href={`/attendQuiz/${course.courseDetails?.quizId}`}>
                     <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                       <Play size={20} />
                      Attend Quiz
                     </button>
                     </Link>
+
+                    }
+                    
                   </div>
 
                   <div className="mb-4">

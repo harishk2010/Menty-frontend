@@ -41,19 +41,25 @@ const InstructorCourseTable = () => {
 
   const togglePublish = async (id: string) => {
     try {
-      const response = await handlePublish(id);
+      const response = await handlePublish(id); // Assuming this API updates the backend
       if (response.success) {
         toast.success(response.message);
-        setCourses((prevCourses: ICourse[]) =>
-          prevCourses.map((course: ICourse) => 
-            course._id == id? { ...course, isPublished: course.isPublished! }  : course
+  
+        setCourses((prevCourses) =>
+          prevCourses.map((course) =>
+            course._id === id
+              ? { ...course, isPublished: !course.isPublished } // Toggle the status correctly
+              : course
           )
         );
+      } else {
+        toast.error(response.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
+  
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
@@ -97,7 +103,7 @@ const InstructorCourseTable = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {courses.map((course) => (
               <tr
-                key={course.courseName}
+                key={course._id}
                 className="hover:bg-gray-50 transition-colors"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
