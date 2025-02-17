@@ -203,7 +203,7 @@ export const getAllBoughtCourses = async (userId: string) => {
 export const chapterCompleted = async (chapterId: string) => {
   try {
     const response = await API.put(
-      `${CourseRoutes.CHAPTER_COMPLETED}${chapterId}`,
+      `${CourseRoutes.CHAPTER_COMPLETED}${chapterId}`,{},
       {
         withCredentials: true,
       }

@@ -1,4 +1,9 @@
+import { logout } from "@/api/userAuthentication";
+import { deleteCookie } from "@/utils/deleteCookie";
 import axios from "axios";
+import Cookies from "js-cookie";
+import Router from "next/router";
+
 
 export const API = axios.create({
   baseURL: "http://localhost:5000",
@@ -34,11 +39,23 @@ API.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-      const { data } = error.response;
-      console.log(data.message);
+      const { status } = error.response;
+
+      // Handle 401 Unauthorized error
+      if (status === 401) {
+        // Cookies.remove("accessToken");
+        // deleteCookie('accessToken')
+        // deleteCookie('refreshToken')
+        logout()
+        // Router.replace("/"); // Redirect to login or home page
+      }
+
+      // Log the error message
+      console.log(error.response.data.message || "An error occurred");
     } else {
-      console.log(error);
+      console.log(error, "Axios error");
     }
+
     return Promise.reject(error);
   }
 );

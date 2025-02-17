@@ -1,5 +1,6 @@
 const InstructorRoutes={
     getInstructorData:"/user/instructors/",
+    getInstructorTransactionsData:"/user/instructors/transactions",
     updateProfile:'/user/instructors/updateProfile',
     updatePassword:'/user/instructors/updatePassword',
     

@@ -128,7 +128,7 @@ const AddChapter: React.FC = () => {
                     id="chapterVideo"
                     type="file"
                     className="hidden"
-                    accept="video/*"
+                    accept="video/mp4,video/x-matroska"
                     onChange={handleFileChange}
                   />
                 </div>

@@ -16,6 +16,23 @@ export const getInstructorData = async (email: string | null): Promise<any> => {
     console.log(error);
   }
 };
+export const getInstructorTransactions = async (email: string | null,currentPage:number,itemsPerPage:number): Promise<any> => {
+  try {
+    console.log("getInsssss")
+    const response = await API.get(
+      // `/user/instructors/${email}`
+      `${InstructorRoutes.getInstructorTransactionsData}?email=${email}&currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`,{
+        withCredentials:true
+      }
+    );
+    console.log(response.data,"getInsssss")
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 export const updateProfile = async (formData: FormData): Promise<any> => {
   try {
     console.log("Inside updateProfile API call");
