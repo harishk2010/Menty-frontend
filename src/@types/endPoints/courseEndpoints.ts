@@ -21,10 +21,10 @@ const CourseRoutes={
     CHAPTER_COMPLETED:'/course/course/chapterCompleted/',
 
     //quizz
-    ADD_QUIZZ:'/course/course/addQuiz',
-    EDIT_QUIZZ:'/course/course/editQuiz/',
-    GET_QUIZZ:'/course/course/getQuiz/',
-    SUBMIT_QUIZZ_RESULT:'/course/course/sumbitResult/',
+    ADD_QUIZZ:'/course/quiz/addQuiz',
+    EDIT_QUIZZ:'/course/quiz/editQuiz/',
+    GET_QUIZZ:'/course/quiz/getQuiz/',
+    SUBMIT_QUIZZ_RESULT:'/course/quiz/sumbitResult/',
 }
 
 export default CourseRoutes

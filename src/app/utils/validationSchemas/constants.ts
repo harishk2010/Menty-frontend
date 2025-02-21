@@ -17,6 +17,10 @@ export const studentHeader = [
     href: "/courses",
   },
   {
+    name: "mentors",
+    href: "/mentors",
+  },
+  {
     name: "MyCourses",
     href: "/myCourses",
   },

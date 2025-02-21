@@ -118,7 +118,7 @@ const path = '/payment/paymentFailure';
       document.body.appendChild(form);
       form.submit();
     } else {
-      toast.success('Payment successful via Wallet/UPI!', { transition: Slide });
+      toast.success('Payment successful via Wallet/UPI!');
     }
   };
 

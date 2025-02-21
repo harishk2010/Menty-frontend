@@ -84,7 +84,7 @@ const InstructorCourseTable = () => {
                 Category
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Students
+                Price
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
@@ -115,7 +115,7 @@ const InstructorCourseTable = () => {
                   <div className="text-sm text-gray-500">{course.category}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">{course.price}</div>
+                  <div className="text-sm text-gray-500">₹ {course.price}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span

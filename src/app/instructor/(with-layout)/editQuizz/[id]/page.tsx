@@ -103,9 +103,11 @@ const EditQuizForm: React.FC = () => {
 
       if (!response.success) {
         toast.error(response.message)
+        return
       }
 
      toast.success(response.message)
+     router.back()
      
     } catch (error:any) {
       toast.error(error.message)

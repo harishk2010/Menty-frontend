@@ -3,10 +3,25 @@ import { API } from "@/service/axios";
 
 export const getInstructorData = async (email: string | null): Promise<any> => {
   try {
-    console.log("getInsssss")
+    console.log("getInsssss",email)
     const response = await API.get(
       // `/user/instructors/${email}`
       `${InstructorRoutes.getInstructorData}${email}`,{
+        withCredentials:true
+      }
+    );
+    console.log(response.data,"getInsssss")
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getInstructorDataById = async (instructorId: string | null): Promise<any> => {
+  try {
+    console.log("getInsssss")
+    const response = await API.get(
+      // `/user/instructors/${email}`
+      `${InstructorRoutes.getInstructorDataById}${instructorId}`,{
         withCredentials:true
       }
     );
