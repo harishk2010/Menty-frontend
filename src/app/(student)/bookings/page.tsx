@@ -3,13 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { format, isToday, isFuture, isPast, startOfDay } from 'date-fns';
+import { format, isToday, isFuture, isPast, startOfDay, isWithinInterval, subMinutes } from 'date-fns';
 import { Clock, Calendar, User } from 'lucide-react';
 import { getStudentData } from '@/api/studentApi';
 import { getStudentBookings } from '@/api/bookingApi';
 import { getInstructorDataById } from '@/api/instructorApi';
 import { getSlot } from '@/api/bookingApi';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 interface Instructor {
     _id: string;
@@ -48,6 +49,7 @@ const StudentBookings = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'today' | 'upcoming' | 'completed' | 'cancelled'>('today');
     const userData = useSelector((state: RootState) => state.user);
+    const router = useRouter();
 
     const fetchBookingDetails = async (booking: Booking): Promise<EnrichedBooking> => {
         try {
@@ -114,6 +116,10 @@ const StudentBookings = () => {
         }
     };
 
+    const handleJoinChat = (booking: EnrichedBooking) => {
+        router.push(`/chat/${booking._id}`);
+    };
+
     const getFilteredBookings = () => {
         return bookings.filter(booking => {
             if (!booking.slotData) return false;
@@ -135,8 +141,6 @@ const StudentBookings = () => {
             }
         });
     };
-
-    console.log(bookings,"bookings")
 
     const handleCancelBooking = async (bookingId: string) => {
         try {
@@ -212,7 +216,6 @@ const StudentBookings = () => {
                                 key={booking._id}
                                 className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
                             >
-                                {/* Rest of the booking card JSX remains the same */}
                                 <div className="flex items-start justify-between flex-wrap gap-4">
                                     <div className="flex items-center space-x-4">
                                         <div className="relative">
@@ -268,6 +271,21 @@ const StudentBookings = () => {
                                                     {format(new Date(booking.slotData.endTime), 'hh:mm a')}
                                                 </span>
                                             </div>
+                                            {booking.status !== 'upcoming' && (
+                                                <div className="flex items-center justify-end">
+                                                    {isWithinInterval(new Date(), {
+                                                        start: subMinutes(new Date(booking.slotData.startTime), 5),
+                                                        end: new Date(booking.slotData.endTime)
+                                                    }) && (
+                                                        <button
+                                                            onClick={() => handleJoinChat(booking)}
+                                                            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                                                        >
+                                                            Join Chat
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            )}
                                         </>
                                     )}
                                     <div className="flex items-center space-x-2 text-gray-600">

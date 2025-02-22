@@ -6,6 +6,7 @@
 
     CREATE_NEW_BOOKING:'/booking/booking/addBooking',
     GET_STUDENT_BOOKINGS:'/booking/booking/',
+    GET_BOOKING_DATA:'/booking/booking/bookingData/',
 }
 
 export default bookingRoutes

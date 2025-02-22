@@ -75,3 +75,16 @@ export const getStudentBookings = async (studentId:object) => {
     throw error
   }
 };
+export const getBookindDataById = async (bookingId:string) => {
+  try {
+
+    const response=await API.get(`${bookingRoutes.GET_BOOKING_DATA}${bookingId}`,{
+        withCredentials:true
+    })
+    console.log(response.data.data,"response from student Bookings slots API")
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+};
