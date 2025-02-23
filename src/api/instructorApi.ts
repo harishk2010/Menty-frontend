@@ -76,3 +76,14 @@ export const updatePassword = async (data: any): Promise<any> => {
     console.error("Error in updateProfile API call:", error);
   }
 };
+export const updatePlanPrice = async (planPrice:number,instructorId:string): Promise<any> => {
+  try {
+    const response = await API.put(`${InstructorRoutes.updatePlanProfile}${instructorId}`, {planPrice}, {
+      withCredentials: true,
+    });
+    console.log(response, "response updatePlanPrice");
+    return response.data;
+  } catch (error) {
+    console.error("Error in updatePlanPrice API call:", error);
+  }
+};

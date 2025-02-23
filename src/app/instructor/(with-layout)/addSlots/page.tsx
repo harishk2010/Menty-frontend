@@ -2,6 +2,8 @@
 import { createSlots } from '@/api/bookingApi';
 import { getInstructorData } from '@/api/instructorApi';
 import { RootState } from '@/redux/store';
+import Link from 'next/link';
+
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -17,7 +19,8 @@ interface SlotFormData {
   price: number;
 }
 interface InstructorData{
-    _id:string
+    _id:string,
+    planPrice:number
 }
 
 const SlotCreationForm = () => {
@@ -39,7 +42,7 @@ const SlotCreationForm = () => {
       days: [],
       startTime: '',
       endTime: '',
-      price: 0,
+     
     }
   });
   useEffect(()=>{
@@ -81,8 +84,9 @@ const SlotCreationForm = () => {
   const onSubmit = async (data: SlotFormData) => {
     try {
         const instructorId=instructorData?._id
-        console.log(instructorId)
-      const response = await createSlots({instructorId,...data})
+        const price=instructorData?.planPrice
+        console.log(instructorId,price)
+      const response = await createSlots({instructorId,...data,price})
       
       if (response.success) {
         router.replace('/instructor/slots')
@@ -196,21 +200,15 @@ const SlotCreationForm = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Price per Session ($)
+            Price per Session <Link href={'/instructor/profile'}>
+            
+           <span className='bg-purple-300 rounded-lg flex-grow px-2 py-1 ml-2'>Change Plan Price</span>
+           </Link>
           </label>
-          <input
-            type="number"
-            {...register('price', { 
-              required: 'Price is required',
-              min: { value: 0, message: 'Price must be greater than or equal to 0' },
-              valueAsNumber: true
-            })}
-            className="w-full text-black px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            step="0.01"
-          />
-          {errors.price && (
-            <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
-          )}
+          
+          <div className=''>
+            <h2 className='text-purple-500 text-2xl font-semibold'>₹ { instructorData?.planPrice}</h2>
+          </div>
         </div>
 
         <div className="flex justify-end">

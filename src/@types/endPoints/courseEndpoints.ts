@@ -17,6 +17,7 @@ const CourseRoutes={
 
     //bought courses
     GET_BOUGHT_COURSES:'/course/course/boughtCourses/',
+    GET_BOUGHT_COURSE:'/course/course/boughtCourse/',
     GET_Play_COURSE_DETAILS:'/course/course/playCourseDetails/',
     CHAPTER_COMPLETED:'/course/course/chapterCompleted/',
 

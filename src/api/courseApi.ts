@@ -200,6 +200,20 @@ export const getAllBoughtCourses = async (userId: string) => {
     console.log(error);
   }
 };
+export const getBoughtCourse = async (courseId: string) => {
+  try {
+    const response = await API.get(
+      `${CourseRoutes.GET_BOUGHT_COURSE}${courseId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response, "response from getAllBoughtCourseee");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const chapterCompleted = async (chapterId: string) => {
   try {
     const response = await API.put(

@@ -6,7 +6,7 @@ export const getStudentData = async (email: string | null): Promise<any> => {
     const response = await API.get(`${StudentRoutes.getStudentData}${email}`,{
       withCredentials: true,
     });
-    // console.log(response.data,"setstudent respone")
+    console.log(response.data,"setstudent respone")
     return response?.data;
   } catch (error) {
     console.log(error);
@@ -88,6 +88,21 @@ export const blockInstructor = async (email: string | null): Promise<any> => {
       withCredentials: true,
     });
     // console.log(response.data,"setstudent respone")
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getStudentDataById = async (studentId: string | null): Promise<any> => {
+  try {
+    console.log("getInsssss")
+    const response = await API.get(
+      // `/user/instructors/${email}`
+      `${StudentRoutes.getStudentDataById}${studentId}`,{
+        withCredentials:true
+      }
+    );
+    console.log(response.data,"getstudentDataaaa")
     return response?.data;
   } catch (error) {
     console.log(error);

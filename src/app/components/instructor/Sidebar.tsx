@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import { useRouter , usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { clearUserDetials } from "@/redux/slices/instructorSlice";
-import { Book } from 'lucide-react'
+import { Book, MessageCircleCodeIcon, TicketCheck } from 'lucide-react'
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -121,6 +121,35 @@ const Sidebar = () => {
         </div>
       </Link>
     </li>
+    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+      <Link href="/instructor/slots" className="flex w-full">
+        <div className="block float-left">
+          <TicketCheck className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+        </div>
+        <div
+          className={`flex-1 text-base ${
+            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+          } ease-out transition-all duration-700`}
+        >
+          slots
+        </div>
+      </Link>
+    </li>
+    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+      <Link href="/instructor/bookings" className="flex w-full">
+        <div className="block float-left">
+          <MessageCircleCodeIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+        </div>
+        <div
+          className={`flex-1 text-base ${
+            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+          } ease-out transition-all duration-700`}
+        >
+          Bookings
+        </div>
+      </Link>
+    </li>
+    
     <li onClick={handleLogout} className="px-4 flex py-2 hover:bg-white rounded-l-full">
       <Link href="/instructor/login" className="flex w-full">
         <div className="block float-left">

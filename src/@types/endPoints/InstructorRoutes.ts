@@ -11,6 +11,7 @@ const InstructorRoutes={
     sendReVerifyRequest:'/user/verification/reVerifyRequest',
     getRequestDataUrl:'/user/verification/request/',
     getAllRequestsUrl:'/user/verification/requests',
-    approveRequestsUrl:'/user/verification/approveRequest'
+    approveRequestsUrl:'/user/verification/approveRequest',
+    updatePlanProfile:'/user/instructors/updatePlanPrice/'
 }
 export default InstructorRoutes 

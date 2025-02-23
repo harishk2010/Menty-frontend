@@ -6,6 +6,7 @@ import { getAllBoughtCourses } from "@/api/courseApi";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 interface completedChapters{
     isCompleted:boolean;
     chapterId:string
@@ -36,7 +37,7 @@ const PurchasedCoursesPage = () => {
   const [loading, setLoading] = useState(true);
   const [purchasedCourses, setPurchasedCourses] = useState<Course[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
-
+const router=useRouter()
   const userDetails = useSelector((state: RootState) => state.user);
   const { userId } = userDetails;
 
@@ -121,9 +122,12 @@ console.log(purchasedCourses[0],"purcourse")
                     </button>
                     </Link>
                     {
-                      course.isCourseCompleted?<button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                      <AwardIcon size={20} />
-                     Get Certificate
+                      course.isCourseCompleted?<button
+                      onClick={() => router.push(`/certificate/${course._id}`)}
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <Award size={20} />
+                      Get Certificate
                     </button>:<Link href={`/attendQuiz/${course.courseDetails?.quizId}`}>
                     <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                       <Play size={20} />

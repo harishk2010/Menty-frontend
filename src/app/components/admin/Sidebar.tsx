@@ -12,6 +12,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { adminLogout } from "@/api/adminAuthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { MessageCircleCodeIcon } from "lucide-react";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -95,6 +96,7 @@ const Sidebar = () => {
         </div>
       </Link>
     </li>
+    
     <li onClick={handleLogout} className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
       <Link href="/admin/login" className="flex w-full">
         <div className="block float-left">

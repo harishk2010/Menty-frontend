@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { toast } from 'react-toastify';
 import { getInstructorData } from '@/api/instructorApi';
+import Link from 'next/link';
 
 interface Slot {
   _id: string;
@@ -151,6 +152,10 @@ const InstructorSlotsPage: React.FC = () => {
               {tab === 'thisWeek' ? 'This Week' : tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
+          <Link href={'/instructor/addSlots'}>
+
+          <button className='bg-orange-500 px-4 py-2 rounded-md text-sm font-medium '>Add Slot</button>
+          </Link>
         </div>
       </div>
 

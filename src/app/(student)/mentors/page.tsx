@@ -10,7 +10,8 @@ import {
   Star,
   Award,
   UserCheck,
-  Users
+  Users,
+  IndianRupee
 } from 'lucide-react';
 import Link from 'next/link';
 import PrimaryButton from '@/app/components/buttons/PrimaryButton';
@@ -27,6 +28,7 @@ type Mentor = {
   verificationStatus: 'pending' | 'verified' | 'rejected';
   isVerified: boolean;
   isBlocked: boolean;
+  planPrice:number
 };
 
 type SortOption = 'verified' | 'expertise' | 'newest';
@@ -211,8 +213,9 @@ export default function MentorListing() {
                           <Award className="h-4 w-4 inline mr-2" />
                           {mentor.expertise}
                         </p>
-                        <p className="mt-2 text-sm text-gray-500 line-clamp-2">
-                          Skills: {mentor.skills}
+                        <p className="mt-2 text-sm font-semibold text-purple-500 line-clamp-2">
+                          <IndianRupee className="h-4 w-4 inline mr-2" />
+                          Plan Price: {mentor.planPrice}
                         </p>
                       </div>
 

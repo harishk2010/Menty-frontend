@@ -8,6 +8,9 @@ import { getChatHistoryById } from '@/api/chatApi';
 import { RootState } from '@/redux/store';
 
 import { motion } from "framer-motion";
+import PrimaryButton from '../../buttons/PrimaryButton';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface Message {
   content: string;
@@ -44,8 +47,8 @@ interface Instructor extends BaseUser {
 const useCurrentUser = () => {
   const student = useSelector((state: RootState) => state.user);
   const instructor = useSelector((state: RootState) => state.instructor);
-  // console.log("Student:", student);
-  // console.log("Instructor:", instructor);
+  console.log("Student:", student);
+  console.log("Instructor:", instructor);
   
   return student.userId?student: instructor;
 };
@@ -64,6 +67,11 @@ const ChatInterface = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentUser = useCurrentUser();
   const [isChatActive, setIsChatActive] = useState(false);
+  const router=useRouter()
+  const currentTime = Date.now();
+  const startTime = new Date(slotStartTime).getTime();
+  const endTime = new Date(slotEndTime).getTime();
+
 
   // Validate current user has access to this chat
   useEffect(() => {
@@ -75,7 +83,7 @@ const ChatInterface = ({
       // alert(`${currentUser.userId}...${instructorId}`)
       
     if (!hasAccess) {
-      console.error('User does not have access to this chat');
+      console.error('User does not have access to this chat',`${currentUser.userId}--${instructorId}`);
       // Handle unauthorized access - could redirect or show error message
     }
   }, [currentUser, studentId, instructorId]);
@@ -131,6 +139,9 @@ const ChatInterface = ({
     console.log("keyup")
     socket?.emit('typing',{roomId:bookingId,userId:currentUser.userId})
   }
+  const handleNavigateBack=()=>{
+    router.back()
+  }
 
   const sendMessage = () => {
     if (!socket || !message.trim() || !isChatActive || !currentUser) return;
@@ -163,10 +174,28 @@ const ChatInterface = ({
 
   if (!isChatActive) {
     return (
-      <div className="flex items-center justify-center h-64 bg-gray-50 rounded-lg">
+      <div className="flex flex-col space-y-5 items-center justify-center h-64 bg-gray-50 rounded-lg">
+        {currentTime < startTime ? (
+        // Show "Join at" message if the session hasn't started
         <p className="text-gray-600">
-          Chat will be available at {format(new Date(slotStartTime), 'hh:mm a')}
+          Join at {format(startTime, 'hh:mm a')}
         </p>
+      ) : currentTime > endTime ? (
+        // Show "Chat Ended" message if the session has ended
+        <p className="text-gray-600">
+          Chat Ended at {format(endTime, 'hh:mm a')}
+        </p>
+      ) : (
+        // Show "Join Now" if the session is ongoing
+        <p className="text-gray-600 font-semibold text-lg">
+          Session is Live! Join Now
+        </p>
+      )}
+        <div onClick={()=>router.back()}>
+
+        <PrimaryButton name={"Return to Bookings"} />
+        </div>
+        
       </div>
     );
   }

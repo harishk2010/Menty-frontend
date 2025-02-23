@@ -360,6 +360,7 @@ import { RootState } from '@/redux/store';
 import { getInstructorData } from '@/api/instructorApi';
 import { getRequestData } from '@/api/verificationApi';
 import { Wallet } from 'lucide-react';
+import InstructorPricing from '@/app/components/instructor/PlanPricing';
 
 interface Transaction {
   amount: number;
@@ -381,6 +382,7 @@ interface InstructorData {
   verificationStatus: 'pending' | 'verified' | 'rejected';
   isVerified: boolean;
   isBlocked: boolean;
+  planPrice:number;
   wallet: {
     balance: number;
     transactions: Transaction[];
@@ -402,6 +404,7 @@ const ProfileHeader = () => {
     verificationStatus: 'pending',
     isVerified: false,
     isBlocked: false,
+    planPrice:100,
     wallet: {
       balance: 0,
       transactions: []
@@ -489,7 +492,7 @@ const ProfileHeader = () => {
                   <h2 className="text-lg font-semibold text-gray-900">Wallet Balance</h2>
                 </div>
                 <p className="mt-2 text-2xl font-bold text-purple-600">
-                  ${instructorData.wallet.balance.toFixed(2)}
+                  ₹{instructorData.wallet.balance.toFixed(2)}
                 </p>
                 <Link href="/instructor/transactions">
                   <p className="text-sm text-gray-600">
@@ -497,6 +500,7 @@ const ProfileHeader = () => {
                   </p>
                 </Link>
               </div>
+              <InstructorPricing initialPrice={instructorData?.planPrice}/>
             </div>
 
             {/* Actions Section */}
