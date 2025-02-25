@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllCourses, getAllInstructorCourses, handlePublish } from "@/api/courseApi";
+import { deleteCourse, getAllCourses, getAllInstructorCourses, handleListingCourse, handlePublish } from "@/api/courseApi";
 import { toast } from "react-toastify";
 import AlertDialog2 from "@/app/components/common/alertBoxes/AlertDialogBox2";
 import { useSelector } from "react-redux";
@@ -59,6 +59,43 @@ const InstructorCourseTable = () => {
       console.error(error);
     }
   };
+  const toggleDelete = async (id: string) => {
+    try {
+      const response = await deleteCourse(id); // Assuming this API updates the backend
+      if (response.success) {
+        toast.success(response.message);
+  
+        setCourses((prevCourses) =>
+          prevCourses.filter(course=>course._id!==id)
+        );
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const toggleListing = async (id: string) => {
+    try {
+      const response = await handleListingCourse(id); // Assuming this API updates the backend
+      if (response.success) {
+        toast.success(response.message);
+  
+        setCourses((prevCourses) =>
+          prevCourses.map((course) =>
+            course._id === id
+              ? { ...course, isListed: !course.isListed } // Toggle the status correctly
+              : course
+          )
+        );
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   
 
   return (
@@ -90,6 +127,9 @@ const InstructorCourseTable = () => {
                 Status
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Listed status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Rating
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -100,8 +140,25 @@ const InstructorCourseTable = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {courses.map((course) => (
+          <tbody className={`bg-white divide-y divide-gray-200${courses.length==0?"flex justify-center ":""}`}>
+            {
+            courses.length==0?
+            // <div className="w-full text-nowrap">
+            //   <h1 className="text-black">No courses found!</h1>
+
+            // </div>
+            <tr
+                
+                className="hover:bg-gray-50 transition-colors"
+              >
+                <td className="px-6 py-4 w-full flex items-center justify-center whitespace-nowrap">
+                  <div className="text-sm    font-medium text-gray-900">
+                  <h1 className="text-black">No courses found!</h1>
+                  </div>
+                </td>
+               
+              </tr>
+            :courses.map((course) => (
               <tr
                 key={course._id}
                 className="hover:bg-gray-50 transition-colors"
@@ -127,6 +184,18 @@ const InstructorCourseTable = () => {
                     }`}
                   >
                     { course.isPublished?"Published" :"UnPublish"}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                    ${
+                      course.isListed
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
+                    { course.isListed?"Listed" :"UnListed"}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -176,16 +245,22 @@ const InstructorCourseTable = () => {
                       Edit
                     </button>
                   </Link>
-                  <button className="text-red-600 hover:text-red-900">
-                    Delete
-                  </button>
+                  <AlertDialog2
+                      title="Confirm Changes"
+                      alert={`Are you sure you want to delete ${course.courseName}?`}
+                      onConfirm={() => toggleDelete(course._id)}
+                    >
+                      <button className="ml-2 text-white-600  bg-red-300 p-1 rounded-md  hover:text-red-900">
+                        Delete
+                      </button>
+                    </AlertDialog2>
                   {course.isPublished ? (
                     <AlertDialog2
                       title="Confirm Changes"
                       alert="Are you sure you want to update your details?"
                       onConfirm={() => togglePublish(course._id)}
                     >
-                      <button className="text-white-600  bg-red-300 p-1 rounded-md  hover:text-red-900">
+                      <button className="ml-2 text-white-600  bg-red-300 p-1 rounded-md  hover:text-red-900">
                         UnPublish
                       </button>
                     </AlertDialog2>
@@ -195,8 +270,29 @@ const InstructorCourseTable = () => {
                       alert="Are you sure you want to update your details?"
                       onConfirm={() => togglePublish(course._id)}
                     >
-                      <button className="text-white-600 bg-green-300 p-1 rounded-md  hover:text-green-900">
+                      <button className="ml-2 text-white-600 bg-green-300 p-1 rounded-md  hover:text-green-900">
                         Publish
+                      </button>
+                    </AlertDialog2>
+                  )}
+                  {course.isListed ? (
+                    <AlertDialog2
+                      title="Confirm Changes"
+                      alert="Are you sure you want to UnList Course?"
+                      onConfirm={() => toggleListing(course._id)}
+                    >
+                      <button className="ml-2 text-white-600  bg-red-300 p-1 rounded-md  hover:text-red-900">
+                        UnList
+                      </button>
+                    </AlertDialog2>
+                  ) : (
+                    <AlertDialog2
+                      title="Confirm Changes"
+                      alert="Are you sure you want to List Course?"
+                      onConfirm={() => toggleListing(course._id)}
+                    >
+                      <button className="ml-2 text-white-600 bg-green-300 p-1 rounded-md  hover:text-green-900">
+                        List
                       </button>
                     </AlertDialog2>
                   )}

@@ -22,7 +22,8 @@ import { useParams } from "next/navigation";
 import ReactPlayer from "react-player";
 import { motion } from "framer-motion";
 import Link from "next/link";
-// Mock course data - would be replaced with actual API data
+
+// Mock course data
 const mockCourse = {
   id: "course123",
   title: "Complete React Developer Bootcamp",
@@ -111,21 +112,23 @@ const CourseDetails: React.FC = () => {
       console.log(error);
     }
   };
+
   const toggleMute = () => {
     if (!MainVideo.current) return;
     MainVideo.current.muted = !muted;
     setMuted(!muted);
   };
 
-  // Restart video
   const restartVideo = () => {
     if (!MainVideo.current) return;
     MainVideo.current.currentTime = 0;
   };
+
   const forwardTenSec = () => {
     if (!MainVideo.current) return;
     MainVideo.current.currentTime += 10;
   };
+
   const backwardTenSec = () => {
     if (!MainVideo.current) return;
     MainVideo.current.currentTime -= 10;
@@ -141,7 +144,7 @@ const CourseDetails: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [courseId]);
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -157,83 +160,78 @@ const CourseDetails: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container  mx-auto px-4 lg:px-8">
+      <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column: Course Overview */}
-          <div className="lg:col-span-2  rounded-xl shadow-lg p-6">
-            <div onMouseEnter={() => setShowControls(true)}
-               onMouseLeave={() => setShowControls(false)} 
-            className="w-full flex justify-center items-center">
-              {/* <img src={course?.thumbnailUrl} className='rounded-md' alt="" /> */}
-              <video
-               
-                ref={MainVideo}
-                poster={course?.thumbnailUrl}
-                onContextMenu={(e) => e.preventDefault()}
-                onTimeUpdate={() =>
-                  setCurrentTime(MainVideo.current?.currentTime || 0)
-                }
-                src={course?.demoVideo?.url}
-                // controls
-                controlsList="nodownload noremoteplayback"
+          <div className="lg:col-span-2 rounded-xl shadow-lg p-6">
+            {/* Video Container with fixed aspect ratio */}
+            <div className="relative w-full" style={{ paddingTop: '56.25%' }}> {/* 16:9 Aspect Ratio */}
+              <div 
+                className="absolute top-0 left-0 w-full h-full"
+                onMouseEnter={() => setShowControls(true)}
+                onMouseLeave={() => setShowControls(false)}
+              >
+                <video
+                  ref={MainVideo}
+                  poster={course?.thumbnailUrl}
+                  onContextMenu={(e) => e.preventDefault()}
+                  onTimeUpdate={() => setCurrentTime(MainVideo.current?.currentTime || 0)}
+                  src={course?.demoVideo?.url}
+                  controlsList="nodownload noremoteplayback"
+                  className="w-full h-full object-contain bg-black rounded-lg"
+                />
                 
-                className="w-full relative rounded-lg flex justify-center items-center"
-              ></video>
-              <ReactPlayer></ReactPlayer>
-              {showControls && (
-                <>
-                <motion.div 
-                initial={{y:20,opacity:0}}
-                animate={{y:0,opacity:100}}
-                transition={{ease:"easeInOut" ,duration:.3}}
-                className="absolute  flex space-x-1 justify-center items-center">
-                  <button
-                    onClick={restartVideo}
-                    className=" transparent hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-1 "
-                  >
-                    <RotateCcw/>
-                  </button>
-                  <button
-                    onClick={backwardTenSec}
-                    className=" bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-2 "
-                  >
-                    <SkipBack/>
-                  </button>
-                  <button
-                    onClick={handlePlayPause}
-                    className=" bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-3 "
-                  >
-                    {" "}
-                    {isPlaying ? <Pause /> : <Play />}
-                  </button>
-                  <button
-                    onClick={forwardTenSec}
-                    className=" bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-2 "
-                  >
-                    <SkipForward/>
-                  </button>
-                  
-                  <button
-                    onClick={toggleMute}
-                    className=" transparent hover:bg-purple-500 rounded-full p-1 "
-                  >
-                    <VolumeOff/>
-                  </button>
-                  <span className="">{Math.floor(currentTime)}</span>
-                  
+                {showControls && (
+                  <>
+                    <motion.div 
+                      initial={{y:20, opacity:0}}
+                      animate={{y:0, opacity:100}}
+                      transition={{ease:"easeInOut", duration:.3}}
+                      className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-1 justify-center items-center"
+                    >
+                      <button
+                        onClick={restartVideo}
+                        className="transparent hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-1"
+                      >
+                        <RotateCcw className="text-white"/>
+                      </button>
+                      <button
+                        onClick={backwardTenSec}
+                        className="bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-2"
+                      >
+                        <SkipBack className="text-white"/>
+                      </button>
+                      <button
+                        onClick={handlePlayPause}
+                        className="bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-3"
+                      >
+                        {isPlaying ? <Pause className="text-white"/> : <Play className="text-white"/>}
+                      </button>
+                      <button
+                        onClick={forwardTenSec}
+                        className="bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-2"
+                      >
+                        <SkipForward className="text-white"/>
+                      </button>
+                      <button
+                        onClick={toggleMute}
+                        className="transparent hover:bg-purple-500 rounded-full p-1"
+                      >
+                        <VolumeOff className="text-white"/>
+                      </button>
+                      <span className="text-white">{Math.floor(currentTime)}</span>
+                    </motion.div>
                     
-                  
-                </motion.div>
-                <div className="absolute opacity-100">
-
-                <progress
-                      max={MainVideo.current?.duration || 0}
-                      value={currentTime}
-                      className="w-full  h-2 rounded-lg overflow-hidden bg-gray-700 [&::-webkit-progress-bar]:bg-gray-700 [&::-webkit-progress-value]:bg-purple-500 [&::-moz-progress-bar]:bg-blue-500"
-                      ></progress>
-                      </div>
-                      </>
-              )}
+                    <div className="absolute bottom-4 left-0 w-full px-4">
+                      <progress
+                        max={MainVideo.current?.duration || 0}
+                        value={currentTime}
+                        className="w-full h-2 rounded-lg overflow-hidden bg-gray-700 [&::-webkit-progress-bar]:bg-gray-700 [&::-webkit-progress-value]:bg-purple-500 [&::-moz-progress-bar]:bg-blue-500"
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
 
             <div className="mb-6">
@@ -277,14 +275,14 @@ const CourseDetails: React.FC = () => {
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="bg-purple-600 hover:bg-purple-400 p-4 rounded-lg flex items-center space-x-4">
                       <Clock className="h-8 w-8 text-white" />
-                      <div>
+                      <div className="text-white">
                         <h4 className="font-semibold">Total Duration</h4>
                         <p>{course?.duration} Hours</p>
                       </div>
                     </div>
                     <div className="bg-purple-600 p-4 rounded-lg flex items-center space-x-4">
                       <BarChart className="h-8 w-8 text-white" />
-                      <div>
+                      <div className="text-white">
                         <h4 className="font-semibold">Skill Level</h4>
                         <p>{course?.level}</p>
                       </div>
@@ -336,9 +334,9 @@ const CourseDetails: React.FC = () => {
                   ₹{course?.price}
                 </h2>
                 <Link href={`/checkout/${courseId}`}>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                  Enroll Now
-                </button>
+                  <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                    Enroll Now
+                  </button>
                 </Link>
               </div>
               <div className="space-y-2">

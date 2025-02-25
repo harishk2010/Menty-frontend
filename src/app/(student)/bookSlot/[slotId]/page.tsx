@@ -73,8 +73,8 @@ const SlotCheckout: React.FC = () => {
 
   useEffect(() => {
     if (!txnid || !slot) return;
-    const key = 't4VOu4';
-    const salt = 'h1r2JIjnHkpgtJrfBkfqKOS02hi3B0UB';
+    const key = process.env.NEXT_PUBLIC_PAYU_KEY;
+    const salt = process.env.NEXT_PUBLIC_PAYU_SALT;
     const productinfo = slotId;
     const firstname = name || '';
     const userEmail = email || '';
@@ -109,7 +109,7 @@ const SlotCheckout: React.FC = () => {
 
     if (paymentMethod === 'PayU') {
       const formData = {
-        key: 't4VOu4',
+        key: process.env.NEXT_PUBLIC_PAYU_KEY,
         txnid: txnid,
         productinfo: slotId,
         amount: slot.price.toString(),
@@ -124,7 +124,7 @@ const SlotCheckout: React.FC = () => {
 
       const form = document.createElement('form');
       form.method = 'POST';
-      form.action = 'https://test.payu.in/_payment';
+      form.action = `${process.env.NEXT_PUBLIC_PAYU_URL}`;
 
       Object.keys(formData).forEach((key) => {
         const input = document.createElement('input');

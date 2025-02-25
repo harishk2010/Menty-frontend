@@ -45,6 +45,8 @@ export default function LoginPage(): ReactElement {
     email: "",
     password: "",
   };
+  const googleUrl=process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+  console.log(googleUrl,"googleUrl")
   const googleSubmit = async (credentialResponse: any) => {
 
 
@@ -183,7 +185,7 @@ export default function LoginPage(): ReactElement {
                   Create account
                 </a>
               </div>
-              <GoogleOAuthProvider clientId="241293973300-q7m09ls0fgqv5u72ft5707edbfnnn1qc.apps.googleusercontent.com">
+              <GoogleOAuthProvider clientId={`${googleUrl}`}>
               <div>
                 <GoogleLogin
                   onSuccess={googleSubmit}

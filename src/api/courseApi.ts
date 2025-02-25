@@ -147,7 +147,21 @@ export const handlePublish = async (coureId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from getCourse");
+    console.log(response, "response from handlePublish");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const handleListingCourse = async (coureId: string) => {
+  try {
+    const response = await API.put(
+      `${CourseRoutes.UPDATE_LISTING_COURSE}${coureId}`,{},
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response, "response from handleListingCourse");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -294,6 +308,19 @@ export const getQuizData = async (id: string) => {
       withCredentials: true,
     });
     console.log(response, "getQuizData");
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteCourse = async (id: string) => {
+  try {
+    console.log(id);
+    const response = await API.delete(`${CourseRoutes.DELETE_COURSE}${id}`, {
+      withCredentials: true,
+    });
+    console.log(response, "deletecourse");
 
     return response.data;
   } catch (error) {

@@ -13,14 +13,16 @@ import {
 import Link from "next/link";
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
 
-// Adjust the type to match your actual API response
+
 type Course = {
   _id: string;
   courseName: string;
   description?: string;
+  isListed:boolean;
+  isPublished:boolean;
   thumbnailUrl: string;
   instructor?: string;
-  price: string; // Changed from number since API returns string
+  price: string; 
   duration: string;
   level?: "beginner" | "intermediate" | "advanced";
   category?: string;
@@ -116,7 +118,7 @@ export default function CourseListing() {
 
   // Get unique categories from actual course data
   const uniqueCategories = Array.from(
-    new Set(courses.map(course => course.category).filter(Boolean))
+    new Set(courses.map(course =>{if(course.isListed)return course.category}).filter(Boolean))
   );
   const levels = ["beginner", "intermediate", "advanced"];
 
@@ -235,6 +237,9 @@ export default function CourseListing() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredCourses.map((course) => (
+                  course.isListed && course.isPublished &&(
+
+                  
                   <Link
                     href={`/courseDetails/${course._id}`}
                     key={course._id}
@@ -299,6 +304,7 @@ export default function CourseListing() {
                       </div>
                     </div>
                   </Link>
+                  )
                 ))}
               </div>
             )}

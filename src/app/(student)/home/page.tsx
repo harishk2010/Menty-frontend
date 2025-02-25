@@ -32,6 +32,7 @@ interface Courses {
     url: string;
   };
   isPublished:boolean;
+  isListed:boolean;
   price: string;
 }
 
@@ -198,7 +199,7 @@ export default function Home(): ReactElement {
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {popularCourses.map((course, index) => (
-                course.isPublished &&(<Link  key={course?._id} href={`/courseDetails/${course._id}`}>
+                (course.isPublished && course.isListed )&&(<Link  key={course?._id} href={`/courseDetails/${course._id}`}>
                 <div
                   
                    className="  flex flex-col rounded-lg shadow-lg overflow-hidden"

@@ -382,16 +382,28 @@ interface InstructorData {
   verificationStatus: 'pending' | 'verified' | 'rejected';
   isVerified: boolean;
   isBlocked: boolean;
-  planPrice:number;
+  planPrice: number;
   wallet: {
     balance: number;
     transactions: Transaction[];
   };
 }
 
+interface VerificationRequest {
+  _id: string;
+  username: string;
+  email: string;
+  resumeUrl: string;
+  degreeCertificateUrl: string;
+  status: 'pending' | 'approved' | 'rejected';
+  submittedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const ProfileHeader = () => {
   const pathname = usePathname();
-  const [requestData, setRequestData] = useState<any>(null);
+  const [requestData, setRequestData] = useState<VerificationRequest | null>(null);
   const [instructorData, setInstructorData] = useState<InstructorData>({
     userId: null,
     username: null,
@@ -404,7 +416,7 @@ const ProfileHeader = () => {
     verificationStatus: 'pending',
     isVerified: false,
     isBlocked: false,
-    planPrice:100,
+    planPrice: 100,
     wallet: {
       balance: 0,
       transactions: []
@@ -431,6 +443,69 @@ const ProfileHeader = () => {
     fetchData();
   }, [loggedIn, instructor?.email]);
 
+  const renderVerificationButton = () => {
+    // If instructor is verified, show change password
+    if (instructorData.isVerified) {
+      return (
+        <Link href="/instructor/changePassword">
+          <button className="w-full bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors">
+            Change Password
+          </button>
+        </Link>
+      );
+    }
+
+    // If verification status is rejected in user document, show reverify button
+    if (instructorData.verificationStatus === "rejected") {
+      return (
+        <Link href="/instructor/verification">
+          <button className="w-full bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors">
+            Reverify
+          </button>
+        </Link>
+      );
+    }
+
+    // If verification status is pending in user document, show get verified button
+    if (instructorData.verificationStatus === "pending") {
+      return (
+        <Link href="/instructor/verification">
+          <button className="w-full bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors">
+            Get Verified
+          </button>
+        </Link>
+      );
+    }
+
+    return null;
+  };
+
+  const getVerificationStatusDisplay = () => {
+    // If instructor is verified
+    if (instructorData.isVerified) {
+      return {
+        text: 'Verified',
+        className: 'bg-green-100 text-green-800'
+      };
+    }
+
+    // If verification is rejected
+    if (instructorData.verificationStatus === 'rejected') {
+      return {
+        text: 'Rejected',
+        className: 'bg-red-100 text-red-800'
+      };
+    }
+
+    // If verification is pending
+    return {
+      text: 'Pending',
+      className: 'bg-yellow-100 text-yellow-800'
+    };
+  };
+
+  const statusDisplay = getVerificationStatusDisplay();
+
   return (
     <div className="min-h-screen p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-sm">
@@ -451,18 +526,8 @@ const ProfileHeader = () => {
                     <h1 className="text-3xl font-bold text-gray-900">
                       {instructorData.username}
                     </h1>
-                    <span className={`px-2 py-1 text-sm rounded ${
-                      instructorData.isVerified 
-                        ? 'bg-green-100 text-green-800'
-                        : instructorData.verificationStatus === 'pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {instructorData.isVerified 
-                        ? 'Verified'
-                        : instructorData.verificationStatus === 'pending'
-                        ? 'Pending'
-                        : 'Not Verified'}
+                    <span className={`px-2 py-1 text-sm rounded ${statusDisplay.className}`}>
+                      {statusDisplay.text}
                     </span>
                   </div>
                   <div className="mt-2 space-y-1">
@@ -511,26 +576,7 @@ const ProfileHeader = () => {
                 </button>
               </Link>
 
-              {/* Original verification logic preserved here */}
-              {instructorData.isVerified ? (
-                <Link href="/instructor/changePassword">
-                  <button className="w-full bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors">
-                    Change Password
-                  </button>
-                </Link>
-              ) : instructorData.verificationStatus === "rejected" ? (
-                <Link href="/instructor/verification">
-                  <button className="w-full bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors">
-                    ReVerify
-                  </button>
-                </Link>
-              ) : !requestData && instructorData.verificationStatus === "pending" && (
-                <Link href="/instructor/verification">
-                  <button className="w-full bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors">
-                    Get Verified
-                  </button>
-                </Link>
-              )}
+              {renderVerificationButton()}
 
               {instructorData.isBlocked && (
                 <div className="mt-2 p-3 bg-red-50 rounded-lg">

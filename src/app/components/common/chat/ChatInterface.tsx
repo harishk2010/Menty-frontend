@@ -85,11 +85,12 @@ const ChatInterface = ({
     if (!hasAccess) {
       console.error('User does not have access to this chat',`${currentUser.userId}--${instructorId}`);
       // Handle unauthorized access - could redirect or show error message
+      router.back()
     }
   }, [currentUser, studentId, instructorId]);
 
   useEffect(() => {
-    const socketInstance = io("http://localhost:5007");
+    const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL);
     
     socketInstance.on('connect', () => {
       console.log('Connected to chat server');

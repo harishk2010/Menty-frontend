@@ -24,6 +24,10 @@ export const studentHeader = [
     name: "MyCourses",
     href: "/myCourses",
   },
+  {
+    name: "bookings",
+    href: "/bookings",
+  },
 ];
 
 //instructor Sidebar

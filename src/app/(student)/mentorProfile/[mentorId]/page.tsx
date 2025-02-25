@@ -13,7 +13,8 @@ import {
   Briefcase,
   Star,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  AlarmClockCheck
 } from 'lucide-react';
 import PrimaryButton from '@/app/components/buttons/PrimaryButton';
 import { getInstructorData, getInstructorDataById } from '@/api/instructorApi';
@@ -233,18 +234,21 @@ export default function MentorProfile() {
                   onClick={() => setSelectedTimeSlot(slot._id)}
                   className={`p-4 rounded-lg border transition-colors ${
                     selectedTimeSlot === slot._id
-                      ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-purple-500'
+                      ? 'border-orange-500 bg-orange-500 shadow-lg shadow-orange-300'
+                      : 'border-gray-200 hover:border-purple-700  hover:bg-purple-700 bg-purple-500'
                   }`}
                 >
                   <div className="flex items-center justify-center mb-2">
-                    <Clock className="h-5 w-5 text-gray-600" />
+                   {
+                     selectedTimeSlot!==slot._id?<Clock className="h-5 w-5 text-gray-600" />:<AlarmClockCheck className="h-7 w-7 text-white " />
+                  } 
+                    
                   </div>
-                  <div className="text-sm font-medium text-center">
+                  <div className={`${selectedTimeSlot==slot._id?"text-md font-semibold":"text-sm font-medium"} text-center transition-all ease-in-out duration-300 `}>
                     {formatTime(new Date(slot.startTime))}
                   </div>
-                  <div className="text-sm text-gray-600 text-center mt-1">
-                    ${slot.price}
+                  <div className={`${selectedTimeSlot==slot._id?"text-md font-semibold text-white":"text-sm text-white"} text-center mt-1`}>
+                    ₹{slot.price}
                   </div>
                 </button>
               ))}

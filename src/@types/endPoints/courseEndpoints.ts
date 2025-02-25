@@ -2,9 +2,11 @@ const CourseRoutes={
     ADD_NEW_COURSE:'/course/course/addCourse',
     UPDATE_COURSE:'/course/course/updateCourse/',
     UPDATE_PUBLISH_COURSE:'/course/course/handlePublish/',
+    UPDATE_LISTING_COURSE:'/course/course/listCourse/',
     GET_ALL_COURSES:'/course/course/courses',
     GET_ALL_Instructor_COURSES:'/course/course/instructorCourses/',
     GET_COURSE:'/course/course/course/',
+    DELETE_COURSE:'/course/course/delete/',
     
     ///chapter
     ADD_NEW_CHAPTER:'/course/chapter/addChapter/',

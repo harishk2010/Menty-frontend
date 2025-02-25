@@ -12,7 +12,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { adminLogout } from "@/api/adminAuthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { MessageCircleCodeIcon } from "lucide-react";
+import { BookmarkPlusIcon, MessageCircleCodeIcon } from "lucide-react";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -92,7 +92,21 @@ const Sidebar = () => {
             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
           } ease-out transition-all duration-700`}
         >
-          About
+          verifyInstructors
+        </div>
+      </Link>
+    </li>
+    <li className="px-4 flex py-2 hover:bg-gray-700 rounded-l-full">
+      <Link href="/admin/category" className="flex w-full">
+        <div className="block float-left">
+          <BookmarkPlusIcon className="mr-3 hover:bg-white text-gray-500  border-gray-300 rounded-full" />
+        </div>
+        <div
+          className={`flex-1 text-base ${
+            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+          } ease-out transition-all duration-700`}
+        >
+          Category
         </div>
       </Link>
     </li>

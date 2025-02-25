@@ -183,7 +183,8 @@ const InstructorBookings = () => {
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">My Sessions</h1>
 
                 <div className="flex space-x-2 mb-6">
-                    {['today', 'upcoming', 'completed', 'cancelled'].map((tab) => (
+                    {['today', 'upcoming', 'completed'].map((tab) => (
+                    // {['today', 'upcoming', 'completed', 'cancelled'].map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab as 'today' | 'upcoming' | 'completed' | 'cancelled')}
@@ -287,7 +288,7 @@ const InstructorBookings = () => {
                                     </div>
                                 </div>
 
-                                {(activeTab === 'upcoming' || activeTab === 'today') && booking.status !== 'cancelled' && (
+                                {/* {(activeTab === 'upcoming' || activeTab === 'today') && booking.status !== 'cancelled' && (
                                     <div className="mt-6 flex items-center justify-end space-x-4">
                                         <button 
                                             onClick={() => handleCancelSession(booking._id)}
@@ -296,7 +297,7 @@ const InstructorBookings = () => {
                                             Cancel Session
                                         </button>
                                     </div>
-                                )}
+                                )} */}
 
                                 <div className="mt-4 pt-4 border-t border-gray-100">
                                     <p className="text-sm text-gray-500">

@@ -190,7 +190,8 @@ const StudentBookings = () => {
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">My Bookings</h1>
 
                 <div className="flex space-x-2 mb-6">
-                    {['today', 'upcoming', 'completed', 'cancelled'].map((tab) => (
+                    {['today', 'upcoming', 'completed'].map((tab) => (
+                    // {['today', 'upcoming', 'completed', 'cancelled'].map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab as 'today' | 'upcoming' | 'completed' | 'cancelled')}
@@ -294,7 +295,7 @@ const StudentBookings = () => {
                                     </div>
                                 </div>
 
-                                {(activeTab === 'upcoming' || activeTab === 'today') && (
+                                {/* {(activeTab === 'upcoming' || activeTab === 'today') && (
                                     <div className="mt-6 flex items-center justify-end space-x-4">
                                         <button 
                                             onClick={() => handleReschedule(booking._id)}
@@ -309,7 +310,7 @@ const StudentBookings = () => {
                                             Cancel
                                         </button>
                                     </div>
-                                )}
+                                )} */}
 
                                 {activeTab === 'completed' && (
                                     <div className="mt-6 flex items-center justify-end">
