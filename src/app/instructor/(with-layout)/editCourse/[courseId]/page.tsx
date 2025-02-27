@@ -8,6 +8,10 @@ import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import AlertDialog2 from "@/app/components/common/alertBoxes/AlertDialogBox2";
 import AlertDialog from "@/app/components/common/alertBoxes/AlertDialogBox";
+import { getInstructorDataById } from "@/api/instructorApi";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import GetVerified from "@/app/components/instructor/GetVerified";
 
 interface CourseData {
   courseName: string;
@@ -22,6 +26,9 @@ interface CourseData {
 interface ICategory {
   categoryName: string;
 }
+interface Instructor {
+  isVerified: boolean;
+}
 const CourseCreation: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const {
@@ -32,11 +39,15 @@ const CourseCreation: React.FC = () => {
     formState: { errors },
   } = useForm<CourseData>();
   const router = useRouter();
+  const Instructor = useSelector((state: RootState) => state.instructor);
+
 
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [demoVideoPreview, setDemoVideoPreview] = useState<string | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+     const [instructorData, setInstructorData] = useState<Instructor>();
+  
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [demoVideoUrl, setDemoVideoUrl] = useState<string | null>(null);
 
@@ -71,6 +82,8 @@ const CourseCreation: React.FC = () => {
     try {
       const fetchCategories = async () => {
         const response = await getCategories();
+         const instructor = await getInstructorDataById(Instructor.userId);
+                        setInstructorData(instructor);
         setCategories(response || "[]");
       };
       fetchCategories();
@@ -141,6 +154,9 @@ const CourseCreation: React.FC = () => {
   const handleConfirmSubmission = () => {
     handleSubmit(onSubmit)();  // Call the form submission function
   };
+
+    if (!instructorData?.isVerified) return <GetVerified/>
+
 
   
   return (

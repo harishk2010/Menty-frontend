@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getInstructorTransactions } from '@/api/instructorApi';
-import { ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 
 interface Transaction {
   txnid: string;
@@ -20,10 +20,6 @@ const WalletTransactions = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortConfig, setSortConfig] = useState<{
-    key: keyof Transaction;
-    direction: 'asc' | 'desc';
-  }>({ key: 'date', direction: 'desc' });
 
   const instructor = useSelector((state: RootState) => state.instructor);
 
@@ -32,48 +28,22 @@ const WalletTransactions = () => {
       if (instructor?.email) {
         setIsLoading(true);
         try {
-          // Only use the original API parameters
-          const fetchedData = await getInstructorTransactions(
-            instructor.email, 
-            currentPage, 
-            itemsPerPage
-          );
+          // const response = await fetch(
+          //   `/api/transactions?email=${instructor.email}&page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`, 
+          //   {
+          //     headers: {
+          //       'Authorization': `Bearer ${localStorage.getItem('token')}`
+          //     }
+          //   }
+          // );
+
+          const response=await getInstructorTransactions(instructor.email,currentPage,itemsPerPage,searchTerm)
           
-          if (fetchedData.data) {
-            let filteredData = fetchedData.data.data || [];
-            
-            // Apply search filter client-side
-            if (searchTerm) {
-              filteredData = filteredData.filter((transaction: Transaction) =>
-                Object.values(transaction).some((value) =>
-                  String(value).toLowerCase().includes(searchTerm.toLowerCase())
-                )
-              );
-            }
-
-            // Apply sorting client-side
-            filteredData.sort((a: Transaction, b: Transaction) => {
-              if (sortConfig.key === 'date') {
-                const dateA = new Date(a[sortConfig.key]).getTime();
-                const dateB = new Date(b[sortConfig.key]).getTime();
-                return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
-              }
-              
-              if (sortConfig.key === 'amount') {
-                return sortConfig.direction === 'asc' 
-                  ? a[sortConfig.key] - b[sortConfig.key]
-                  : b[sortConfig.key] - a[sortConfig.key];
-              }
-              
-              const valueA = String(a[sortConfig.key]).toLowerCase();
-              const valueB = String(b[sortConfig.key]).toLowerCase();
-              return sortConfig.direction === 'asc'
-                ? valueA.localeCompare(valueB)
-                : valueB.localeCompare(valueA);
-            });
-
-            setTransactions(filteredData);
-            setTotalTransactions(fetchedData.data.total || filteredData.length);
+          const data = await response;
+          
+          if (data && data.success) {
+            setTransactions(data.data.data);
+            setTotalTransactions(data.data.total);
           }
         } catch (error) {
           console.error('Error fetching transactions:', error);
@@ -84,7 +54,7 @@ const WalletTransactions = () => {
     };
 
     fetchTransactions();
-  }, [instructor?.email, currentPage, itemsPerPage, searchTerm, sortConfig]);
+  }, [instructor?.email, currentPage, itemsPerPage, searchTerm]);
 
   // Format date
   const formatDate = (date: Date) => {
@@ -97,16 +67,13 @@ const WalletTransactions = () => {
     });
   };
 
-  // Handle sort
-  const handleSort = (key: keyof Transaction) => {
-    setSortConfig({
-      key,
-      direction:
-        sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc',
-    });
-  };
-
   const totalPages = Math.ceil(totalTransactions / itemsPerPage);
+
+  // Handle search with immediate update
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -121,10 +88,7 @@ const WalletTransactions = () => {
                 type="text"
                 placeholder="Search transactions..."
                 value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setCurrentPage(1);
-                }}
+                onChange={handleSearchChange}
                 className="w-full sm:w-64 px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
@@ -138,9 +102,9 @@ const WalletTransactions = () => {
                 }}
                 className="px-2 py-1 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
-                <option value={1}>5</option>
-                <option value={3}>10</option>
-                <option value={4}>20</option>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
                 <option value={50}>50</option>
               </select>
               <span className="text-sm text-gray-600">per page</span>
@@ -152,50 +116,20 @@ const WalletTransactions = () => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gray-50">
-                  <th className="px-4 py-3 text-left">
-                    <button
-                      onClick={() => handleSort('txnid')}
-                      className="flex items-center gap-1 text-sm font-semibold text-gray-900"
-                    >
-                      Transaction ID
-                      <ArrowUpDown className="w-4 h-4" />
-                    </button>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                    Transaction ID
                   </th>
-                  <th className="px-4 py-3 text-left">
-                    <button
-                      onClick={() => handleSort('date')}
-                      className="flex items-center gap-1 text-sm font-semibold text-gray-900"
-                    >
-                      Date
-                      <ArrowUpDown className="w-4 h-4" />
-                    </button>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                    Date
                   </th>
-                  <th className="px-4 py-3 text-left">
-                    <button
-                      onClick={() => handleSort('type')}
-                      className="flex items-center gap-1 text-sm font-semibold text-gray-900"
-                    >
-                      Type
-                      <ArrowUpDown className="w-4 h-4" />
-                    </button>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                    Type
                   </th>
-                  <th className="px-4 py-3 text-left">
-                    <button
-                      onClick={() => handleSort('amount')}
-                      className="flex items-center gap-1 text-sm font-semibold text-gray-900"
-                    >
-                      Amount
-                      <ArrowUpDown className="w-4 h-4" />
-                    </button>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                    Amount
                   </th>
-                  <th className="px-4 py-3 text-left">
-                    <button
-                      onClick={() => handleSort('description')}
-                      className="flex items-center gap-1 text-sm font-semibold text-gray-900"
-                    >
-                      Description
-                      <ArrowUpDown className="w-4 h-4" />
-                    </button>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                    Description
                   </th>
                 </tr>
               </thead>
@@ -253,7 +187,7 @@ const WalletTransactions = () => {
             </table>
           </div>
 
-          {/* Pagination */}
+          {/* Simplified Pagination */}
           <div className="flex items-center justify-between mt-6">
             <div className="text-sm text-gray-600">
               Showing {totalTransactions === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1} to{' '}
@@ -268,35 +202,11 @@ const WalletTransactions = () => {
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter(
-                  (page) =>
-                    page === 1 ||
-                    page === totalPages ||
-                    Math.abs(currentPage - page) <= 1
-                )
-                .map((page, index, array) => (
-                  <React.Fragment key={page}>
-                    {index > 0 && array[index - 1] !== page - 1 && (
-                      <span className="px-2 py-1">...</span>
-                    )}
-                    <button
-                      onClick={() => setCurrentPage(page)}
-                      disabled={isLoading}
-                      className={`px-3 py-1 rounded-lg ${
-                        currentPage === page
-                          ? 'bg-purple-600 text-white'
-                          : 'hover:bg-purple-700 text-white bg-purple-800'
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  </React.Fragment>
-                ))}
+              <span className="px-3 py-1 rounded-lg bg-purple-600 text-white">
+                {currentPage} of {totalPages}
+              </span>
               <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages || isLoading}
                 className="p-2 rounded-lg hover:bg-purple-700 bg-purple-800 text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >

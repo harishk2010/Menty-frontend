@@ -1,6 +1,10 @@
 "use client"
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { PlusCircle, Upload, X, Video } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { getInstructorDataById } from '@/api/instructorApi';
+import GetVerified from '@/app/components/instructor/GetVerified';
 
 // Interface for course data
 interface CourseData {
@@ -20,7 +24,9 @@ interface ChapterData {
   description: string;
   video: File | null;
 }
-
+interface Instructor {
+  isVerified: boolean;
+}
 // Type for active step
 type ActiveStep = 'course' | 'chapters';
 
@@ -35,11 +41,25 @@ const CourseCreation: React.FC = () => {
     thumbnail: null,
     demoVideos: []
   });
-  
+  const Instructor = useSelector((state: RootState) => state.instructor);
+
+     const [instructorData, setInstructorData] = useState<Instructor>();
   const [chapters, setChapters] = useState<ChapterData[]>([]);
   const [activeStep, setActiveStep] = useState<ActiveStep>('course');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const instructor = await getInstructorDataById(Instructor.userId);
+        setInstructorData(instructor);
+      } catch (error) {
+        // alert('Error fetching quiz data');
+        // router.push('/quizzes'); // Redirect to quizzes list on error
+      }
+    };
 
+    fetchUser();
+  }, []);
   const handleCourseSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -142,6 +162,7 @@ const CourseCreation: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+  if (!instructorData?.isVerified) return <GetVerified/>
 
   return (
     <div className="min-h-screen rounded-md  p-8">

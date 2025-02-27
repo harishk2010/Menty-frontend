@@ -1,20 +1,30 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Video } from 'lucide-react';
 import { addChapter } from '@/api/courseApi';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import { getInstructorDataById } from '@/api/instructorApi';
+import GetVerified from '@/app/components/instructor/GetVerified';
 
 interface ChapterInputs {
   title: string;
   description: string;
   chapterVideo:File | null
 }
+interface Instructor {
+  isVerified: boolean;
+}
 
 const AddChapter: React.FC = () => {
 
     const { courseId } = useParams<{ courseId: string }>();
+    const Instructor = useSelector((state: RootState) => state.instructor);
+
+     const [instructorData, setInstructorData] = useState<Instructor>();
 
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,6 +42,18 @@ const AddChapter: React.FC = () => {
     const file = e.target.files?.[0] || null;
     setVideoFile(file);
   };
+   useEffect(() => {
+      try {
+        const fetch = async () => {
+        
+          const instructor = await getInstructorDataById(Instructor.userId);
+          setInstructorData(instructor);
+  
+          
+        };
+        fetch();
+      } catch (error) {}
+    }, []);
 
   const onSubmit: SubmitHandler<ChapterInputs> = async (data:ChapterInputs) => {
     try {
@@ -61,6 +83,8 @@ const AddChapter: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+  if (!instructorData?.isVerified) return <GetVerified/>
+
 
   return (
     <div className="min-h-screen rounded-md p-8">

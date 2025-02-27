@@ -5,12 +5,20 @@ import { Video } from 'lucide-react';
 import { updateChapter, getChapter } from '@/api/courseApi';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { getInstructorDataById } from '@/api/instructorApi';
+import GetVerified from '@/app/components/instructor/GetVerified';
 
 interface ChapterInputs {
   title: string;
   description: string;
   chapterVideo: File | null;
 }
+interface Instructor {
+  isVerified: boolean;
+}
+
 
 const EditChapter: React.FC = () => {
   const { chapterId } = useParams<{ chapterId: string }>();
@@ -19,6 +27,9 @@ const EditChapter: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentVideoName, setCurrentVideoName] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const Instructor = useSelector((state: RootState) => state.instructor);
+
+     const [instructorData, setInstructorData] = useState<Instructor>();
 
   const router = useRouter();
   
@@ -36,6 +47,9 @@ const EditChapter: React.FC = () => {
         const response = await getChapter( chapterId);
         if (response) {
           const chapter = response.data;
+          const instructor = await getInstructorDataById(Instructor.userId);
+          setInstructorData(instructor);
+
           setCourseId(chapter.courseId ||"")
           
           setValue('title', chapter.chapterTitle);
@@ -91,6 +105,8 @@ const EditChapter: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+  if (!instructorData?.isVerified) return <GetVerified/>
+
 
   if (isLoading) {
     return (

@@ -104,6 +104,27 @@ export const getAllInstructorCourses = async (userId: string) => {
     console.log(error);
   }
 };
+export const getAllFilteredInstructorCourses = async (instructorId:string,
+  currentPage:number,
+  itemsPerPage:number,
+  searchTerm:string,
+  sortField:string,
+  sortDirection:"asc" | "desc") => {
+  try {
+    console.log(instructorId,currentPage,itemsPerPage,searchTerm,sortField,sortDirection,"uderidddd")
+    
+    const response = await API.get(
+      `${CourseRoutes.GET_PAGINATED_INSTRUCTOR_COURSES}?instructorId=${instructorId}&page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}&sortField=${sortField}&sortDirection=${sortDirection}`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response.data, "response from getAllCourses");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getCourse = async (coureId: string) => {
   try {
     const response = await API.get(`${CourseRoutes.GET_COURSE}${coureId}`, {
@@ -325,5 +346,62 @@ export const deleteCourse = async (id: string) => {
     return response.data;
   } catch (error) {
     console.log(error);
+  }
+};
+export const getCourseCategories = async () => {
+  try {
+    
+    const response = await API.get(CourseRoutes.COURSE_CATGEGORIES, {
+      withCredentials: true,
+    });
+    console.log(response.data, "getCourseCategories");
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllPaginatedCourses = async (
+  page = 1,
+  limit = 9, // Changed to 9 to match your 3x3 grid layout
+  search = "",
+  sort = "popular",
+  category: string[] = [], 
+  level: string[] = []     
+) => {
+  try {
+    // Build query parameters
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    
+    if (search) {
+      params.append('search', search);
+    }
+    
+    if (sort) {
+      params.append('sort', sort);
+    }
+    
+    // Add category filters if any
+    category.forEach(cat => {
+      params.append('category', cat);
+    });
+    
+    // Add level filters if any
+    level.forEach(lvl => {
+      params.append('level', lvl);
+    });
+    
+    const response = await API.get(`${CourseRoutes.PAGINATED_COURSES}${params.toString()}`,{
+      withCredentials:true
+    });
+    
+    console.log(response.data,"filtered courseeeee")
+    const data = await response.data
+    return data;
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    throw error;
   }
 };

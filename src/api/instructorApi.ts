@@ -31,12 +31,12 @@ export const getInstructorDataById = async (instructorId: string | null): Promis
     console.log(error);
   }
 };
-export const getInstructorTransactions = async (email: string | null,currentPage:number,itemsPerPage:number): Promise<any> => {
+export const getInstructorTransactions = async (email: string | null,currentPage:number,itemsPerPage:number,searchTerm:string): Promise<any> => {
   try {
     console.log("getInsssss")
     const response = await API.get(
       // `/user/instructors/${email}`
-      `${InstructorRoutes.getInstructorTransactionsData}?email=${email}&currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`,{
+      `${InstructorRoutes.getInstructorTransactionsData}?email=${email}&page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,{
         withCredentials:true
       }
     );

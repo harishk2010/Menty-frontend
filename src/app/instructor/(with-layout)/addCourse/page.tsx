@@ -6,6 +6,10 @@ import { getCategories } from "@/api/adminApi";
 import { addCouse } from "@/api/courseApi";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { getInstructorDataById } from "@/api/instructorApi";
+import GetVerified from "@/app/components/instructor/GetVerified";
 
 interface CourseData {
   courseName: string;
@@ -20,6 +24,9 @@ interface CourseData {
 interface ICategory {
   categoryName: string;
 }
+interface Instructor {
+  isVerified: boolean;
+}
 const CourseCreation: React.FC = () => {
   const {
     register,
@@ -28,11 +35,14 @@ const CourseCreation: React.FC = () => {
     formState: { errors },
   } = useForm<CourseData>();
   const router=useRouter()
+  const Instructor = useSelector((state: RootState) => state.instructor);
+
 
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [demoVideoPreview, setDemoVideoPreview] = useState<string | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+   const [instructorData, setInstructorData] = useState<Instructor>();
 
   const handleDemoVideoChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -65,6 +75,10 @@ const CourseCreation: React.FC = () => {
     try {
       const fetchCategories = async () => {
         const response = await getCategories();
+                const instructor = await getInstructorDataById(Instructor.userId);
+                setInstructorData(instructor);
+
+        
         setCategories(response || "[]");
       };
       fetchCategories();
@@ -119,6 +133,7 @@ const CourseCreation: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+  if (!instructorData?.isVerified) return <GetVerified/>
 
   return (
     <div className="min-h-screen rounded-md p-8">

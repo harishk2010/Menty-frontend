@@ -7,6 +7,8 @@ import { RootState } from '@/redux/store';
 import { toast } from 'react-toastify';
 import { getInstructorData } from '@/api/instructorApi';
 import Link from 'next/link';
+import GetVerified from '@/app/components/instructor/GetVerified';
+import Loading from '@/app/components/fallbacks/Loading';
 
 interface Slot {
   _id: string;
@@ -17,6 +19,8 @@ interface Slot {
 }
 interface InstructorData{
     _id:string
+    isVerified: boolean;
+
 }
 type TabType = 'today' |'thisWeek' | 'upcoming' | 'all' | 'ended';
 
@@ -123,18 +127,13 @@ const InstructorSlotsPage: React.FC = () => {
       ? 'bg-blue-100 text-blue-800' 
       : 'bg-green-100 text-green-800';
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500" />
-      </div>
-    );
-  }
-
+  
+  if (isLoading) return <Loading/>
+  
   const tabs: TabType[] = ['today','thisWeek', 'upcoming', 'all' ,'ended'];
-
-  return (
+  
+  if (!instructorData?.isVerified) return <GetVerified/>
+  else return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900">My Teaching Slots</h1>

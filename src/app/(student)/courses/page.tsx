@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllCourses } from "@/api/courseApi";
+import { getAllCourses, getAllPaginatedCourses, getCourseCategories } from "@/api/courseApi";
 import {
   Search,
   SlidersHorizontal,
@@ -9,17 +9,18 @@ import {
   Users,
   BookOpen,
   Star,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import Link from "next/link";
 import PrimaryButton from "@/app/components/buttons/PrimaryButton";
-
 
 type Course = {
   _id: string;
   courseName: string;
   description?: string;
-  isListed:boolean;
-  isPublished:boolean;
+  isListed: boolean;
+  isPublished: boolean;
   thumbnailUrl: string;
   instructor?: string;
   price: string; 
@@ -38,89 +39,130 @@ type SortOption = "popular" | "price-low" | "price-high" | "rating" | "newest";
 
 export default function CourseListing() {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>("popular");
+  const [itemsCount, setItemsCount] = useState<number>(6);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCourses, setTotalCourses] = useState(0);
+  const [isSearching, setIsSearching] = useState(false);
+  const [filterChanged, setFilterChanged] = useState(false);
 
-  // Fetch courses
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await getAllCourses();
-        console.log("Fetched courses:", response); // Debug log
-        if (Array.isArray(response)) {
-          setCourses(response);
-          setFilteredCourses(response);
-        }
-      } catch (error) {
-        console.error("Failed to fetch courses:", error);
-      } finally {
-        setLoading(false);
+  // Define categories and levels
+  const levels = ["beginner", "intermediate", "advanced"];
+  const [uniqueCategories, setUniqueCategories] = useState<string[]>([]);
+
+  // Fetch courses with pagination, filtering, and sorting from the backend
+  const fetchCourses = async (resetPage = false) => {
+    try {
+      setLoading(true);
+      setIsSearching(true);
+      
+      // If filters changed, reset to page 1
+      const pageToFetch = resetPage ? 1 : currentPage;
+      if (resetPage) {
+        setCurrentPage(1);
       }
-    };
+      
+      console.log("Fetching courses with filters:", {
+        page: pageToFetch,
+        searchQuery,
+        sortBy,
+        itemsCount,
+        categories: selectedCategories,
+        levels: selectedLevels
+      });
+      
+      const response = await getAllPaginatedCourses(
+        pageToFetch,
+        // 3, // 9 items per page (3x3 grid)
+        itemsCount,
+        searchQuery,
+        sortBy,
+        selectedCategories.length > 0 ? selectedCategories : undefined,
+        selectedLevels.length > 0 ? selectedLevels : undefined
+      );
+      
+      setCourses(response.courses);
+      setTotalPages(response.totalPages);
+      setTotalCourses(response.totalCourses);
+      
+      // Fetch all categories if we don't have them yet
+      if (uniqueCategories.length === 0) {
+        const allCoursesResponse = await getCourseCategories()
+        if (allCoursesResponse.success) {
+          setUniqueCategories(allCoursesResponse.data || []);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch courses:", error);
+    } finally {
+      setLoading(false);
+      setIsSearching(false);
+      setFilterChanged(false);
+    }
+  };
 
+  // Initial load
+  useEffect(() => {
     fetchCourses();
   }, []);
 
-  // Apply filters and search
+  // Effect for handling filter changes
   useEffect(() => {
-    let filtered = [...courses];
-
-    // Search filter
-    if (searchQuery) {
-      filtered = filtered.filter(
-        course =>
-          course.courseName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          course.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          course.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
+    if (filterChanged) {
+      fetchCourses(true);
     }
+  }, [filterChanged]);
 
-    // Category filter
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter(course =>
-        course.category && selectedCategories.includes(course.category)
-      );
+  // Effect for handling pagination
+  useEffect(() => {
+    if (!filterChanged) {
+      fetchCourses(false);
     }
+  }, [currentPage]);
 
-    // Level filter
-    if (selectedLevels.length > 0) {
-      filtered = filtered.filter(course =>
-        course.level && selectedLevels.includes(course.level)
-      );
-    }
+  // Handle category selection
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories(prev => {
+      const newCategories = prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category];
+      
+      console.log("Updated categories:", newCategories);
+      return newCategories;
+    });
+    setFilterChanged(true);
+  };
 
-    // Sort
-    switch (sortBy) {
-      case "price-low":
-        filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-        break;
-      case "price-high":
-        filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-        break;
-      case "rating":
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      case "popular":
-        filtered.sort((a, b) => (b.studentsEnrolled || 0) - (a.studentsEnrolled || 0));
-        break;
-      case "newest":
-        filtered.sort((a, b) => b._id.localeCompare(a._id));
-        break;
-    }
+  // Handle level selection
+  const handleLevelChange = (level: string) => {
+    setSelectedLevels(prev => {
+      const newLevels = prev.includes(level)
+        ? prev.filter(l => l !== level)
+        : [...prev, level];
+      
+      console.log("Updated levels:", newLevels);
+      return newLevels;
+    });
+    setFilterChanged(true);
+  };
 
-    setFilteredCourses(filtered);
-  }, [courses, searchQuery, selectedCategories, selectedLevels, sortBy]);
-
-  // Get unique categories from actual course data
-  const uniqueCategories = Array.from(
-    new Set(courses.map(course =>{if(course.isListed)return course.category}).filter(Boolean))
-  );
-  const levels = ["beginner", "intermediate", "advanced"];
+  // Handle sort change
+  const handleSortChange = (newSortBy: SortOption) => {
+    console.log("Changing sort to:", newSortBy);
+    setSortBy(newSortBy);
+    setFilterChanged(true);
+  };
+  const handleItemsChange = (itemCount: number) => {
+    console.log("Changing itemCount to:", itemCount);
+    setItemsCount(itemCount);
+    setFilterChanged(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -140,9 +182,17 @@ export default function CourseListing() {
                 placeholder="Search courses..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setFilterChanged(true);
+                  }
+                }}
+                className="w-full pl-10 pr-4 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <Search 
+                className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 cursor-pointer"
+                onClick={() => setFilterChanged(true)}
+              />
             </div>
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -166,13 +216,7 @@ export default function CourseListing() {
                       <input
                         type="checkbox"
                         checked={selectedCategories.includes(category)}
-                        onChange={() => {
-                          setSelectedCategories(prev =>
-                            prev.includes(category)
-                              ? prev.filter(c => c !== category)
-                              : [...prev, category]
-                          );
-                        }}
+                        onChange={() => handleCategoryChange(category)}
                         className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <span className="ml-2 text-gray-600">{category}</span>
@@ -190,13 +234,7 @@ export default function CourseListing() {
                     <input
                       type="checkbox"
                       checked={selectedLevels.includes(level)}
-                      onChange={() => {
-                        setSelectedLevels(prev =>
-                          prev.includes(level)
-                            ? prev.filter(l => l !== level)
-                            : [...prev, level]
-                        );
-                      }}
+                      onChange={() => handleLevelChange(level)}
                       className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                     />
                     <span className="ml-2 text-gray-600">{level}</span>
@@ -210,11 +248,13 @@ export default function CourseListing() {
           <div className="md:col-span-3">
             <div className="flex justify-between items-center mb-6">
               <p className="text-gray-600">
-                Showing {filteredCourses.length} courses
+                Showing {courses.length} of {totalCourses} courses
               </p>
+              <div className="space-x-3">
+
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                onChange={(e) => handleSortChange(e.target.value as SortOption)}
                 className="border text-gray-800 border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="popular">Most Popular</option>
@@ -223,6 +263,18 @@ export default function CourseListing() {
                 <option value="rating">Highest Rated</option>
                 <option value="newest">Newest</option>
               </select>
+              <select
+                value={itemsCount}
+                onChange={(e) => handleItemsChange(e.target.value as unknown as number)}
+                className="border text-gray-800 border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                <option value={3}>3</option>
+                <option value={6}>6</option>
+                <option value={9}>9</option>
+                <option value={12}>12</option>
+                
+              </select>
+                </div>
             </div>
 
             {loading ? (
@@ -236,33 +288,29 @@ export default function CourseListing() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredCourses.map((course) => (
-                  course.isListed && course.isPublished &&(
-
-                  
+                {courses.map((course) => (
                   <Link
                     href={`/courseDetails/${course._id}`}
                     key={course._id}
                     className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
                   >
-                    <div className="group relative  h-48">
+                    <div className="group relative h-48">
                       <img
                         src={course.thumbnailUrl}
                         alt={course.courseName}
                         onContextMenu={(e) => e.preventDefault()}
-                 
-                        className="w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-300 ease-in-out "
+                        className="w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
                       />
                       <video
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                     onContextMenu={(e) => e.preventDefault()}
-                         controlsList="nodownload noremoteplayback"
-                    src={course.demoVideo.url}
-                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
-                    />
+                        muted
+                        autoPlay
+                        loop
+                        playsInline
+                        onContextMenu={(e) => e.preventDefault()}
+                        controlsList="nodownload noremoteplayback"
+                        src={course.demoVideo.url}
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+                      />
                       <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-sm font-medium text-purple-600">
                         ${course.price}
                       </div>
@@ -299,17 +347,62 @@ export default function CourseListing() {
                           </span>
                         )}
                       </div>
-                      <div className="flex justify-end w-full ">
+                      <div className="flex justify-end w-full">
                         <PrimaryButton type={"button"} name="Enroll Now"/>
                       </div>
                     </div>
                   </Link>
-                  )
                 ))}
               </div>
             )}
 
-            {filteredCourses.length === 0 && !loading && (
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center space-x-2 mt-8">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`flex items-center justify-center p-2 rounded-md ${
+                    currentPage === 1 
+                      ? 'text-gray-400 cursor-not-allowed' 
+                      : 'text-purple-600 hover:bg-purple-100'
+                  }`}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                
+                {/* Page numbers */}
+                <div className="flex items-center space-x-1">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-md ${
+                        currentPage === i + 1
+                          ? 'bg-purple-600 text-white'
+                          : 'text-gray-600 hover:bg-purple-100'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+                
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`flex items-center justify-center p-2 rounded-md ${
+                    currentPage === totalPages 
+                      ? 'text-gray-400 cursor-not-allowed' 
+                      : 'text-purple-600 hover:bg-purple-100'
+                  }`}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            )}
+
+            {courses.length === 0 && !loading && (
               <div className="text-center py-12">
                 <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
                 <h3 className="mt-2 text-lg font-medium text-gray-900">No courses found</h3>

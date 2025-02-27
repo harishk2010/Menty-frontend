@@ -1,10 +1,14 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlusCircle, MinusCircle } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useParams, useRouter } from 'next/navigation';
 import { editQuiz, getQuizData } from '@/api/courseApi';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { getInstructorDataById } from '@/api/instructorApi';
+import GetVerified from '@/app/components/instructor/GetVerified';
 
 interface Question {
   questionText: string;
@@ -21,10 +25,16 @@ interface QuizFormData {
 interface quizId {
   quizId: string;
 }
+interface Instructor {
+  isVerified: boolean;
+}
 
 const EditQuizForm: React.FC = () => {
   const {id}=useParams<{id:string}>()
   const router = useRouter();
+  const Instructor = useSelector((state: RootState) => state.instructor);
+  const [instructorData, setInstructorData] = useState<Instructor>();
+
   
   const {
     register,
@@ -59,7 +69,10 @@ const EditQuizForm: React.FC = () => {
       try {
         const response = await getQuizData(id);
 
+
         if (!response.success) toast.error("couldint get quiz data")
+   const instructor = await getInstructorDataById(Instructor.userId);
+                        setInstructorData(instructor);
 
         const quizData =  response.data;
 
@@ -113,6 +126,7 @@ const EditQuizForm: React.FC = () => {
       toast.error(error.message)
     }
   };
+  if (!instructorData?.isVerified) return <GetVerified/>
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">

@@ -6,6 +6,10 @@ import { toast } from "react-toastify";
 import AlertDialog2 from "@/app/components/common/alertBoxes/AlertDialogBox2";
 import { useParams } from "next/navigation";
 import { tr } from "framer-motion/client";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { getInstructorDataById } from "@/api/instructorApi";
+import GetVerified from "@/app/components/instructor/GetVerified";
 
 interface IChapters {
   _id?: string;
@@ -13,16 +17,26 @@ interface IChapters {
   description: string;
   videoUrl: string;
 }
+interface Instructor {
+  isVerified: boolean;
+}
+
 
 const InstructorChapterTable = () => {
   // Sample data - replace with your actual data fetching logic
   const { courseId } = useParams<{ courseId: string }>();
   const [chapters, setChapters] = useState<IChapters[]>([]);
+  const Instructor = useSelector((state: RootState) => state.instructor);
+
+     const [instructorData, setInstructorData] = useState<Instructor>();
 
   useEffect(() => {
     try {
       const fetchChapters = async () => {
         const response = await getAllChapter(courseId);
+        const instructor = await getInstructorDataById(Instructor.userId);
+        setInstructorData(instructor);
+
         setChapters(response.data || []);
       };
       fetchChapters();
@@ -45,7 +59,7 @@ const InstructorChapterTable = () => {
   //   }
   // };
   
-
+  if (!instructorData?.isVerified) return <GetVerified/>
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">

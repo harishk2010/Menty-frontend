@@ -1,11 +1,15 @@
-"use client"
-import React from 'react';
-import { PlusCircle, MinusCircle } from 'lucide-react';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { addQuizz } from '@/api/courseApi';
-import { toast } from 'react-toastify';
-import { useParams, useRouter } from 'next/navigation';
-import { string } from 'yup';
+"use client";
+import React, { useEffect, useState } from "react";
+import { PlusCircle, MinusCircle } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { addQuizz } from "@/api/courseApi";
+import { toast } from "react-toastify";
+import { useParams, useRouter } from "next/navigation";
+import { string } from "yup";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { getInstructorDataById } from "@/api/instructorApi";
+import GetVerified from "@/app/components/instructor/GetVerified";
 
 interface Question {
   questionText: string;
@@ -22,12 +26,17 @@ interface QuizFormData {
     correctAnswer: string;
   }[];
 }
+interface Instructor {
+  isVerified: boolean;
+}
 
 const QuizForm: React.FC = () => {
+  const { courseId } = useParams<{ courseId: string }>();
 
-    const {courseId}=useParams<{courseId:string}>()
+  const router = useRouter();
+  const Instructor = useSelector((state: RootState) => state.instructor);
 
-    const router=useRouter()
+  const [instructorData, setInstructorData] = useState<Instructor>();
   const {
     register,
     control,
@@ -37,57 +46,69 @@ const QuizForm: React.FC = () => {
     setValue,
   } = useForm<QuizFormData>({
     defaultValues: {
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       questions: [
         {
-          questionText: '',
-          options: ['', ''],
-          correctAnswer: '',
+          questionText: "",
+          options: ["", ""],
+          correctAnswer: "",
         },
       ],
     },
   });
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const instructor = await getInstructorDataById(Instructor.userId);
+        setInstructorData(instructor);
+      } catch (error) {
+        // alert('Error fetching quiz data');
+        // router.push('/quizzes'); // Redirect to quizzes list on error
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'questions',
+    name: "questions",
   });
 
   const handleAddOption = (questionIndex: number) => {
-    const currentQuestions = watch('questions');
+    const currentQuestions = watch("questions");
     const updatedQuestions = [...currentQuestions];
-    updatedQuestions[questionIndex].options.push('');
-    setValue('questions', updatedQuestions);
+    updatedQuestions[questionIndex].options.push("");
+    setValue("questions", updatedQuestions);
   };
 
   const handleRemoveOption = (questionIndex: number, optionIndex: number) => {
-    const currentQuestions = watch('questions');
+    const currentQuestions = watch("questions");
     const updatedQuestions = [...currentQuestions];
-    updatedQuestions[questionIndex].options = updatedQuestions[questionIndex].options.filter(
-      (_, index) => index !== optionIndex
-    );
-    setValue('questions', updatedQuestions);
+    updatedQuestions[questionIndex].options = updatedQuestions[
+      questionIndex
+    ].options.filter((_, index) => index !== optionIndex);
+    setValue("questions", updatedQuestions);
   };
 
   const onSubmit = async (data: QuizFormData) => {
     try {
-      const response = await addQuizz({courseId,...data})
+      const response = await addQuizz({ courseId, ...data });
 
       if (!response.success) {
-        throw new Error('Failed to create quiz');
-      }else{
-        toast.success(response.message)
-        router.replace('/instructor/courses')
+        throw new Error("Failed to create quiz");
+      } else {
+        toast.success(response.message);
+        router.replace("/instructor/courses");
       }
 
       // Reset form or show success message
-     
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'An error occurred');
+      alert(error instanceof Error ? error.message : "An error occurred");
     }
   };
-
+  if (!instructorData?.isVerified) return <GetVerified />;
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Create New Quiz</h1>
@@ -99,11 +120,11 @@ const QuizForm: React.FC = () => {
               Quiz Title
             </label>
             <input
-              {...register('title', {
-                required: 'Title is required',
+              {...register("title", {
+                required: "Title is required",
                 minLength: {
                   value: 3,
-                  message: 'Title must be at least 3 characters',
+                  message: "Title must be at least 3 characters",
                 },
               })}
               type="text"
@@ -111,7 +132,9 @@ const QuizForm: React.FC = () => {
               className="w-full p-2 border text-black border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             {errors.title && (
-              <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.title.message}
+              </p>
             )}
           </div>
 
@@ -120,11 +143,11 @@ const QuizForm: React.FC = () => {
               Description
             </label>
             <textarea
-              {...register('description', {
-                required: 'Description is required',
+              {...register("description", {
+                required: "Description is required",
                 minLength: {
                   value: 10,
-                  message: 'Description must be at least 10 characters',
+                  message: "Description must be at least 10 characters",
                 },
               })}
               placeholder="Enter quiz description"
@@ -132,14 +155,19 @@ const QuizForm: React.FC = () => {
               rows={3}
             />
             {errors.description && (
-              <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.description.message}
+              </p>
             )}
           </div>
         </div>
 
         <div className="space-y-6">
           {fields.map((field, questionIndex) => (
-            <div key={field.id} className="p-4 border border-gray-200 rounded-lg space-y-4">
+            <div
+              key={field.id}
+              className="p-4 border border-gray-200 rounded-lg space-y-4"
+            >
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-medium text-gray-800">
                   Question {questionIndex + 1}
@@ -158,10 +186,10 @@ const QuizForm: React.FC = () => {
               <div>
                 <input
                   {...register(`questions.${questionIndex}.questionText`, {
-                    required: 'Question text is required',
+                    required: "Question text is required",
                     minLength: {
                       value: 5,
-                      message: 'Question must be at least 5 characters',
+                      message: "Question must be at least 5 characters",
                     },
                   })}
                   type="text"
@@ -179,27 +207,35 @@ const QuizForm: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Options
                 </label>
-                {watch(`questions.${questionIndex}.options`).map((_, optionIndex) => (
-                  <div key={optionIndex} className="flex gap-2">
-                    <input
-                      {...register(`questions.${questionIndex}.options.${optionIndex}`, {
-                        required: 'Option text is required',
-                      })}
-                      type="text"
-                      placeholder={`Option ${optionIndex + 1}`}
-                      className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                    {watch(`questions.${questionIndex}.options`).length > 2 && (
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveOption(questionIndex, optionIndex)}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <MinusCircle className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                ))}
+                {watch(`questions.${questionIndex}.options`).map(
+                  (_, optionIndex) => (
+                    <div key={optionIndex} className="flex gap-2">
+                      <input
+                        {...register(
+                          `questions.${questionIndex}.options.${optionIndex}`,
+                          {
+                            required: "Option text is required",
+                          }
+                        )}
+                        type="text"
+                        placeholder={`Option ${optionIndex + 1}`}
+                        className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                      {watch(`questions.${questionIndex}.options`).length >
+                        2 && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleRemoveOption(questionIndex, optionIndex)
+                          }
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <MinusCircle className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  )
+                )}
                 <button
                   type="button"
                   onClick={() => handleAddOption(questionIndex)}
@@ -216,16 +252,18 @@ const QuizForm: React.FC = () => {
                 </label>
                 <select
                   {...register(`questions.${questionIndex}.correctAnswer`, {
-                    required: 'Please select the correct answer',
+                    required: "Please select the correct answer",
                   })}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select correct answer</option>
-                  {watch(`questions.${questionIndex}.options`).map((option, index) => (
-                    <option key={index} value={option}>
-                      {option || `Option ${index + 1}`}
-                    </option>
-                  ))}
+                  {watch(`questions.${questionIndex}.options`).map(
+                    (option, index) => (
+                      <option key={index} value={option}>
+                        {option || `Option ${index + 1}`}
+                      </option>
+                    )
+                  )}
                 </select>
                 {errors.questions?.[questionIndex]?.correctAnswer && (
                   <p className="mt-1 text-sm text-red-600">
@@ -239,7 +277,9 @@ const QuizForm: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => append({ questionText: '', options: ['', ''], correctAnswer: '' })}
+          onClick={() =>
+            append({ questionText: "", options: ["", ""], correctAnswer: "" })
+          }
           className="w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center justify-center"
         >
           <PlusCircle className="w-4 h-4 mr-2" />

@@ -7,6 +7,9 @@ const CourseRoutes={
     GET_ALL_Instructor_COURSES:'/course/course/instructorCourses/',
     GET_COURSE:'/course/course/course/',
     DELETE_COURSE:'/course/course/delete/',
+    PAGINATED_COURSES:'/course/course/paginatedCourses?',
+    COURSE_CATGEGORIES:'/course/course/courses/categories',
+    GET_PAGINATED_INSTRUCTOR_COURSES:'/course/course/filteredCourses',
     
     ///chapter
     ADD_NEW_CHAPTER:'/course/chapter/addChapter/',

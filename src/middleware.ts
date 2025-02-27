@@ -193,6 +193,11 @@ export async function middleware(req: NextRequest) {
     "/checkout",
     "/courseDetails",
     "/courses",
+    "/bookings",
+    "/bookSlot/[id]",
+    "/certificate/[id]",
+    '/mentors',
+    '/mentorProfile/[id]'
   ];
 
   const instructorProtectedRoutes = [
@@ -207,9 +212,13 @@ export async function middleware(req: NextRequest) {
     "/instructor/addQuizz/[id]",
     "/instructor/addChapters/[id]",
     "/instructor/chapters/[id]",
+    "/instructor/chapters",
     "/instructor/editChapter/[id]",
     "/instructor/editCourse/[id]",
     "/instructor/transactions",
+    "/instructor/slots",
+    "/instructor/addSlots",
+    "/instructor/bookings",
   ];
   const instructorPublicRoutes = [
     "/instructor/login",

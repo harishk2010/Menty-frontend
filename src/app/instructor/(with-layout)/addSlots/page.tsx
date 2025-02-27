@@ -1,6 +1,7 @@
 "use client"
 import { createSlots } from '@/api/bookingApi';
 import { getInstructorData } from '@/api/instructorApi';
+import GetVerified from '@/app/components/instructor/GetVerified';
 import { RootState } from '@/redux/store';
 import Link from 'next/link';
 
@@ -20,7 +21,8 @@ interface SlotFormData {
 }
 interface InstructorData{
     _id:string,
-    planPrice:number
+    planPrice:number,
+    isVerified:boolean
 }
 
 const SlotCreationForm = () => {
@@ -97,6 +99,8 @@ const SlotCreationForm = () => {
       alert('Failed to create slots. Please try again.');
     }
   };
+  if (!instructorData?.isVerified) return <GetVerified/>
+
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
