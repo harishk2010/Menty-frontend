@@ -4,6 +4,8 @@ const InstructorRoutes={
     getInstructorTransactionsData:"/user/instructors/transactions",
     updateProfile:'/user/instructors/updateProfile',
     updatePassword:'/user/instructors/updatePassword',
+    getAllPaginatedMentors:'/user/instructors/get/paginatedMentors',
+    getMentorsExpertise:'/user/instructors/expertise',
     
 
     //verification

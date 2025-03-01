@@ -1,21 +1,22 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-
 import {
   Search,
   SlidersHorizontal,
   Mail,
   Phone,
-  Star,
-  Award,
   UserCheck,
   Users,
-  IndianRupee
+  IndianRupee,
+  Award,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import Link from 'next/link';
 import PrimaryButton from '@/app/components/buttons/PrimaryButton';
-import { getAllInstructors } from '@/api/studentApi';
+import { getAllPaginatedMentors, getMentorExpertise } from '@/api/instructorApi';
+
 
 type Mentor = {
   _id: string;
@@ -28,73 +29,120 @@ type Mentor = {
   verificationStatus: 'pending' | 'verified' | 'rejected';
   isVerified: boolean;
   isBlocked: boolean;
-  planPrice:number
+  planPrice: number;
 };
 
-type SortOption = 'verified' | 'expertise' | 'newest';
+type SortOption = 'verified' | 'expertise' | 'price-low' | 'price-high' | 'newest';
 
 export default function MentorListing() {
   const [mentors, setMentors] = useState<Mentor[]>([]);
-  const [filteredMentors, setFilteredMentors] = useState<Mentor[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedExpertise, setSelectedExpertise] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>('verified');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalMentors, setTotalMentors] = useState(0);
+  const [itemsCount, setItemsCount] = useState<number>(6);
+  const [isSearching, setIsSearching] = useState(false);
+  const [filterChanged, setFilterChanged] = useState(false);
+  const [uniqueExpertise, setUniqueExpertise] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchMentors = async () => {
-      try {
-        const response = await getAllInstructors();
-        if (Array.isArray(response)) {
-          setMentors(response.filter(mentor => !mentor.isBlocked));
-          setFilteredMentors(response.filter(mentor => !mentor.isBlocked));
-        }
-      } catch (error) {
-        console.error('Failed to fetch mentors:', error);
-      } finally {
-        setLoading(false);
+  // Fetch mentors with pagination, filtering, and sorting from the backend
+  const fetchMentors = async (resetPage = false) => {
+    try {
+      setLoading(true);
+      setIsSearching(true);
+      
+      // If filters changed, reset to page 1
+      const pageToFetch = resetPage ? 1 : currentPage;
+      if (resetPage) {
+        setCurrentPage(1);
       }
-    };
+      
+      console.log("Fetching mentors with filters:", {
+        page: pageToFetch,
+        searchQuery,
+        sortBy,
+        itemsCount,
+        expertise: selectedExpertise
+      });
+      
+      const response = await getAllPaginatedMentors(
+        pageToFetch,
+        itemsCount,
+        searchQuery,
+        sortBy,
+        selectedExpertise.length > 0 ? selectedExpertise : undefined
+      );
+      console.log(response,"responsee")
+      
+      setMentors(response.mentors);
+      setTotalPages(response.totalPages);
+      setTotalMentors(response.totalMentors);
+      
+      // Fetch all expertise if we don't have them yet
+      if (uniqueExpertise.length === 0) {
+        const expertiseResponse = await getMentorExpertise();
+        if (expertiseResponse.success) {
+          setUniqueExpertise(expertiseResponse.data || []);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch mentors:", error);
+    } finally {
+      setLoading(false);
+      setIsSearching(false);
+      setFilterChanged(false);
+    }
+  };
 
+  // Initial load
+  useEffect(() => {
     fetchMentors();
   }, []);
 
+  // Effect for handling filter changes
   useEffect(() => {
-    let filtered = [...mentors];
-
-    if (searchQuery) {
-      filtered = filtered.filter(mentor =>
-        mentor.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        mentor.expertise.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        mentor.skills.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    if (filterChanged) {
+      fetchMentors(true);
     }
+  }, [filterChanged]);
 
-    if (selectedExpertise.length > 0) {
-      filtered = filtered.filter(mentor =>
-        selectedExpertise.some(exp => mentor.expertise.includes(exp))
-      );
+  // Effect for handling pagination
+  useEffect(() => {
+    if (!filterChanged) {
+      fetchMentors(false);
     }
+  }, [currentPage]);
 
-    switch (sortBy) {
-      case 'verified':
-        filtered.sort((a, b) => Number(b.isVerified) - Number(a.isVerified));
-        break;
-      case 'expertise':
-        filtered.sort((a, b) => a.expertise.localeCompare(b.expertise));
-        break;
-      case 'newest':
-        filtered.sort((a, b) => b._id.localeCompare(a._id));
-        break;
-    }
+  // Handle expertise selection
+  const handleExpertiseChange = (expertise: string) => {
+    setSelectedExpertise(prev => {
+      const newExpertise = prev.includes(expertise)
+        ? prev.filter(e => e !== expertise)
+        : [...prev, expertise];
+      
+      console.log("Updated expertise:", newExpertise);
+      return newExpertise;
+    });
+    setFilterChanged(true);
+  };
 
-    setFilteredMentors(filtered);
-  }, [mentors, searchQuery, selectedExpertise, sortBy]);
+  // Handle sort change
+  const handleSortChange = (newSortBy: SortOption) => {
+    console.log("Changing sort to:", newSortBy);
+    setSortBy(newSortBy);
+    setFilterChanged(true);
+  };
 
-  const uniqueExpertise = Array.from(
-    new Set(mentors.map(mentor => mentor.expertise).filter(Boolean))
-  );
+  // Handle items per page change
+  const handleItemsChange = (itemCount: number) => {
+    console.log("Changing itemCount to:", itemCount);
+    setItemsCount(itemCount);
+    setFilterChanged(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -113,9 +161,17 @@ export default function MentorListing() {
                 placeholder="Search mentors..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full  text-black pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setFilterChanged(true);
+                  }
+                }}
+                className="w-full text-black pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <Search 
+                className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 cursor-pointer" 
+                onClick={() => setFilterChanged(true)}
+              />
             </div>
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -127,6 +183,7 @@ export default function MentorListing() {
         </div>
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Filters - Desktop */}
           <div className={`${isFilterOpen ? 'block' : 'hidden'} md:block space-y-6`}>
             <div>
               <h3 className="font-semibold text-gray-900">Expertise</h3>
@@ -137,13 +194,7 @@ export default function MentorListing() {
                       <input
                         type="checkbox"
                         checked={selectedExpertise.includes(expertise)}
-                        onChange={() => {
-                          setSelectedExpertise(prev =>
-                            prev.includes(expertise)
-                              ? prev.filter(e => e !== expertise)
-                              : [...prev, expertise]
-                          );
-                        }}
+                        onChange={() => handleExpertiseChange(expertise)}
                         className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <span className="ml-2 text-gray-600">{expertise}</span>
@@ -154,20 +205,36 @@ export default function MentorListing() {
             </div>
           </div>
 
+          {/* Mentor Grid */}
           <div className="md:col-span-3">
             <div className="flex justify-between items-center mb-6">
               <p className="text-gray-600">
-                Showing {filteredMentors.length} mentors
+                {/* Showing { 1} of {totalMentors} mentors */}
+                Showing {mentors.length | 1} of {totalMentors} mentors
               </p>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="border text-black border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="verified">Verified First</option>
-                <option value="expertise">By Expertise</option>
-                <option value="newest">Newest</option>
-              </select>
+              <div className="space-x-3">
+                <select
+                  value={sortBy}
+                  onChange={(e) => handleSortChange(e.target.value as SortOption)}
+                  className="border text-gray-800 border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="verified">Verified First</option>
+                  <option value="expertise">By Expertise</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="newest">Newest</option>
+                </select>
+                <select
+                  value={itemsCount}
+                  onChange={(e) => handleItemsChange(parseInt(e.target.value))}
+                  className="border text-gray-800 border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value={3}>3</option>
+                  <option value={6}>6</option>
+                  <option value={9}>9</option>
+                  <option value={12}>12</option>
+                </select>
+              </div>
             </div>
 
             {loading ? (
@@ -181,7 +248,7 @@ export default function MentorListing() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredMentors.map((mentor) => (
+                {mentors.map((mentor) => (
                   <div
                     key={mentor._id}
                     className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
@@ -244,7 +311,53 @@ export default function MentorListing() {
               </div>
             )}
 
-            {filteredMentors.length === 0 && !loading && (
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center space-x-2 mt-8">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`flex items-center justify-center p-2 rounded-md ${
+                    currentPage === 1 
+                      ? 'text-gray-400 cursor-not-allowed' 
+                      : 'text-purple-600 hover:bg-purple-100'
+                  }`}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                
+                {/* Page numbers */}
+                <div className="flex items-center space-x-1">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-md ${
+                        currentPage === i + 1
+                          ? 'bg-purple-600 text-white'
+                          : 'text-gray-600 hover:bg-purple-100'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+                
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`flex items-center justify-center p-2 rounded-md ${
+                    currentPage === totalPages 
+                      ? 'text-gray-400 cursor-not-allowed' 
+                      : 'text-purple-600 hover:bg-purple-100'
+                  }`}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            )}
+
+            {mentors.length === 0 && !loading && (
               <div className="text-center py-12">
                 <Users className="mx-auto h-12 w-12 text-gray-400" />
                 <h3 className="mt-2 text-lg font-medium text-gray-900">No mentors found</h3>

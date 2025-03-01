@@ -16,8 +16,8 @@ export const authErrorHandler=async (error:Error)=>{
                 console.log("removeing")
                 // Cookies.remove('accessToken')
                 // Cookies.remove('refreshToken')
-                await logout()
-                await logout
+                // await logout()
+                // await logout
             }
             if(statusCode==401)  throw new ApiError(400,"eror"); 
       

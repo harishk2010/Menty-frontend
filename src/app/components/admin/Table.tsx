@@ -263,3 +263,469 @@ const UsersTable = () => {
 };
 
 export default UsersTable;
+
+
+
+
+
+
+
+
+
+// "use client"
+// import { useState, useEffect } from "react";
+// import { adminSearchStudents } from "@/api/studentApi";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
+
+// interface User {
+//   _id: string;
+//   name: string;
+//   email: string;
+//   role: string;
+//   createdAt: string;
+// }
+
+// interface PaginationData {
+//   total: number;
+//   page: number;
+//   limit: number;
+//   pages: number;
+// }
+
+// interface queryParams { q: string; role: string; page: number; limit: number }
+
+// interface UserSearchResponse {
+//   success: boolean;
+//   data: User[];
+//   pagination: PaginationData;
+// }
+
+// const UsersTable = () => {
+//   // State for search parameters and results
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [role, setRole] = useState("");
+//   const [users, setUsers] = useState<User[]>([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState<Error | null>(null);
+  
+//   // Pagination state
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [itemsPerPage, setItemsPerPage] = useState(10);
+//   const [totalPages, setTotalPages] = useState(1);
+//   const [totalItems, setTotalItems] = useState(0);
+  
+//   // Initialize data on first load
+//   useEffect(() => {
+//     fetchUsers(searchQuery, role, currentPage, itemsPerPage);
+//   }, []);
+  
+//   // Function to fetch users with search and pagination
+//   const fetchUsers = async (query: string, role: string, page: number, limit: number) => {
+//     try {
+//       setLoading(true);
+  
+//       // Build the query object
+//       const queryParams = {
+//         q: query,
+//         role: role,
+//         page: page,
+//         limit: limit,
+//       };
+  
+//       // Make the API request
+//       const response = await adminSearchStudents(queryParams);
+  
+//       // Check if the response is successful
+//       if (!response.success) {
+//         throw new Error("Failed to fetch users");
+//       }
+  
+//       // Update state with response data
+//       setUsers(response.data);
+//       setTotalPages(response.pagination.pages);
+//       setTotalItems(response.pagination.total);
+//       setError(null);
+//     } catch (err) {
+//       setError(err as Error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+//   // Handle search form submission
+//   const handleSearch = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setCurrentPage(1); // Reset to first page on new search
+//     fetchUsers(searchQuery, role, 1, itemsPerPage);
+//   };
+  
+//   // Handle page change
+//   const handlePageChange = (newPage: number) => {
+//     setCurrentPage(newPage);
+//     fetchUsers(searchQuery, role, newPage, itemsPerPage);
+//   };
+  
+//   // Handle items per page change
+//   const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//     const newLimit = parseInt(e.target.value);
+//     setItemsPerPage(newLimit);
+//     setCurrentPage(1); // Reset to first page when changing limit
+//     fetchUsers(searchQuery, role, 1, newLimit);
+//   };
+  
+//   // If there's an error, we can display it
+//   if (error) {
+//     return (
+//       <div className="text-red-500 p-4">
+//         Error loading users: {error.message}
+//       </div>
+//     );
+//   }
+  
+//   return (
+//     <div className="min-h-screen p-6">
+//       <div className="max-w-7xl mx-auto bg-gray-900 rounded-lg shadow-sm">
+//         <div className="p-6">
+//           <h1 className="text-2xl font-bold text-white mb-6">User Management</h1>
+          
+//           {/* Search Form */}
+//           <form onSubmit={handleSearch} className="mb-6 bg-gray-800 p-4 rounded-lg">
+//             <div className="flex flex-col sm:flex-row gap-4">
+//               <div className="flex-1">
+//                 <label htmlFor="searchQuery" className="block text-sm font-medium text-gray-400 mb-1">
+//                   Search Users
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id="searchQuery"
+//                   value={searchQuery}
+//                   onChange={(e) => setSearchQuery(e.target.value)}
+//                   placeholder="Search by name or email"
+//                   className="w-full bg-gray-700 text-white px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+//                 />
+//               </div>
+              
+//               <div className="w-full sm:w-48">
+//                 <label htmlFor="role" className="block text-sm font-medium text-gray-400 mb-1">
+//                   Role
+//                 </label>
+//                 <select
+//                   id="role"
+//                   value={role}
+//                   onChange={(e) => setRole(e.target.value)}
+//                   className="w-full bg-gray-700 text-white px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+//                 >
+//                   <option value="">All Roles</option>
+//                   <option value="student">Student</option>
+//                   <option value="instructor">Instructor</option>
+//                   <option value="admin">Admin</option>
+//                 </select>
+//               </div>
+              
+//               <div className="flex items-end">
+//                 <button
+//                   type="submit"
+//                   className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+//                   disabled={loading}
+//                 >
+//                   {loading ? "Searching..." : "Search"}
+//                 </button>
+//               </div>
+//             </div>
+//           </form>
+          
+//           {/* Items Per Page */}
+//           <div className="flex justify-end mb-4">
+//             <div className="flex items-center gap-2">
+//               <span className="text-sm text-gray-400">Show:</span>
+//               <select
+//                 value={itemsPerPage}
+//                 onChange={handleLimitChange}
+//                 className="px-2 py-1 border bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+//               >
+//                 <option value={5}>5</option>
+//                 <option value={10}>10</option>
+//                 <option value={25}>25</option>
+//                 <option value={50}>50</option>
+//               </select>
+//               <span className="text-sm text-gray-400">per page</span>
+//             </div>
+//           </div>
+          
+//           {/* Results Table */}
+//           <div className="overflow-x-auto">
+//             <table className="w-full border-collapse">
+//               <thead>
+//                 <tr className="bg-gray-800">
+//                   <th className="px-4 py-3 text-left text-sm font-semibold text-white">Name</th>
+//                   <th className="px-4 py-3 text-left text-sm font-semibold text-white">Email</th>
+//                   <th className="px-4 py-3 text-left text-sm font-semibold text-white">Role</th>
+//                   <th className="px-4 py-3 text-center text-sm font-semibold text-white">Actions</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {loading ? (
+//                   <tr>
+//                     <td colSpan={4} className="px-4 py-8 text-center text-gray-400">
+//                       Loading...
+//                     </td>
+//                   </tr>
+//                 ) : users.length === 0 ? (
+//                   <tr>
+//                     <td colSpan={4} className="px-4 py-8 text-center text-gray-400">
+//                       No users found
+//                     </td>
+//                   </tr>
+//                 ) : (
+//                   users.map((user) => (
+//                     <tr key={user._id} className="border-t border-gray-700 hover:bg-gray-800">
+//                       <td className="px-4 py-3 text-sm text-white">{user.name}</td>
+//                       <td className="px-4 py-3 text-sm text-white">{user.email}</td>
+//                       <td className="px-4 py-3">
+//                         <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+//                           user.role === 'admin' 
+//                             ? 'bg-red-100 text-red-800' 
+//                             : user.role === 'instructor' 
+//                               ? 'bg-blue-100 text-blue-800' 
+//                               : 'bg-green-100 text-green-800'
+//                         }`}>
+//                           {user.role}
+//                         </span>
+//                       </td>
+//                       <td className="px-4 py-3 text-center">
+//                         <button className="text-blue-400 hover:text-blue-300 text-sm mr-2">
+//                           Edit
+//                         </button>
+//                         <button className="text-red-400 hover:text-red-300 text-sm">
+//                           Delete
+//                         </button>
+//                       </td>
+//                     </tr>
+//                   ))
+//                 )}
+//               </tbody>
+//             </table>
+//           </div>
+          
+//           {/* Pagination Controls */}
+//           <div className="flex items-center justify-between mt-6">
+//             <div className="text-sm text-gray-400">
+//               Showing {users.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to{" "}
+//               {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} users
+//             </div>
+//             <div className="flex gap-2">
+//               <button
+//                 onClick={() => handlePageChange(currentPage - 1)}
+//                 disabled={currentPage === 1}
+//                 className="p-2 rounded-lg text-gray-400 hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+//               >
+//                 <ChevronLeft className="w-5 h-5" />
+//               </button>
+              
+//               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+//                 const pageNum = currentPage > 3 
+//                   ? currentPage - 3 + i + (totalPages - currentPage < 2 ? totalPages - currentPage - 2 : 0) 
+//                   : i + 1;
+                  
+//                 if (pageNum <= totalPages) {
+//                   return (
+//                     <button
+//                       key={pageNum}
+//                       onClick={() => handlePageChange(pageNum)}
+//                       className={`px-3 py-1 rounded-lg ${
+//                         currentPage === pageNum 
+//                           ? "bg-purple-600 text-white" 
+//                           : "text-gray-400 hover:bg-gray-800"
+//                       }`}
+//                     >
+//                       {pageNum}
+//                     </button>
+//                   );
+//                 }
+//                 return null;
+//               })}
+              
+//               <button
+//                 onClick={() => handlePageChange(currentPage + 1)}
+//                 disabled={currentPage === totalPages || totalPages === 0}
+//                 className="p-2 rounded-lg text-gray-400 hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+//               >
+//                 <ChevronRight className="w-5 h-5" />
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// "use client"
+// import { useState, useEffect } from "react";
+// import { adminSearchStudents } from "@/api/studentApi";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
+
+// interface User {
+//   _id: string;
+//   name: string;
+//   email: string;
+//   role: string;
+//   createdAt: string;
+// }
+
+// interface PaginationData {
+//   total: number;
+//   page: number;
+//   limit: number;
+//   pages: number;
+// }
+
+// interface queryParams { q: string; role: string; page: number; limit: number }
+
+// interface UserSearchResponse {
+//   success: boolean;
+//   data: User[];
+//   pagination: PaginationData;
+// }
+// const UsersTable = () => {
+//   // State for search parameters and results
+//   const [searchQuery, setSearchQuery] = useState(""); // Default: empty string
+//   const [role, setRole] = useState("student"); // Default: "student"
+//   const [users, setUsers] = useState<User[]>([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState<Error | null>(null);
+
+//   // Pagination state
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [itemsPerPage, setItemsPerPage] = useState(10);
+//   const [totalPages, setTotalPages] = useState(1);
+//   const [totalItems, setTotalItems] = useState(0);
+
+//   // Initialize data on first load
+//   useEffect(() => {
+//     fetchUsers(searchQuery, role, currentPage, itemsPerPage);
+//   }, []);
+
+//   // Function to fetch users with search and pagination
+//   const fetchUsers = async (query: string, role: string, page: number, limit: number) => {
+//     try {
+//       setLoading(true);
+
+//       // Build the query object
+//       const queryParams = {
+//         q: query,
+//         role: role,
+//         page: page,
+//         limit: limit,
+//       };
+
+//       // Make the API request
+//       const response = await adminSearchStudents(queryParams);
+
+//       // Check if the response is successful
+//       if (!response.success) {
+//         throw new Error("Failed to fetch users");
+//       }
+
+//       // Update state with response data
+//       setUsers(response.data);
+//       setTotalPages(response.pagination.pages);
+//       setTotalItems(response.pagination.total);
+//       setError(null);
+//     } catch (err) {
+//       setError(err as Error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   // Handle search form submission
+//   const handleSearch = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setCurrentPage(1); // Reset to first page on new search
+//     fetchUsers(searchQuery, role, 1, itemsPerPage);
+//   };
+
+//   // Handle page change
+//   const handlePageChange = (newPage: number) => {
+//     setCurrentPage(newPage);
+//     fetchUsers(searchQuery, role, newPage, itemsPerPage);
+//   };
+
+//   // Handle items per page change
+//   const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//     const newLimit = parseInt(e.target.value);
+//     setItemsPerPage(newLimit);
+//     setCurrentPage(1); // Reset to first page when changing limit
+//     fetchUsers(searchQuery, role, 1, newLimit);
+//   };
+
+//   // If there's an error, we can display it
+//   if (error) {
+//     return (
+//       <div className="text-red-500 p-4">
+//         Error loading users: {error.message}
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="min-h-screen p-6">
+//       <div className="max-w-7xl mx-auto bg-gray-900 rounded-lg shadow-sm">
+//         <div className="p-6">
+//           <h1 className="text-2xl font-bold text-white mb-6">User Management</h1>
+
+//           {/* Search Form */}
+//           <form onSubmit={handleSearch} className="mb-6 bg-gray-800 p-4 rounded-lg">
+//             <div className="flex flex-col sm:flex-row gap-4">
+//               <div className="flex-1">
+//                 <label htmlFor="searchQuery" className="block text-sm font-medium text-gray-400 mb-1">
+//                   Search Users
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id="searchQuery"
+//                   value={searchQuery}
+//                   onChange={(e) => setSearchQuery(e.target.value)}
+//                   placeholder="Search by name or email"
+//                   className="w-full bg-gray-700 text-white px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+//                 />
+//               </div>
+
+//               <div className="w-full sm:w-48">
+//                 <label htmlFor="role" className="block text-sm font-medium text-gray-400 mb-1">
+//                   Role
+//                 </label>
+//                 <select
+//                   id="role"
+//                   value={role}
+//                   onChange={(e) => setRole(e.target.value)}
+//                   className="w-full bg-gray-700 text-white px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+//                 >
+//                   <option value="">All Roles</option>
+//                   <option value="student">Student</option>
+//                   <option value="instructor">Instructor</option>
+//                   <option value="admin">Admin</option>
+//                 </select>
+//               </div>
+
+//               <div className="flex items-end">
+//                 <button
+//                   type="submit"
+//                   className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+//                   disabled={loading}
+//                 >
+//                   {loading ? "Searching..." : "Search"}
+//                 </button>
+//               </div>
+//             </div>
+//           </form>
+
+//           {/* Rest of the component remains the same */}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default UsersTable;

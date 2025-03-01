@@ -64,7 +64,7 @@ const StudentBookings = () => {
                 slotData: slotResponse.data
             };
         } catch (error) {
-            console.error(`Error fetching details for booking ${booking._id}:`, error);
+            // console.error(`Error fetching details for booking ${booking._id}:`, error);
             return {
                 ...booking,
                 instructorData: undefined,
@@ -91,7 +91,7 @@ const StudentBookings = () => {
 
                 setBookings(enrichedBookings);
             } catch (error) {
-                console.error('Failed to fetch bookings:', error);
+                // console.error('Failed to fetch bookings:', error);
                 toast.error('Failed to load bookings. Please try again later.');
             } finally {
                 setIsLoading(false);

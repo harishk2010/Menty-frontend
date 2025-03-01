@@ -5,6 +5,7 @@ const studentRoutes={
     adminGetStudents:'/user/student/getStudents',
     adminBlockStudent:'/user/student/blockStudent/',
     getStudentDataById:'/user/student/student/',
+    adminSearchStudents:'/user/student/search',
     
     
     adminGetInstructors:'/user/instructors/getInstructors',

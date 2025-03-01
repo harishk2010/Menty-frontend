@@ -1,6 +1,11 @@
 import InstructorRoutes from "@/@types/endPoints/InstructorRoutes";
 import { API } from "@/service/axios";
-
+interface PaginatedMentorsResponse {
+  mentors: any[];
+  currentPage: number;
+  totalPages: number;
+  totalMentors: number;
+}
 export const getInstructorData = async (email: string | null): Promise<any> => {
   try {
     console.log("getInsssss",email)
@@ -87,3 +92,65 @@ export const updatePlanPrice = async (planPrice:number,instructorId:string): Pro
     console.error("Error in updatePlanPrice API call:", error);
   }
 };
+
+export async function getAllPaginatedMentors(
+  page: number = 1,
+  limit: number = 6,
+  search: string = "",
+  sort: string = "verified",
+  expertise: string[] = []
+): Promise<PaginatedMentorsResponse>{
+  try {
+    // Build the query parameters
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    
+    if (search) {
+      params.append('search', search);
+    }
+    
+    if (sort) {
+      params.append('sort', sort);
+    }
+    
+    if (expertise && expertise.length > 0) {
+      expertise.forEach(exp => params.append('expertise', exp));
+    }
+    
+    const response = await API.get(`${InstructorRoutes.getAllPaginatedMentors}?${params}`, {
+    
+      withCredentials:true
+    });
+
+    if (!response) {
+      throw new Error('Failed to fetch mentors');
+    }
+    console.log(response,"response")
+
+    return await response.data as unknown as PaginatedMentorsResponse
+  } catch (error) {
+    console.error('Error fetching paginated mentors:', error);
+    throw error;
+  }
+}
+
+export async function getMentorExpertise(): Promise<{success: boolean, data: string[]}> {
+  try {
+    const response = await API.get(InstructorRoutes.getMentorsExpertise, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials:true
+    });
+
+    if (!response) {
+      throw new Error('Failed to fetch mentor expertise');
+    }
+
+    return await response as unknown as {success: boolean, data: string[]}
+  } catch (error) {
+    console.error('Error fetching mentor expertise:', error);
+    return { success: false, data: [] };
+  }
+}
