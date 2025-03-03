@@ -543,9 +543,9 @@ const ProfileHeader = () => {
                     <p className="text-gray-600">
                       <span className="font-medium">Expertise:</span> {instructorData.expertise}
                     </p>
-                    <p className="text-gray-600">
+                    {/* <p className="text-gray-600">
                       <span className="font-medium">Skills:</span> {instructorData.skills}
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>

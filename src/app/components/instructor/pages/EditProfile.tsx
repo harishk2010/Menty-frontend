@@ -12,6 +12,7 @@ import { getInstructorData, updateProfile } from "@/api/instructorApi";
 import { toast } from "react-toastify";
 import Loader from "@/app/components/fallbacks/Loader";
 import { useRouter } from "next/navigation";
+import { getCategories } from "@/api/adminApi";
 
 const PersonalDetailsSchema = Yup.object().shape({
   username: Yup.string()
@@ -35,14 +36,20 @@ const PersonalDetailsSchema = Yup.object().shape({
     }
   ),
   expertise: Yup.string().min(3, "expertise must be at least 3 characters").required("Expertised is Required"),
-  skills: Yup.string().min(3, "skill must be at least 3 characters").required("Skills is important"),
+  // skills: Yup.string().min(3, "skill must be at least 3 characters").required("Skills is important"),
 });
+
+interface Expertise{
+  _id:string,
+  categoryName:string
+}
 
 export default function PersonalDetailsForm() {
   
   const [studentData, setStudentData] = useState<any>(null); // Initially set to null
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [expertiseOptions,setExpertiseOptions]=useState<Expertise[] | null>()
 
   const loggedIn = useSelector((state: RootState) => state.instructor.email);
   const Instructor = useSelector((state: RootState) => state.instructor);
@@ -54,6 +61,12 @@ export default function PersonalDetailsForm() {
       if (loggedIn && Instructor?.email) {
         try {
           const fetchedData = await getInstructorData(Instructor.email);
+          const expertises=await getCategories()
+          // if(!expertises){
+          //   throw new Error("No Expertises!")
+          // }
+          console.log(expertises,"expertesise")
+          setExpertiseOptions(expertises|| [])
           setStudentData(fetchedData || {}); // Set fetched data or empty object
         } catch (error) {
           console.error("Error fetching student data:", error);
@@ -164,7 +177,7 @@ export default function PersonalDetailsForm() {
                 placeholder="Enter your Phone No"
               />
             </div>
-            <div>
+            {/* <div>
               <InputField
                 label="Expertise"
                 type="text"
@@ -174,8 +187,32 @@ export default function PersonalDetailsForm() {
                 onBlur={handleBlur}
                 placeholder="Enter your Expertised Field"
               />
+            </div> */}
+             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Expertise
+              </label>
+              <select
+                name="expertise"
+                value={values.expertise || ""}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="mt-1 block w-full py-2 px-3 border text-black border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              >
+                <option value="" disabled>Select your expertise</option>
+                {expertiseOptions?.map((option,index) => (
+                  <option key={option._id} value={option.categoryName}>
+                    {option.categoryName}
+                  </option>
+                ))}
+              </select>
+              <ErrorMessage
+                name="expertise"
+                component="div"
+                className="text-red-500 text-xs mt-1"
+              />
             </div>
-            <div>
+            {/* <div>
               <InputField
                 label="skills"
                 type="text"
@@ -185,7 +222,7 @@ export default function PersonalDetailsForm() {
                 onBlur={handleBlur}
                 placeholder="Enter your skills ..."
               />
-            </div>
+            </div> */}
 
             <div className="flex flex-col items-center col-span-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">

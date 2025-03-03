@@ -147,8 +147,9 @@ export async function getMentorExpertise(): Promise<{success: boolean, data: str
     if (!response) {
       throw new Error('Failed to fetch mentor expertise');
     }
+    console.log(response,"expertisee")
 
-    return await response as unknown as {success: boolean, data: string[]}
+    return await response.data as unknown as {success: boolean, data: string[]}
   } catch (error) {
     console.error('Error fetching mentor expertise:', error);
     return { success: false, data: [] };
