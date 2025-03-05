@@ -405,3 +405,28 @@ export const getAllPaginatedCourses = async (
     throw error;
   }
 };
+
+
+export const addReview=async(courseId:string,rating:number,comment:string)=>{
+  try {
+    const response=await API.post(CourseRoutes.ADD_REVIEW,{courseId,rating,comment},{
+      withCredentials:true
+    })
+    return response.data
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+export const GetCourseReviews=async(courseId:string)=>{
+  try {
+    const response=await API.get(`${CourseRoutes.GET_REVIEW}${courseId}`,{
+      withCredentials:true
+    })
+    console.log(response.data.data,"reviews")
+    return response.data
+    
+  } catch (error) {
+    console.log(error)
+  }
+}

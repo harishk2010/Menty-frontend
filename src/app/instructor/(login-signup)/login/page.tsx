@@ -73,7 +73,7 @@ export default function LoginPage(): ReactElement {
           profilePicUrl:user.profilePicUrl
         })))
         toast.success(response.message)
-        router.push('/instructor/profile')
+        router.push('/instructor/dashboard')
 
       } else {
         const { message } = response.response?.data
@@ -111,7 +111,7 @@ export default function LoginPage(): ReactElement {
         })))
 
             
-          router.replace(`/instructor/profile`);
+          router.replace(`/instructor/dashboard`);
        
       } else {
       

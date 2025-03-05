@@ -31,6 +31,10 @@ const CourseRoutes={
     EDIT_QUIZZ:'/course/quiz/editQuiz/',
     GET_QUIZZ:'/course/quiz/getQuiz/',
     SUBMIT_QUIZZ_RESULT:'/course/quiz/sumbitResult/',
+
+    //review
+    ADD_REVIEW:'/course/review/addReview',
+    GET_REVIEW:'/course/review/',
 }
 
 export default CourseRoutes
