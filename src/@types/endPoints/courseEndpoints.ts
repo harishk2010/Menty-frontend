@@ -35,6 +35,9 @@ const CourseRoutes={
     //review
     ADD_REVIEW:'/course/review/addReview',
     GET_REVIEW:'/course/review/',
+
+    //instructor Dashboard
+    GET_INSTRUCTOR_DASHBOARD:'/course/course/instructorDashboard',
 }
 
 export default CourseRoutes

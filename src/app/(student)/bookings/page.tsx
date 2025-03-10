@@ -3,12 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { format, isToday, isFuture, isPast, startOfDay, isWithinInterval, subMinutes } from 'date-fns';
-import { Clock, Calendar, User } from 'lucide-react';
+import { format, isToday, isFuture, isPast, isWithinInterval, subMinutes } from 'date-fns';
+import { Clock, Calendar, User, Star } from 'lucide-react';
 import { getStudentData } from '@/api/studentApi';
 import { getStudentBookings } from '@/api/bookingApi';
 import { getInstructorDataById } from '@/api/instructorApi';
 import { getSlot } from '@/api/bookingApi';
+import { addMentorReview } from '@/api/instructorApi';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
@@ -35,6 +36,7 @@ interface Booking {
     txnid: string;
     amountPaid: number;
     createdAt: Date;
+    hasReview?: boolean;
 }
 
 interface EnrichedBooking extends Omit<Booking, 'instructorId' | 'slotId'> {
@@ -48,6 +50,11 @@ const StudentBookings = () => {
     const [bookings, setBookings] = useState<EnrichedBooking[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'today' | 'upcoming' | 'completed' | 'cancelled'>('today');
+    const [showFeedbackForm, setShowFeedbackForm] = useState<string | null>(null);
+    const [review, setReview] = useState<{rating: number, comment: string}>({
+        rating: 0,
+        comment: ""
+    });
     const userData = useSelector((state: RootState) => state.user);
     const router = useRouter();
 
@@ -162,7 +169,65 @@ const StudentBookings = () => {
     };
 
     const handleLeaveFeedback = (bookingId: string) => {
-        // Implement your feedback logic here
+        setShowFeedbackForm(bookingId);
+        setReview({rating: 0, comment: ""});
+    };
+
+    // Render stars function
+    const renderStars = (rating: number, interactive = false, onStarClick?: (rating: number) => void) => {
+        return Array.from({ length: 5 }, (_, index) => (
+            <Star
+                key={index}
+                className={`h-5 w-5 cursor-pointer ${
+                    index < Math.floor(rating) ? "text-yellow-500" : "text-gray-300"
+                }`}
+                fill={index < Math.floor(rating) ? "#FFD700" : "none"}
+                onClick={() => interactive && onStarClick && onStarClick(index + 1)}
+            />
+        ));
+    };
+
+    const handleSubmitFeedback = async (e: React.FormEvent, booking: EnrichedBooking) => {
+        e.preventDefault();
+        
+        if (review.rating === 0) {
+            toast.error("Please select a rating");
+            return;
+        }
+      
+        if (!booking.instructorId) {
+            toast.error("Mentor information is missing");
+            return;
+        }
+      
+        try {
+            const response = await addMentorReview(
+                booking.instructorId, 
+                review.rating, 
+                review.comment
+            );
+          
+            if (response?.success) {
+                toast.success('Review submitted successfully');
+                
+                // Update the booking to mark it as reviewed
+                const updatedBookings = bookings.map(b => 
+                    b._id === booking._id 
+                        ? { ...b, hasReview: true }
+                        : b
+                );
+                setBookings(updatedBookings);
+                
+                // Reset the form
+                setReview({ rating: 0, comment: "" });
+                setShowFeedbackForm(null);
+            } else {
+                toast.error(response?.message || 'Failed to submit review');
+            }
+        } catch (error: any) {
+            console.error('Review submission error:', error);
+            toast.error(error.message || 'An unexpected error occurred');
+        }
     };
 
     const filteredBookings = getFilteredBookings();
@@ -191,7 +256,6 @@ const StudentBookings = () => {
 
                 <div className="flex space-x-2 mb-6">
                     {['today', 'upcoming', 'completed'].map((tab) => (
-                    // {['today', 'upcoming', 'completed', 'cancelled'].map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab as 'today' | 'upcoming' | 'completed' | 'cancelled')}
@@ -295,31 +359,64 @@ const StudentBookings = () => {
                                     </div>
                                 </div>
 
-                                {/* {(activeTab === 'upcoming' || activeTab === 'today') && (
-                                    <div className="mt-6 flex items-center justify-end space-x-4">
-                                        <button 
-                                            onClick={() => handleReschedule(booking._id)}
-                                            className="px-6 py-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                                        >
-                                            Reschedule
-                                        </button>
-                                        <button 
-                                            onClick={() => handleCancelBooking(booking._id)}
-                                            className="px-6 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                )} */}
-
                                 {activeTab === 'completed' && (
                                     <div className="mt-6 flex items-center justify-end">
-                                        <button 
-                                            onClick={() => handleLeaveFeedback(booking._id)}
-                                            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                                        >
-                                            Leave Feedback
-                                        </button>
+                                        {!booking.hasReview && showFeedbackForm !== booking._id && (
+                                            <button 
+                                                onClick={() => handleLeaveFeedback(booking._id)}
+                                                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                                            >
+                                                Leave Feedback
+                                            </button>
+                                        )}
+                                        {booking.hasReview && (
+                                            <div className="px-6 py-2 bg-green-100 text-green-800 rounded-lg">
+                                                Feedback Submitted
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {/* Feedback Form */}
+                                {showFeedbackForm === booking._id && (
+                                    <div className="mt-6 p-6 bg-gray-50 rounded-lg">
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                                            Rate Your Experience with {booking.instructorData?.username}
+                                        </h3>
+                                        <form onSubmit={(e) => handleSubmitFeedback(e, booking)}>
+                                            <div className="mb-4">
+                                                <label className="block text-gray-700 mb-2">Your Rating</label>
+                                                <div className="flex space-x-1">
+                                                    {renderStars(review.rating, true, (rating) => setReview(prev => ({...prev, rating})))}
+                                                </div>
+                                            </div>
+                                            <div className="mb-4">
+                                                <label className="block text-gray-700 mb-2">Your Feedback</label>
+                                                <textarea 
+                                                    className="w-full p-2 border rounded-lg text-gray-800"
+                                                    rows={4}
+                                                    placeholder="Share your experience with this mentor"
+                                                    value={review.comment}
+                                                    onChange={(e) => setReview(prev => ({...prev, comment: e.target.value}))}
+                                                    required
+                                                ></textarea>
+                                            </div>
+                                            <div className="flex justify-end space-x-3">
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => setShowFeedbackForm(null)}
+                                                    className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button 
+                                                    type="submit" 
+                                                    className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                                                >
+                                                    Submit Feedback
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 )}
 

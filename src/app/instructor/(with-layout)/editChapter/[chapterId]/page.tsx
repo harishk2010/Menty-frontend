@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Video } from 'lucide-react';
+import { Video, FileText } from 'lucide-react';
 import { updateChapter, getChapter } from '@/api/courseApi';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -14,22 +14,24 @@ interface ChapterInputs {
   title: string;
   description: string;
   chapterVideo: File | null;
+  captionsFile: File | null;
 }
+
 interface Instructor {
   isVerified: boolean;
 }
 
-
 const EditChapter: React.FC = () => {
   const { chapterId } = useParams<{ chapterId: string }>();
-  const [courseId,setCourseId]=useState<{courseId:string}>()
+  const [courseId, setCourseId] = useState<{courseId: string}>();
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [captionsFile, setCaptionsFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentVideoName, setCurrentVideoName] = useState<string>('');
+  const [currentCaptionsName, setCurrentCaptionsName] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const Instructor = useSelector((state: RootState) => state.instructor);
-
-     const [instructorData, setInstructorData] = useState<Instructor>();
+  const [instructorData, setInstructorData] = useState<Instructor>();
 
   const router = useRouter();
   
@@ -44,20 +46,20 @@ const EditChapter: React.FC = () => {
   useEffect(() => {
     const fetchChapterData = async () => {
       try {
-        const response = await getChapter( chapterId);
+        const response = await getChapter(chapterId);
         if (response) {
           const chapter = response.data;
           const instructor = await getInstructorDataById(Instructor.userId);
           setInstructorData(instructor);
 
-          setCourseId(chapter.courseId ||"")
+          setCourseId(chapter.courseId || "");
           
           setValue('title', chapter.chapterTitle);
           setValue('description', chapter.description);
           setCurrentVideoName(chapter.videoUrl || 'No video uploaded');
+          setCurrentCaptionsName(chapter.captionsUrl || 'No captions uploaded');
         } else {
           toast.error('Failed to fetch chapter data');
-        //   router.back();
         }
       } catch (error) {
         console.error('Error fetching chapter:', error);
@@ -68,11 +70,24 @@ const EditChapter: React.FC = () => {
     };
 
     fetchChapterData();
-  }, [ ]);
+  }, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
+    if (!file?.type.startsWith('video/')) {
+      toast.warn("Choose Only Video Files!");
+      return;
+    }
     setVideoFile(file);
+  };
+
+  const handleCaptionsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file && !file.name.endsWith('.vtt')) {
+      toast.warn("Captions must be in VTT format!");
+      return;
+    }
+    setCaptionsFile(file);
   };
 
   const onSubmit: SubmitHandler<ChapterInputs> = async (data: ChapterInputs) => {
@@ -82,15 +97,20 @@ const EditChapter: React.FC = () => {
       const formData = new FormData();
       formData.append('title', data.title);
       formData.append('description', data.description);
+      
       if (videoFile) {
         formData.append('chapterVideo', videoFile);
       }
+      
+      if (captionsFile) {
+        formData.append('captionsFile', captionsFile);
+      }
+      
       if(courseId){
-
-          formData.append('courseId',courseId as any)
+        formData.append('courseId', courseId as any);
       }
 
-      const response = await updateChapter(chapterId,formData);
+      const response = await updateChapter(chapterId, formData);
       if (response.success) {
         toast.success(response.message);
         router.back();
@@ -105,8 +125,8 @@ const EditChapter: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-  if (!instructorData?.isVerified) return <GetVerified/>
 
+  if (!instructorData?.isVerified) return <GetVerified/>;
 
   if (isLoading) {
     return (
@@ -186,9 +206,38 @@ const EditChapter: React.FC = () => {
                     type="file"
                     className="hidden"
                     accept="video/*"
-                    onChange={handleFileChange}
+                    onChange={handleVideoChange}
                   />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 flex items-center">
+                  Captions (Optional)
+                  <span className="ml-2 text-xs text-gray-500 italic">VTT format</span>
+                </label>
+                <div 
+                  className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer"
+                  onClick={() => document.getElementById('captionsFile')?.click()}
+                >
+                  <FileText className="mx-auto h-12 w-12 text-gray-400" />
+                  <p className="mt-2 text-sm text-gray-600">
+                    {captionsFile ? captionsFile.name : `Current captions: ${currentCaptionsName}`}
+                  </p>
+                  <p className="mt-2 text-xs text-gray-500">
+                    Click to upload new captions file (optional)
+                  </p>
+                  <input
+                    id="captionsFile"
+                    type="file"
+                    className="hidden"
+                    accept=".vtt"
+                    onChange={handleCaptionsChange}
+                  />
+                </div>
+                <p className="text-xs text-gray-500">
+                  Adding captions helps make your content more accessible and improves SEO.
+                </p>
               </div>
 
               <div className="flex gap-4">

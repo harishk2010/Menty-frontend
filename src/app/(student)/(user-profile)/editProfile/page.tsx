@@ -60,45 +60,63 @@ export default function PersonalDetailsForm() {
   if (studentData === null) {
     return <Loader />;
   }
+  
   const handleImagePreview = (file: File | null) => {
     if (file) {
+      // Validate file is an image
+      if (!file.type.startsWith('image/')) {
+        toast.warn("Choose Only Image Files!");
+        return null;
+      }
+       
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.warn('Image size should be less than 5MB');
+        return null;
+      }
+      
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
+      return file; // Return the valid file
     } else {
       setImagePreview(null);
+      return null;
     }
   };
 
   const handleSubmit = async (data: typeof studentData) => {
-    // console.log('data: ', data)
-
     const formData = new FormData();
 
     // Check if profile image exists and append it to form data
-    if (data.profile && data.profile) {
+    if (data.profile instanceof File) {
       formData.append("profile", data.profile);
     }
 
     // Append other fields
     for (const key of Object.keys(data)) {
-      if (key !== "profile") {
+      if (key !== "profile" && data[key] !== undefined && data[key] !== null) {
         formData.append(key, data[key]);
       }
     }
 
     // Log form data for debugging
     for (const [key, value] of formData.entries()) {
-      if (key == "profile") console.log(`${key}:`, value);
+      console.log(`${key}:`, value);
     }
 
-    const response = await updateProfile(formData);
-    console.log("response:", response.user);
-    if (response) {
-      toast.success(response.message);
-      setStudentData(response.user);
+    try {
+      const response = await updateProfile(formData);
+      console.log("response:", response.user);
+      if (response) {
+        toast.success(response.message);
+        setStudentData(response.user);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile");
     }
   };
 
@@ -185,8 +203,10 @@ export default function PersonalDetailsForm() {
                   accept="image/*"
                   onChange={(event) => {
                     const file = event.target.files?.[0] || null;
-                    setFieldValue("profile", file);
-                    handleImagePreview(file);
+                    const validatedFile = handleImagePreview(file);
+                    if (validatedFile) {
+                      setFieldValue("profile", validatedFile);
+                    }
                   }}
                   className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500"
                 />

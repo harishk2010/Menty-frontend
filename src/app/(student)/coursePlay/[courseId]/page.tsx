@@ -1,228 +1,17 @@
+
 // "use client"
-// import React, { useState } from 'react';
-
-// interface Chapter {
-//   id: string;
-//   title: string;
-//   duration: string;
-//   isCompleted: boolean;
-//   sections: {
-//     id: string;
-//     title: string;
-//     duration: string;
-//     isCompleted: boolean;
-//     videoUrl?: string;
-//   }[];
-// }
-
-// const CourseStudyPage = () => {
-//   const [activeChapterId, setActiveChapterId] = useState('1');
-//   const [activeSectionId, setActiveSectionId] = useState('1.1');
-//   const [isChapterListOpen, setIsChapterListOpen] = useState(true);
-
-//   // Sample data - replace with your actual data
-//   const chapters: Chapter[] = [
-//     {
-//       id: '1',
-//       title: 'Getting Started with Web Development',
-//       duration: '45:00',
-//       isCompleted: true,
-//       sections: [
-//         {
-//           id: '1.1',
-//           title: 'Introduction to HTML',
-//           duration: '15:30',
-//           isCompleted: true,
-//           videoUrl: '/api/placeholder/640/360'
-//         },
-//         {
-//           id: '1.2',
-//           title: 'Basic HTML Tags',
-//           duration: '12:45',
-//           isCompleted: true,
-//           videoUrl: '/api/placeholder/640/360'
-//         }
-//       ]
-//     },
-//     {
-//       id: '2',
-//       title: 'CSS Fundamentals',
-//       duration: '55:00',
-//       isCompleted: false,
-//       sections: [
-//         {
-//           id: '2.1',
-//           title: 'CSS Selectors',
-//           duration: '18:20',
-//           isCompleted: false,
-//           videoUrl: '/api/placeholder/640/360'
-//         },
-//         {
-//           id: '2.2',
-//           title: 'Box Model',
-//           duration: '20:15',
-//           isCompleted: false,
-//           videoUrl: '/api/placeholder/640/360'
-//         }
-//       ]
-//     }
-//   ];
-
-//   const activeSection = chapters
-//     .flatMap(chapter => chapter.sections)
-//     .find(section => section.id === activeSectionId);
-
-//   return (
-//     <div className="flex h-screen bg-gray-100">
-//       {/* Sidebar with chapters */}
-//       <div className={`bg-white w-80 flex-shrink-0 border-r border-gray-200 transition-all duration-300 
-//         ${isChapterListOpen ? 'translate-x-0' : '-translate-x-80'}`}>
-//         <div className="p-4 border-b border-gray-200">
-//           <h2 className="text-xl font-bold text-gray-800">Course Content</h2>
-//           <p className="text-sm text-gray-500 mt-1">12 chapters • 3.5 hours</p>
-//         </div>
-        
-//         <div className="overflow-y-auto h-[calc(100vh-5rem)]">
-//           {chapters.map(chapter => (
-//             <div key={chapter.id} className="border-b border-gray-200">
-//               <button
-//                 onClick={() => setActiveChapterId(chapter.id)}
-//                 className="w-full p-4 text-left hover:bg-gray-50"
-//               >
-//                 <div className="flex items-center justify-between">
-//                   <div className="flex items-center space-x-3">
-//                     {chapter.isCompleted ? (
-//                       <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-//                         <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-//                         </svg>
-//                       </div>
-//                     ) : (
-//                       <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
-//                     )}
-//                     <span className="text-sm font-medium text-gray-800">{chapter.title}</span>
-//                   </div>
-//                   <span className="text-xs text-gray-500">{chapter.duration}</span>
-//                 </div>
-//               </button>
-              
-//               {chapter.id === activeChapterId && (
-//                 <div className="bg-gray-50">
-//                   {chapter.sections.map(section => (
-//                     <button
-//                       key={section.id}
-//                       onClick={() => setActiveSectionId(section.id)}
-//                       className={`w-full p-4 pl-12 text-left hover:bg-gray-100 flex items-center justify-between
-//                         ${section.id === activeSectionId ? 'bg-blue-50' : ''}`}
-//                     >
-//                       <div className="flex items-center space-x-3">
-//                         {section.isCompleted ? (
-//                           <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
-//                             <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-//                             </svg>
-//                           </div>
-//                         ) : (
-//                           <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
-//                         )}
-//                         <span className="text-sm text-gray-700">{section.title}</span>
-//                       </div>
-//                       <span className="text-xs text-gray-500">{section.duration}</span>
-//                     </button>
-//                   ))}
-//                 </div>
-//               )}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Main content area */}
-//       <div className="flex-1 flex flex-col overflow-hidden">
-//         {/* Top bar */}
-//         <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-//           <button
-//             onClick={() => setIsChapterListOpen(!isChapterListOpen)}
-//             className="p-2 hover:bg-gray-100 rounded-lg"
-//           >
-//             <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-//             </svg>
-//           </button>
-//           <div className="flex items-center space-x-4">
-//             <button className="text-gray-600 hover:text-gray-800">
-//               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-//               </svg>
-//             </button>
-//             <button className="text-gray-600 hover:text-gray-800">
-//               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-//               </svg>
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Video player area */}
-//         <div className="flex-1 overflow-y-auto bg-gray-900">
-//           <div className="aspect-w-16 aspect-h-9 bg-black">
-//             {activeSection?.videoUrl && (
-//               <img 
-//                 src={activeSection.videoUrl} 
-//                 alt="Video placeholder"
-//                 className="w-full h-full object-cover"
-//               />
-//             )}
-//           </div>
-//         </div>
-
-//         {/* Bottom bar with video controls */}
-//         <div className="bg-white border-t border-gray-200 p-4">
-//           <div className="flex justify-between items-center">
-//             <div>
-//               <h3 className="text-lg font-semibold text-gray-800">{activeSection?.title}</h3>
-//               <p className="text-sm text-gray-500">Section {activeSectionId}</p>
-//             </div>
-//             <div className="flex items-center space-x-4">
-//               <button className="p-2 hover:bg-gray-100 rounded-full">
-//                 <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-//                 </svg>
-//               </button>
-//               <button className="p-2 hover:bg-gray-100 rounded-full">
-//                 <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-//                 </svg>
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CourseStudyPage;
-// "use client"
-// import { getPlayCourse } from '@/api/courseApi';
-// import { Check, Play,
-//   Clock,
-//   BarChart,
-//   BookOpen,
-//   Star,
-//   Users,
-//   ChevronRight,
-//   PlayCircle,
-//   Pause,
-//   RotateCcw,
-//   VolumeOff,
-//   FastForward,
-//   SkipBack,
-//   SkipForward, } from 'lucide-react';
-// import { useParams } from 'next/navigation';
 // import React, { useEffect, useRef, useState } from 'react';
+// import { chapterCompleted, getPlayCourse } from '@/api/courseApi';
+// import { 
+//   Check, Play, Clock, BarChart, BookOpen, Star, Users,
+//   ChevronRight, PlayCircle, Pause, RotateCcw, VolumeOff,
+//   FastForward, SkipBack, SkipForward, Volume2 
+// } from 'lucide-react';
+// import { useParams } from 'next/navigation';
 // import { motion } from "framer-motion";
+// import { toast } from 'react-toastify';
 
+// // Your existing interfaces remain the same
 // interface PurchasedCourse {
 //   _id: string;
 //   courseId: CourseDetails;
@@ -266,6 +55,7 @@
 //   courseId: string;
 //   description: string;
 //   videoUrl: string;
+//   captionsUrl: string;
 //   createdAt: string;
 // }
 
@@ -274,72 +64,191 @@
 //   course: Course;
 //   chapters: Chapter[];
 // }
-
 // const CourseStudyPage = () => {
-
-//   const {courseId}=useParams<{courseId:string}>()
-//     const [course, setCourse] = useState<CourseResponse>();
-  
-//   const [activeChapterId, setActiveChapterId] = useState('1');
+//   const { courseId } = useParams<{ courseId: string }>();
+//   const [course, setCourse] = useState<CourseResponse>();
 //   const [activeChapter, setActiveChapter] = useState<Chapter>();
 //   const [isMenuOpen, setIsMenuOpen] = useState(true);
-//    const [isPlaying, setIsPlaying] = useState<boolean>(false);
-//     const [showControls, setShowControls] = useState<boolean>(true);
-//     const [currentTime, setCurrentTime] = useState<number>(0);
-//     const MainVideo = useRef<HTMLVideoElement | null>(null);
-//     const [muted, setMuted] = useState(false);
-//     const [progress, setProgress] = useState(0);
-  
-//     const handlePlayPause = () => {
+//   const [isPlaying, setIsPlaying] = useState(false);
+//   const [showControls, setShowControls] = useState(true);
+//   const [currentTime, setCurrentTime] = useState(0);
+//   const [duration, setDuration] = useState(0);
+//   const [muted, setMuted] = useState(false);
+//   const [progress, setProgress] = useState(0);
+//   const [currentChapterIndex, setCurrentChapterIndex] = useState<number>(0);
+//   const MainVideo = useRef<HTMLVideoElement | null>(null);
+
+//   useEffect(() => {
+//     const fetchCourse = async () => {
 //       try {
-//         if (MainVideo.current) {
-//           isPlaying ? MainVideo.current?.pause() : MainVideo.current?.play();
-//           setIsPlaying(!isPlaying);
+//         const response = await getPlayCourse(courseId);
+//         setCourse(response.data);
+//         // setPurchasedCourse(data.purchasedCourse);
+//         // Set initial active chapter to first chapter
+//         if (response.data?.chapters?.length > 0) {
+//           setActiveChapter(response.data.chapters[0]);
 //         }
 //       } catch (error) {
 //         console.log(error);
 //       }
 //     };
-//     const toggleMute = () => {
-//       if (!MainVideo.current) return;
+//     fetchCourse();
+//   }, [courseId]);
+// console.log("coursee",course,"coursee")
+//   // Video control functions
+//   const handlePlayPause = () => {
+//     if (MainVideo.current) {
+//       if (isPlaying) {
+//         MainVideo.current.pause();
+//       } else {
+//         MainVideo.current.play();
+//       }
+//       setIsPlaying(!isPlaying);
+//     }
+//   };
+//  const handleChapterCompletion=async(chapterId:string)=>{
+// try {
+//   const response=await chapterCompleted(chapterId)
+//   console.log(response,"ress")
+//   if (response.success) {
+//     toast.success(response.message);
+//     setCourse((prevCourse) => {
+//       if (!prevCourse) return prevCourse; // Handle case when prevCourse is undefined
+  
+//       return {
+//         ...prevCourse,
+//         purchasedCourse: {
+//           ...prevCourse.purchasedCourse,
+//           completedChapters: prevCourse.purchasedCourse.completedChapters.map(ch =>
+//             ch.chapterId === chapterId ? { ...ch, isCompleted: !ch.isCompleted } : ch
+//           )
+//         }
+//       };
+//     });
+//   }
+  
+  
+// } catch (error:any) {
+//   toast.error(error.message)
+// }
+//  }
+//   const toggleMute = () => {
+//     if (MainVideo.current) {
 //       MainVideo.current.muted = !muted;
 //       setMuted(!muted);
-//     };
-  
-//     // Restart video
-//     const restartVideo = () => {
-//       if (!MainVideo.current) return;
-//       MainVideo.current.currentTime = 0;
-//     };
-//     const forwardTenSec = () => {
-//       if (!MainVideo.current) return;
-//       MainVideo.current.currentTime += 10;
-//     };
-//     const backwardTenSec = () => {
-//       if (!MainVideo.current) return;
-//       MainVideo.current.currentTime -= 10;
-//     };
-
-//    useEffect(() => {
-//       try {
-//         const fetchCourse = async () => {
-//           const response = await getPlayCourse(courseId);
-//           setCourse(response.data || {});
-//         };
-//         fetchCourse();
-//       } catch (error) {
-//         console.log(error);
+//     }
+//   };
+//   const enableCaptions = () => {
+//     if (MainVideo.current) {
+//       // Access text tracks
+//       const textTracks = MainVideo.current.textTracks;
+      
+//       // Enable the first track (if it exists)
+//       if (textTracks.length > 0) {
+//         // Set mode to 'showing' to display captions
+//         textTracks[0].mode = 'showing';
+        
+//         console.log('Captions enabled:', textTracks[0]);
+//       } else {
+//         console.warn('No caption tracks found');
 //       }
-//     }, []);
+//     }
+//   };
 
-//     console.log(course,"fetched")
+//   const restartVideo = () => {
+//     if (MainVideo.current) {
+//       MainVideo.current.currentTime = 0;
+//     }
+//   };
 
- 
+//   const skipTime = (seconds: number) => {
+//     if (MainVideo.current) {
+//       MainVideo.current.currentTime += seconds;
+//     }
+//   };
+
+//   const formatTime = (time: number) => {
+//     const minutes = Math.floor(time / 60);
+//     const seconds = Math.floor(time % 60);
+//     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+//   };
+
+//   // Video event handlers
+//   const handleTimeUpdate = () => {
+//     if (MainVideo.current) {
+//       setCurrentTime(MainVideo.current.currentTime);
+//       setProgress((MainVideo.current.currentTime / MainVideo.current.duration) * 100);
+//     }
+//   };
+
+//   const handleLoadedMetadata = () => {
+//     if (MainVideo.current) {
+//       setDuration(MainVideo.current.duration);
+//     }
+//   };
+
+//   // Handle chapter change
+//   const handleChapterChange = (chapter: Chapter) => {
+//     console.log("chap",chapter)
+//     const index = course?.purchasedCourse.completedChapters.findIndex(ch => ch.chapterId === chapter._id);
+//     if (!index) return; // Prevent errors if chapter is not found.
+
+//     const currentChapter = course?.purchasedCourse?.completedChapters[currentChapterIndex];
+//     const clickedChapter = course?.purchasedCourse?.completedChapters.find(ch => ch.chapterId === chapter._id);
+
+//     if (
+//         index === currentChapterIndex || // Allow replaying the current chapter.
+//         clickedChapter?.isCompleted || // Allow access to completed chapters.
+//         (index === currentChapterIndex + 1 && currentChapter?.isCompleted) // Allow next chapter if current one is completed.
+//     ) {
+//         setCurrentChapterIndex(index);
+//         setActiveChapter(chapter);
+//         setIsPlaying(false);
+//         setCurrentTime(0);
+//         setProgress(0);
+//         if (MainVideo.current) {
+//             MainVideo.current.currentTime = 0;
+//         }
+//     }
+// };
+// // const handleChapterChange = (chapter: Chapter) => {
+// //   const clickedChapter = course?.purchasedCourse?.completedChapters.find(ch => ch.chapterId === chapter._id);
+  
+// //   // Always allow navigation to completed chapters
+// //   if (clickedChapter?.isCompleted) {
+// //       setActiveChapter(chapter);
+// //       setIsPlaying(false);
+// //       setCurrentTime(0);
+// //       setProgress(0);
+// //       if (MainVideo.current) {
+// //           MainVideo.current.currentTime = 0;
+// //       }
+// //       return;
+// //   }
+
+// //   // Find last completed chapter dynamically
+// //   const completedChapters = course?.purchasedCourse?.completedChapters.filter(ch => ch.isCompleted) || [];
+// //   const lastCompletedChapter = completedChapters[completedChapters.length - 1];
+// //   if(!course)return 
+// //   // Allow only the next chapter if the last completed one is right before it
+// //   if (!lastCompletedChapter || 
+// //       course?.chapters.findIndex(ch => ch._id === chapter._id) === 
+// //       course.chapters.findIndex(ch => ch._id === lastCompletedChapter.chapterId) + 1) {
+      
+// //       setActiveChapter(chapter);
+// //       setIsPlaying(false);
+// //       setCurrentTime(0);
+// //       setProgress(0);
+// //       if (MainVideo.current) {
+// //           MainVideo.current.currentTime = 0;
+// //       }
+// //   }
+// // };
 
 
 //   return (
 //     <div className="flex h-screen">
-//       {/* Sidebar */}
+//       {/* Sidebar - Your existing sidebar code remains the same */}
 //       <aside className={`${isMenuOpen ? 'w-72' : 'w-0 lg:w-16'} h-full bg-white text-black shadow transition-all duration-300`}>
 //         <div className="p-4 border-b flex justify-between items-center">
 //           {isMenuOpen && <h2 className="font-bold">Contents</h2>}
@@ -352,128 +261,638 @@
         
 //         {isMenuOpen && (
 //           <nav className="overflow-y-auto h-[calc(100vh-4rem)]">
-//             {course?.chapters.map(chapter => (
-//               <div className={`flex justify-between p-3 items-center ${
-//                 chapter._id === activeChapterId ? 'bg-purple-50 border-l-2 border-purple-500' : ''
-//               }`} key={chapter._id}>
+//             {course?.chapters.map((chapter,index )=> {
+
+//               const isChapterCompleted=course.purchasedCourse.completedChapters.find(
+//                 (ch) => ch.chapterId === chapter._id
+//             )
+            
+//               return (
 //                 <div 
-//                   className={`p-3 pl-6 cursor-pointer text-sm `}
-//                   onClick={() => {
-//                     setActiveChapter(chapter)
-//                     setActiveChapterId(chapter._id)
-                  
-//                   }}
-//                 >
+//                 key={chapter._id}
+//                 className={`flex justify-between p-3 items-center cursor-pointer hover:bg-purple-50 ${
+//                   chapter._id === activeChapter?._id ? 'bg-purple-50 border-l-2 border-purple-500' : ''
+//                 }`}
+//                 onClick={() => {handleChapterChange(chapter)
+//                   setCurrentChapterIndex(index)}
+
+//                 }
+//               >
+//                 <div className="p-3 pl-6 text-sm">
 //                   {chapter.chapterTitle}
 //                 </div>
 //                 <div>
-//                   <Check className='text-sm size-5 p-1 bg-purple-500 text-white rounded-full'/>
+//                   <Check className={`text-sm size-5 p-1 ${isChapterCompleted?.isCompleted?"bg-green-500":"bg-purple-500"}  text-white rounded-full`}/>
 //                 </div>
-                
 //               </div>
-//             ))}
+//               )
+// })}
 //           </nav>
 //         )}
 //       </aside>
 
 //       {/* Main Content */}
 //       <main className="flex-1 bg-gray-100">
-//         <div className="relative h-[60vh] bg-black">
-//           <video 
-//             src={activeChapter?.videoUrl  } 
-//             poster={course?.course.thumbnailUrl}
+//         <div className="relative h-[60vh] bg-black group">
+//         <video 
+//   ref={MainVideo}
+//   src={activeChapter?.videoUrl}
+//   poster={course?.course.thumbnailUrl}
+//   className="w-full h-full object-cover"
+//   onTimeUpdate={handleTimeUpdate}
+//   onLoadedMetadata={(e) => {
+//     handleLoadedMetadata();
+//     // Enable captions after video metadata is loaded
+//     setTimeout(enableCaptions, 100); // Small delay to ensure tracks are loaded
+//   }}
+//   onPlay={() => setIsPlaying(true)}
+//   onPause={() => setIsPlaying(false)}
+//   onContextMenu={(e) => e.preventDefault()}
+//   onEnded={() => handleChapterCompletion(activeChapter?._id || "")}
+// >
+//   {activeChapter?.captionsUrl && (
+//     <track
+//       src={activeChapter.captionsUrl}
+//       kind="captions"
+//       label="English"
+//       srcLang="en"
+//       default
+//     />
+//   )}
+// </video>
+//           {/* <video 
 //             ref={MainVideo}
+//             src={activeChapter?.videoUrl}
+//             poster={course?.course.thumbnailUrl}
+//             className="w-full h-full object-cover"
+//             onTimeUpdate={handleTimeUpdate}
+//             onLoadedMetadata={handleLoadedMetadata}
+//             onPlay={() => setIsPlaying(true)}
+//             onPause={() => setIsPlaying(false)}
 //             onContextMenu={(e) => e.preventDefault()}
             
-//             controls
-//             className="w-full relative h-full object-cover"
-//           />
-        
+//             onEnded={()=>handleChapterCompletion(activeChapter?._id || "")}
+//           >
+//             {activeChapter?.captionsUrl && (
+//     <track
+//       src={activeChapter.captionsUrl}
+//       kind="captions"
+//       label="English"
+//       srcLang="en"
+//       default
+//     />
+//   )}
+//           </video> */}
+          
 //           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-4">
-//           {showControls && (
-               
-//                 <motion.div 
-//                 initial={{y:20,opacity:0}}
-//                 animate={{y:0,opacity:100}}
-//                 transition={{ease:"easeInOut" ,duration:.3}}
-//                 className="  flex space-x-1 justify-center items-center">
+//             <div className="max-w-4xl mx-auto">
+//               {/* Progress bar */}
+//               <div className="w-full bg-white/30 h-1 rounded mb-4 cursor-pointer"
+//                 onClick={(e) => {
+//                   if (MainVideo.current) {
+//                     const rect = e.currentTarget.getBoundingClientRect();
+//                     const x = e.clientX - rect.left;
+//                     const percent = x / rect.width;
+//                     MainVideo.current.currentTime = percent * duration;
+//                   }
+//                 }}
+//               >
+//                 <div 
+//                   className="bg-purple-500 h-full rounded transition-all duration-100"
+//                   style={{ width: `${progress}%` }}
+//                 />
+//               </div>
+
+//               {/* Controls */}
+//               <div className="flex items-center justify-between text-white">
+//                 <div className="flex items-center space-x-4">
+//                 <button
+//   onClick={() => {
+//     if (MainVideo.current && MainVideo.current.textTracks.length > 0) {
+//       const track = MainVideo.current.textTracks[0];
+//       track.mode = track.mode === 'showing' ? 'hidden' : 'showing';
+//     }
+//   }}
+//   className="p-2 hover:bg-white/20 rounded-full transition"
+// >
+//   {/* You can use a captions icon here */}
+//   CC
+// </button>
 //                   <button
 //                     onClick={restartVideo}
-//                     className=" transparent hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-1 "
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
 //                   >
-//                     <RotateCcw/>
+//                     <RotateCcw size={20} />
 //                   </button>
 //                   <button
-//                     onClick={backwardTenSec}
-//                     className=" bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-2 "
+//                     onClick={() => skipTime(-10)}
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
 //                   >
-//                     <SkipBack/>
+//                     <SkipBack size={20} />
 //                   </button>
 //                   <button
 //                     onClick={handlePlayPause}
-//                     className=" bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-3 "
+//                     className="p-3 bg-purple-500 hover:bg-purple-600 rounded-full transition"
 //                   >
-//                     {" "}
-//                     {isPlaying ? <Pause /> : <Play />}
+//                     {isPlaying ? <Pause size={24} /> : <Play size={24} />}
 //                   </button>
 //                   <button
-//                     onClick={forwardTenSec}
-//                     className=" bg-purple-400 hover:bg-purple-500 transition ease-in-out duration-400 rounded-full p-2 "
+//                     onClick={() => skipTime(10)}
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
 //                   >
-//                     <SkipForward/>
+//                     <SkipForward size={20} />
 //                   </button>
-                  
 //                   <button
 //                     onClick={toggleMute}
-//                     className=" transparent hover:bg-purple-500 rounded-full p-1 "
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
 //                   >
-//                     <VolumeOff/>
+//                     {muted ? <VolumeOff size={20} /> : <Volume2 size={20} />}
 //                   </button>
-//                   <span className="">{Math.floor(currentTime)}</span>
-                  
-                    
-                  
-//                 </motion.div>
-                
-                      
-//               )}
-            
-//             <div className="w-full bg-white/30 h-1 rounded mb-3">
-//               <div className="bg-blue-500 h-full w-1/3 rounded"/>
-//             </div>
-//             <div className="flex justify-between text-white">
-//               <span>{activeChapter?.chapterTitle}</span>
-//               <span>{activeChapter?.createdAt}</span>
+//                   <span className="text-sm">
+//                     {formatTime(currentTime)} / {formatTime(duration)}
+//                   </span>
+//                 </div>
+
+//                 <div className="text-sm">
+//                   <span className="font-medium">{activeChapter?.chapterTitle}</span>
+//                 </div>
+//               </div>
 //             </div>
 //           </div>
 //         </div>
-//         {/* Bottom bar with video controls */}
-//          <div className="bg-white border-t border-gray-200 p-4">
-//            <div className="flex justify-between items-center">
-//              <div>
-//                <h3 className="text-lg font-semibold text-gray-800">{activeChapter?.chapterTitle}</h3>
-//                <p className="text-sm text-gray-500">Section {activeChapterId}</p>
-//              </div>
-//              <div className="flex items-center space-x-4">
-//                <button className="p-2 hover:bg-gray-100 rounded-full">
-//                  <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-//                  </svg>
-//                </button>
-//                <button className="p-2 hover:bg-gray-100 rounded-full">
-//                  <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-//                  </svg>
-//                </button>
-//              </div>
-//            </div>
-//          </div>
+
+//         {/* Bottom chapter navigation */}
+//         <div className="bg-white border-t border-gray-200 p-4">
+//           <div className="max-w-4xl mx-auto flex justify-between items-center">
+//             <div>
+//               <h3 className="text-lg font-semibold text-gray-800">{activeChapter?.chapterTitle}</h3>
+//               <p className="text-sm text-gray-500">
+//                 Chapter {course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0 + 1} of {course?.chapters.length}
+//               </p>
+//             </div>
+//             <div className="flex items-center space-x-4">
+//               <button className='p'>
+
+//               </button>
+//               <button 
+//                 className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
+//                 disabled={!course?.chapters[0] || activeChapter?._id === course?.chapters[0]._id}
+//                 onClick={() => {
+//                   const currentIndex = course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0;
+//                   if (currentIndex > 0) {
+//                     handleChapterChange(course!.chapters[currentIndex - 1]);
+//                   }
+//                 }}
+//               >
+//                 <ChevronRight className="w-6 h-6 text-gray-600 rotate-180" />
+//               </button>
+//               <button 
+//                 className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
+//                 disabled={!course?.chapters || activeChapter?._id === course?.chapters[course.chapters.length - 1]._id}
+//                 onClick={() => {
+//                   const currentIndex = course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0;
+//                   if (currentIndex < (course?.chapters.length ?? 0) - 1) {
+//                     handleChapterChange(course!.chapters[currentIndex + 1]);
+//                   }
+//                 }}
+//               >
+//                 <ChevronRight className="w-6 h-6 text-gray-600" />
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//         <div className="bg-gray border-t border-gray-200 p-4">
+//             {/* <h1 className='text-black max-w-4xl mx-auto flex justify-between items-center'>Des:</h1> */}
+//           <div className="max-w-4xl mx-auto flex justify-between items-center">
+//             <p className='text-black'>
+//               {activeChapter?.description}
+//             </p>
+//           </div>
+//         </div>
 //       </main>
 //     </div>
 //   );
 // };
 
 // export default CourseStudyPage;
+
+// "use client"
+// import React, { useEffect, useRef, useState } from 'react';
+// import { chapterCompleted, getPlayCourse } from '@/api/courseApi';
+// import { 
+//   Check, Play, Clock, BarChart, BookOpen, Star, Users,
+//   ChevronRight, PlayCircle, Pause, RotateCcw, VolumeOff,
+//   FastForward, SkipBack, SkipForward, Volume2 
+// } from 'lucide-react';
+// import { useParams } from 'next/navigation';
+// import { motion } from "framer-motion";
+// import { toast } from 'react-toastify';
+
+// // Your existing interfaces remain the same
+// interface PurchasedCourse {
+//   _id: string;
+//   courseId: CourseDetails;
+//   userId: string;
+//   instructorId: string;
+//   transactionId: string;
+//   completedChapters: CompletedChapter[]; // Update with actual structure if needed
+//   isCourseCompleted: boolean;
+//   purchasedAt: string;
+//   createdAt: string;
+//   updatedAt: string;
+// }
+// interface CompletedChapter {
+//   chapterId: string;
+//   isCompleted: boolean;
+// }
+
+// interface CourseDetails {
+//   _id: string;
+//   courseName: string;
+//   description: string;
+//   category: string;
+//   level: string;
+//   duration: string;
+//   thumbnailUrl: string;
+//   fullVideo: { chapterId: string; _id: string }[]; // Assuming it's an array of video URLs
+// }
+
+// interface Course {
+//   courseName: string;
+//   description: string;
+//   category: string;
+//   level: string;
+//   duration: string;
+//   thumbnailUrl: string;
+// }
+
+// interface Chapter {
+//   _id: string;
+//   chapterTitle: string;
+//   courseId: string;
+//   description: string;
+//   videoUrl: string;
+//   captionsUrl: string;
+//   createdAt: string;
+// }
+
+// interface CourseResponse {
+//   purchasedCourse: PurchasedCourse;
+//   course: Course;
+//   chapters: Chapter[];
+// }
+// const CourseStudyPage = () => {
+//   const { courseId } = useParams<{ courseId: string }>();
+//   const [course, setCourse] = useState<CourseResponse>();
+//   const [activeChapter, setActiveChapter] = useState<Chapter>();
+//   const [isMenuOpen, setIsMenuOpen] = useState(true);
+//   const [isPlaying, setIsPlaying] = useState(false);
+//   const [showControls, setShowControls] = useState(true);
+//   const [currentTime, setCurrentTime] = useState(0);
+//   const [duration, setDuration] = useState(0);
+//   const [muted, setMuted] = useState(false);
+//   const [progress, setProgress] = useState(0);
+//   const [currentChapterIndex, setCurrentChapterIndex] = useState<number>(0);
+//   const [captionsEnabled, setCaptionsEnabled] = useState(false);
+//   const MainVideo = useRef<HTMLVideoElement | null>(null);
+
+//   useEffect(() => {
+//     const fetchCourse = async () => {
+//       try {
+//         const response = await getPlayCourse(courseId);
+//         setCourse(response.data);
+//         // setPurchasedCourse(data.purchasedCourse);
+//         // Set initial active chapter to first chapter
+//         if (response.data?.chapters?.length > 0) {
+//           setActiveChapter(response.data.chapters[0]);
+//         }
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     };
+//     fetchCourse();
+//   }, [courseId]);
+
+//   // Add effect to handle captions whenever the active chapter changes
+//   useEffect(() => {
+//     // Short delay to ensure video and tracks are loaded
+//     const timer = setTimeout(() => {
+//       if (MainVideo.current && MainVideo.current.textTracks.length > 0) {
+//         // Force display mode based on captionsEnabled state
+//         for (let i = 0; i < MainVideo.current.textTracks.length; i++) {
+//           MainVideo.current.textTracks[i].mode = captionsEnabled ? 'showing' : 'hidden';
+//         }
+//         console.log(`Captions ${captionsEnabled ? 'enabled' : 'disabled'}`);
+//       }
+//     }, 300);
+    
+//     return () => clearTimeout(timer);
+//   }, [activeChapter, captionsEnabled]);
+
+// console.log("coursee",course,"coursee")
+//   // Video control functions
+//   const handlePlayPause = () => {
+//     if (MainVideo.current) {
+//       if (isPlaying) {
+//         MainVideo.current.pause();
+//       } else {
+//         MainVideo.current.play();
+//       }
+//       setIsPlaying(!isPlaying);
+//     }
+//   };
+//  const handleChapterCompletion=async(chapterId:string)=>{
+// try {
+//   const response=await chapterCompleted(chapterId)
+//   console.log(response,"ress")
+//   if (response.success) {
+//     toast.success(response.message);
+//     setCourse((prevCourse) => {
+//       if (!prevCourse) return prevCourse; // Handle case when prevCourse is undefined
+  
+//       return {
+//         ...prevCourse,
+//         purchasedCourse: {
+//           ...prevCourse.purchasedCourse,
+//           completedChapters: prevCourse.purchasedCourse.completedChapters.map(ch =>
+//             ch.chapterId === chapterId ? { ...ch, isCompleted: !ch.isCompleted } : ch
+//           )
+//         }
+//       };
+//     });
+//   }
+  
+  
+// } catch (error:any) {
+//   toast.error(error.message)
+// }
+//  }
+//   const toggleMute = () => {
+//     if (MainVideo.current) {
+//       MainVideo.current.muted = !muted;
+//       setMuted(!muted);
+//     }
+//   };
+
+//   const toggleCaptions = () => {
+//     setCaptionsEnabled(!captionsEnabled);
+//   };
+
+//   const restartVideo = () => {
+//     if (MainVideo.current) {
+//       MainVideo.current.currentTime = 0;
+//     }
+//   };
+
+//   const skipTime = (seconds: number) => {
+//     if (MainVideo.current) {
+//       MainVideo.current.currentTime += seconds;
+//     }
+//   };
+
+//   const formatTime = (time: number) => {
+//     const minutes = Math.floor(time / 60);
+//     const seconds = Math.floor(time % 60);
+//     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+//   };
+
+//   // Video event handlers
+//   const handleTimeUpdate = () => {
+//     if (MainVideo.current) {
+//       setCurrentTime(MainVideo.current.currentTime);
+//       setProgress((MainVideo.current.currentTime / MainVideo.current.duration) * 100);
+//     }
+//   };
+
+//   const handleLoadedMetadata = () => {
+//     if (MainVideo.current) {
+//       setDuration(MainVideo.current.duration);
+//     }
+//   };
+
+//   // Handle chapter change
+//   const handleChapterChange = (chapter: Chapter) => {
+//     console.log("chap",chapter)
+//     const index = course?.purchasedCourse.completedChapters.findIndex(ch => ch.chapterId === chapter._id);
+//     if (!index) return; // Prevent errors if chapter is not found.
+
+//     const currentChapter = course?.purchasedCourse?.completedChapters[currentChapterIndex];
+//     const clickedChapter = course?.purchasedCourse?.completedChapters.find(ch => ch.chapterId === chapter._id);
+
+//     if (
+//         index === currentChapterIndex || // Allow replaying the current chapter.
+//         clickedChapter?.isCompleted || // Allow access to completed chapters.
+//         (index === currentChapterIndex + 1 && currentChapter?.isCompleted) // Allow next chapter if current one is completed.
+//     ) {
+//         setCurrentChapterIndex(index);
+//         setActiveChapter(chapter);
+//         setIsPlaying(false);
+//         setCurrentTime(0);
+//         setProgress(0);
+//         if (MainVideo.current) {
+//             MainVideo.current.currentTime = 0;
+//         }
+//     }
+// };
+
+//   return (
+//     <div className="flex h-screen">
+//       {/* Sidebar - Your existing sidebar code remains the same */}
+//       <aside className={`${isMenuOpen ? 'w-72' : 'w-0 lg:w-16'} h-full bg-white text-black shadow transition-all duration-300`}>
+//         <div className="p-4 border-b flex justify-between items-center">
+//           {isMenuOpen && <h2 className="font-bold">Contents</h2>}
+//           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 hover:bg-gray-100 rounded">
+//             <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+//               <path d="M3 4h14v2H3V4zm0 5h14v2H3V9zm0 5h14v2H3v-2z"/>
+//             </svg>
+//           </button>
+//         </div>
+        
+//         {isMenuOpen && (
+//           <nav className="overflow-y-auto h-[calc(100vh-4rem)]">
+//             {course?.chapters.map((chapter,index )=> {
+
+//               const isChapterCompleted=course.purchasedCourse.completedChapters.find(
+//                 (ch) => ch.chapterId === chapter._id
+//             )
+            
+//               return (
+//                 <div 
+//                 key={chapter._id}
+//                 className={`flex justify-between p-3 items-center cursor-pointer hover:bg-purple-50 ${
+//                   chapter._id === activeChapter?._id ? 'bg-purple-50 border-l-2 border-purple-500' : ''
+//                 }`}
+//                 onClick={() => {handleChapterChange(chapter)
+//                   setCurrentChapterIndex(index)}
+
+//                 }
+//               >
+//                 <div className="p-3 pl-6 text-sm">
+//                   {chapter.chapterTitle}
+//                 </div>
+//                 <div>
+//                   <Check className={`text-sm size-5 p-1 ${isChapterCompleted?.isCompleted?"bg-green-500":"bg-purple-500"}  text-white rounded-full`}/>
+//                 </div>
+//               </div>
+//               )
+// })}
+//           </nav>
+//         )}
+//       </aside>
+
+//       {/* Main Content */}
+//       <main className="flex-1 bg-gray-100">
+//         <div className="relative h-[60vh] bg-black group">
+//           <video 
+//             ref={MainVideo}
+//             src={activeChapter?.videoUrl}
+//             poster={course?.course.thumbnailUrl}
+//             className="w-full h-full object-cover"
+//             // crossOrigin="anonymous"
+//             onTimeUpdate={handleTimeUpdate}
+//             onLoadedMetadata={handleLoadedMetadata}
+//             onPlay={() => setIsPlaying(true)}
+//             onPause={() => setIsPlaying(false)}
+//             onContextMenu={(e) => e.preventDefault()}
+//             onEnded={()=>handleChapterCompletion(activeChapter?._id || "")}
+//           >
+//             {activeChapter?.captionsUrl && (
+//               <track
+//                 src={activeChapter.captionsUrl}
+//                 kind="subtitles"
+//                 label="English"
+//                 srcLang="en"
+//                 default
+//               />
+//             )}
+//           </video>
+          
+//           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-4">
+//             <div className="max-w-4xl mx-auto">
+//               {/* Progress bar */}
+//               <div className="w-full bg-white/30 h-1 rounded mb-4 cursor-pointer"
+//                 onClick={(e) => {
+//                   if (MainVideo.current) {
+//                     const rect = e.currentTarget.getBoundingClientRect();
+//                     const x = e.clientX - rect.left;
+//                     const percent = x / rect.width;
+//                     MainVideo.current.currentTime = percent * duration;
+//                   }
+//                 }}
+//               >
+//                 <div 
+//                   className="bg-purple-500 h-full rounded transition-all duration-100"
+//                   style={{ width: `${progress}%` }}
+//                 />
+//               </div>
+
+//               {/* Controls */}
+//               <div className="flex items-center justify-between text-white">
+//                 <div className="flex items-center space-x-4">
+//                   <button
+//                     onClick={toggleCaptions}
+//                     className={`p-2 ${captionsEnabled ? 'bg-purple-500/60' : 'hover:bg-white/20'} rounded-full transition`}
+//                   >
+//                     CC
+//                   </button>
+//                   <button
+//                     onClick={restartVideo}
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
+//                   >
+//                     <RotateCcw size={20} />
+//                   </button>
+//                   <button
+//                     onClick={() => skipTime(-10)}
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
+//                   >
+//                     <SkipBack size={20} />
+//                   </button>
+//                   <button
+//                     onClick={handlePlayPause}
+//                     className="p-3 bg-purple-500 hover:bg-purple-600 rounded-full transition"
+//                   >
+//                     {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+//                   </button>
+//                   <button
+//                     onClick={() => skipTime(10)}
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
+//                   >
+//                     <SkipForward size={20} />
+//                   </button>
+//                   <button
+//                     onClick={toggleMute}
+//                     className="p-2 hover:bg-white/20 rounded-full transition"
+//                   >
+//                     {muted ? <VolumeOff size={20} /> : <Volume2 size={20} />}
+//                   </button>
+//                   <span className="text-sm">
+//                     {formatTime(currentTime)} / {formatTime(duration)}
+//                   </span>
+//                 </div>
+
+//                 <div className="text-sm">
+//                   <span className="font-medium">{activeChapter?.chapterTitle}</span>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Bottom chapter navigation */}
+//         <div className="bg-white border-t border-gray-200 p-4">
+//           <div className="max-w-4xl mx-auto flex justify-between items-center">
+//             <div>
+//               <h3 className="text-lg font-semibold text-gray-800">{activeChapter?.chapterTitle}</h3>
+//               <p className="text-sm text-gray-500">
+//                 Chapter {course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0 + 1} of {course?.chapters.length}
+//               </p>
+//             </div>
+//             <div className="flex items-center space-x-4">
+//               <button className='p'>
+
+//               </button>
+//               <button 
+//                 className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
+//                 disabled={!course?.chapters[0] || activeChapter?._id === course?.chapters[0]._id}
+//                 onClick={() => {
+//                   const currentIndex = course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0;
+//                   if (currentIndex > 0) {
+//                     handleChapterChange(course!.chapters[currentIndex - 1]);
+//                   }
+//                 }}
+//               >
+//                 <ChevronRight className="w-6 h-6 text-gray-600 rotate-180" />
+//               </button>
+//               <button 
+//                 className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
+//                 disabled={!course?.chapters || activeChapter?._id === course?.chapters[course.chapters.length - 1]._id}
+//                 onClick={() => {
+//                   const currentIndex = course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0;
+//                   if (currentIndex < (course?.chapters.length ?? 0) - 1) {
+//                     handleChapterChange(course!.chapters[currentIndex + 1]);
+//                   }
+//                 }}
+//               >
+//                 <ChevronRight className="w-6 h-6 text-gray-600" />
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//         <div className="bg-gray border-t border-gray-200 p-4">
+//             {/* <h1 className='text-black max-w-4xl mx-auto flex justify-between items-center'>Des:</h1> */}
+//           <div className="max-w-4xl mx-auto flex justify-between items-center">
+//             <p className='text-black'>
+//               {activeChapter?.description}
+//             </p>
+//           </div>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default CourseStudyPage;
+
 "use client"
 import React, { useEffect, useRef, useState } from 'react';
 import { chapterCompleted, getPlayCourse } from '@/api/courseApi';
@@ -530,6 +949,7 @@ interface Chapter {
   courseId: string;
   description: string;
   videoUrl: string;
+  captionsUrl: string;
   createdAt: string;
 }
 
@@ -544,20 +964,22 @@ const CourseStudyPage = () => {
   const [activeChapter, setActiveChapter] = useState<Chapter>();
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showControls, setShowControls] = useState(true);
+  const [showControls, setShowControls] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [muted, setMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentChapterIndex, setCurrentChapterIndex] = useState<number>(0);
+  const [captionsEnabled, setCaptionsEnabled] = useState(false);
   const MainVideo = useRef<HTMLVideoElement | null>(null);
+  const videoContainerRef = useRef<HTMLDivElement | null>(null);
+  const [controlsTimer, setControlsTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const response = await getPlayCourse(courseId);
         setCourse(response.data);
-        // setPurchasedCourse(data.purchasedCourse);
         // Set initial active chapter to first chapter
         if (response.data?.chapters?.length > 0) {
           setActiveChapter(response.data.chapters[0]);
@@ -568,7 +990,57 @@ const CourseStudyPage = () => {
     };
     fetchCourse();
   }, [courseId]);
-console.log("coursee",course,"coursee")
+
+  // Add effect to handle captions whenever the active chapter changes or caption state changes
+  useEffect(() => {
+    // Short delay to ensure video and tracks are loaded
+    const timer = setTimeout(() => {
+      if (MainVideo.current && MainVideo.current.textTracks.length > 0) {
+        // Force display mode based on captionsEnabled state
+        for (let i = 0; i < MainVideo.current.textTracks.length; i++) {
+          MainVideo.current.textTracks[i].mode = captionsEnabled ? 'showing' : 'hidden';
+        }
+        console.log(`Captions ${captionsEnabled ? 'enabled' : 'disabled'}`);
+      }
+    }, 500); // Increased delay to ensure tracks are fully loaded
+    
+    return () => clearTimeout(timer);
+  }, [activeChapter, captionsEnabled]);
+
+  // Ensure captions are properly loaded when video source changes
+  useEffect(() => {
+    if (MainVideo.current) {
+      // Reset video when changing chapters to ensure captions load properly
+      MainVideo.current.load();
+    }
+  }, [activeChapter]);
+
+  // Handle mouse movement to show/hide controls
+  const handleMouseMove = () => {
+    setShowControls(true);
+    
+    // Clear any existing timer
+    if (controlsTimer) {
+      clearTimeout(controlsTimer);
+    }
+    
+    // Set a new timer to hide controls after 3 seconds of inactivity
+    const timer = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
+    
+    setControlsTimer(timer);
+  };
+
+  // Clear timer on component unmount
+  useEffect(() => {
+    return () => {
+      if (controlsTimer) {
+        clearTimeout(controlsTimer);
+      }
+    };
+  }, [controlsTimer]);
+
   // Video control functions
   const handlePlayPause = () => {
     if (MainVideo.current) {
@@ -580,37 +1052,41 @@ console.log("coursee",course,"coursee")
       setIsPlaying(!isPlaying);
     }
   };
- const handleChapterCompletion=async(chapterId:string)=>{
-try {
-  const response=await chapterCompleted(chapterId)
-  console.log(response,"ress")
-  if (response.success) {
-    toast.success(response.message);
-    setCourse((prevCourse) => {
-      if (!prevCourse) return prevCourse; // Handle case when prevCourse is undefined
   
-      return {
-        ...prevCourse,
-        purchasedCourse: {
-          ...prevCourse.purchasedCourse,
-          completedChapters: prevCourse.purchasedCourse.completedChapters.map(ch =>
-            ch.chapterId === chapterId ? { ...ch, isCompleted: !ch.isCompleted } : ch
-          )
-        }
-      };
-    });
-  }
+  const handleChapterCompletion = async(chapterId: string) => {
+    try {
+      const response = await chapterCompleted(chapterId);
+      console.log(response, "ress");
+      if (response.success) {
+        toast.success(response.message);
+        setCourse((prevCourse) => {
+          if (!prevCourse) return prevCourse; // Handle case when prevCourse is undefined
+        
+          return {
+            ...prevCourse,
+            purchasedCourse: {
+              ...prevCourse.purchasedCourse,
+              completedChapters: prevCourse.purchasedCourse.completedChapters.map(ch =>
+                ch.chapterId === chapterId ? { ...ch, isCompleted: !ch.isCompleted } : ch
+              )
+            }
+          };
+        });
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
   
-  
-} catch (error:any) {
-  toast.error(error.message)
-}
- }
   const toggleMute = () => {
     if (MainVideo.current) {
       MainVideo.current.muted = !muted;
       setMuted(!muted);
     }
+  };
+
+  const toggleCaptions = () => {
+    setCaptionsEnabled(!captionsEnabled);
   };
 
   const restartVideo = () => {
@@ -642,14 +1118,24 @@ try {
   const handleLoadedMetadata = () => {
     if (MainVideo.current) {
       setDuration(MainVideo.current.duration);
+      
+      // Ensure captions are applied when metadata is loaded
+      if (MainVideo.current.textTracks.length > 0) {
+        for (let i = 0; i < MainVideo.current.textTracks.length; i++) {
+          MainVideo.current.textTracks[i].mode = captionsEnabled ? 'showing' : 'hidden';
+        }
+      }
     }
   };
 
   // Handle chapter change
   const handleChapterChange = (chapter: Chapter) => {
-    console.log("chap",chapter)
-    const index = course?.purchasedCourse.completedChapters.findIndex(ch => ch.chapterId === chapter._id);
-    if (!index) return; // Prevent errors if chapter is not found.
+    const index = course?.chapters.findIndex(ch => ch._id === chapter._id);
+    if (index === undefined || index < 0) return; // Prevent errors if chapter is not found
+    
+    const completedIndex = course?.purchasedCourse.completedChapters.findIndex(ch => ch.chapterId === chapter._id);
+    
+    if (completedIndex === undefined || completedIndex < 0) return;
 
     const currentChapter = course?.purchasedCourse?.completedChapters[currentChapterIndex];
     const clickedChapter = course?.purchasedCourse?.completedChapters.find(ch => ch.chapterId === chapter._id);
@@ -668,41 +1154,7 @@ try {
             MainVideo.current.currentTime = 0;
         }
     }
-};
-// const handleChapterChange = (chapter: Chapter) => {
-//   const clickedChapter = course?.purchasedCourse?.completedChapters.find(ch => ch.chapterId === chapter._id);
-  
-//   // Always allow navigation to completed chapters
-//   if (clickedChapter?.isCompleted) {
-//       setActiveChapter(chapter);
-//       setIsPlaying(false);
-//       setCurrentTime(0);
-//       setProgress(0);
-//       if (MainVideo.current) {
-//           MainVideo.current.currentTime = 0;
-//       }
-//       return;
-//   }
-
-//   // Find last completed chapter dynamically
-//   const completedChapters = course?.purchasedCourse?.completedChapters.filter(ch => ch.isCompleted) || [];
-//   const lastCompletedChapter = completedChapters[completedChapters.length - 1];
-//   if(!course)return 
-//   // Allow only the next chapter if the last completed one is right before it
-//   if (!lastCompletedChapter || 
-//       course?.chapters.findIndex(ch => ch._id === chapter._id) === 
-//       course.chapters.findIndex(ch => ch._id === lastCompletedChapter.chapterId) + 1) {
-      
-//       setActiveChapter(chapter);
-//       setIsPlaying(false);
-//       setCurrentTime(0);
-//       setProgress(0);
-//       if (MainVideo.current) {
-//           MainVideo.current.currentTime = 0;
-//       }
-//   }
-// };
-
+  };
 
   return (
     <div className="flex h-screen">
@@ -719,53 +1171,87 @@ try {
         
         {isMenuOpen && (
           <nav className="overflow-y-auto h-[calc(100vh-4rem)]">
-            {course?.chapters.map((chapter,index )=> {
-
-              const isChapterCompleted=course.purchasedCourse.completedChapters.find(
+            {course?.chapters.map((chapter, index) => {
+              const isChapterCompleted = course.purchasedCourse.completedChapters.find(
                 (ch) => ch.chapterId === chapter._id
-            )
+              );
             
               return (
                 <div 
-                key={chapter._id}
-                className={`flex justify-between p-3 items-center cursor-pointer hover:bg-purple-50 ${
-                  chapter._id === activeChapter?._id ? 'bg-purple-50 border-l-2 border-purple-500' : ''
-                }`}
-                onClick={() => {handleChapterChange(chapter)
-                  setCurrentChapterIndex(index)}
-
-                }
-              >
-                <div className="p-3 pl-6 text-sm">
-                  {chapter.chapterTitle}
+                  key={chapter._id}
+                  className={`flex justify-between p-3 items-center cursor-pointer hover:bg-purple-50 ${
+                    chapter._id === activeChapter?._id ? 'bg-purple-50 border-l-2 border-purple-500' : ''
+                  }`}
+                  onClick={() => {
+                    handleChapterChange(chapter);
+                    setCurrentChapterIndex(index);
+                  }}
+                >
+                  <div className="p-3 pl-6 text-sm">
+                    {chapter.chapterTitle}
+                  </div>
+                  <div>
+                    <Check className={`text-sm size-5 p-1 ${isChapterCompleted?.isCompleted ? "bg-green-500" : "bg-purple-500"}  text-white rounded-full`}/>
+                  </div>
                 </div>
-                <div>
-                  <Check className={`text-sm size-5 p-1 ${isChapterCompleted?.isCompleted?"bg-green-500":"bg-purple-500"}  text-white rounded-full`}/>
-                </div>
-              </div>
-              )
-})}
+              );
+            })}
           </nav>
         )}
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 bg-gray-100">
-        <div className="relative h-[60vh] bg-black group">
-          <video 
-            ref={MainVideo}
-            src={activeChapter?.videoUrl}
-            poster={course?.course.thumbnailUrl}
-            className="w-full h-full object-cover"
-            onTimeUpdate={handleTimeUpdate}
-            onLoadedMetadata={handleLoadedMetadata}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onContextMenu={(e) => e.preventDefault()}
-            onEnded={()=>handleChapterCompletion(activeChapter?._id || "")}
-          />
+        <div 
+          ref={videoContainerRef}
+          className="relative h-[60vh] bg-black group"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => setShowControls(false)}
+        >
+          {/* Video container with styled captions area */}
+          <div className="relative w-full h-full">
+            <video 
+              ref={MainVideo}
+              src={activeChapter?.videoUrl}
+              poster={course?.course.thumbnailUrl}
+              className="w-full h-full object-cover"
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
+              crossOrigin='anonymous'
+              onClick={handlePlayPause}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onContextMenu={(e) => e.preventDefault()}
+              onEnded={() => handleChapterCompletion(activeChapter?._id || "")}
+            >
+              {activeChapter?.captionsUrl && (
+                <track
+                  src={activeChapter.captionsUrl}
+                  kind="subtitles"
+                  label="English"
+                  srcLang="en"
+                  className='pb-2 absolute bg-green-400'
+                  default
+                />
+              )}
+            </video>
+            
+           
+            {/* <div 
+              className={`absolute bottom-24 left-0 right-0 text-center z-20 ${captionsEnabled ? 'block' : 'hidden'}`}
+            >
+              <div className="bg-black/70 text-white inline-block px-4 py-2 rounded text-lg font-semibold mx-auto">
+               
+              </div>
+            </div> */}
+          </div>
           
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-4">
+          
+          <div 
+            className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 z-10 transition-opacity duration-300 ${
+              showControls || !isPlaying ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
             <div className="max-w-4xl mx-auto">
               {/* Progress bar */}
               <div className="w-full bg-white/30 h-1 rounded mb-4 cursor-pointer"
@@ -787,6 +1273,12 @@ try {
               {/* Controls */}
               <div className="flex items-center justify-between text-white">
                 <div className="flex items-center space-x-4">
+                  <button
+                    onClick={toggleCaptions}
+                    className={`p-2 ${captionsEnabled ? 'bg-purple-500/60' : 'hover:bg-white/20'} rounded-full transition`}
+                  >
+                    CC
+                  </button>
                   <button
                     onClick={restartVideo}
                     className="p-2 hover:bg-white/20 rounded-full transition"
@@ -836,13 +1328,10 @@ try {
             <div>
               <h3 className="text-lg font-semibold text-gray-800">{activeChapter?.chapterTitle}</h3>
               <p className="text-sm text-gray-500">
-                Chapter {course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0 + 1} of {course?.chapters.length}
+                Chapter {(course?.chapters.findIndex(ch => ch._id === activeChapter?._id) ?? 0) + 1} of {course?.chapters.length}
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <button className='p'>
-
-              </button>
               <button 
                 className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
                 disabled={!course?.chapters[0] || activeChapter?._id === course?.chapters[0]._id}
@@ -871,7 +1360,6 @@ try {
           </div>
         </div>
         <div className="bg-gray border-t border-gray-200 p-4">
-            {/* <h1 className='text-black max-w-4xl mx-auto flex justify-between items-center'>Des:</h1> */}
           <div className="max-w-4xl mx-auto flex justify-between items-center">
             <p className='text-black'>
               {activeChapter?.description}

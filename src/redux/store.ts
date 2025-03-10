@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage'; // Defaults to localStorage for
 import { combineReducers } from 'redux';
 import userReducer from './slices/userSlice';
 import instructorReducer from './slices/instructorSlice';
+import adminReducer from './slices/adminSlice'
 
 // Configure persistence
 const userPersistConfig = {
@@ -17,11 +18,16 @@ const instructorPersistConfig = {
   key: 'instructor',
   storage,
 };
+const adminPersistConfig = {
+  key: 'admin',
+  storage,
+};
 
 // Combine reducers (for scalability)
 const rootReducer = combineReducers({
   user: persistReducer(userPersistConfig, userReducer),
-  instructor: persistReducer(instructorPersistConfig, instructorReducer)
+  instructor: persistReducer(instructorPersistConfig, instructorReducer),
+  admin: persistReducer(adminPersistConfig, adminReducer),
 });
 
 // Wrap reducers with persistReducer

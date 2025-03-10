@@ -317,7 +317,7 @@ const useCurrentUser = () => {
   const student = useSelector((state: RootState) => state.user);
   const instructor = useSelector((state: RootState) => state.instructor);
   
-  return student.userId ? student : instructor;
+  return student.userId? student : instructor;
 };
 
 const ChatInterface = ({ 

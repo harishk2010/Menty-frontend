@@ -71,3 +71,31 @@ import { API } from "@/service/axios"
         throw error
     }
  }
+ export const adminDashboard=async()=>{
+    try {
+
+        const response=await API.get(adminRoutes.get_adminDashboard,{
+            withCredentials:true
+        })
+        console.log(response.data.data,"adminDashboard adminAPi")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+ }
+ export const getAdminData=async(email:string)=>{
+    try {
+
+        const response=await API.get(`${adminRoutes.get_adminDetails}${email}`,{
+            withCredentials:true
+        })
+        console.log(response.data.data,"getAdminData adminAPi")
+        return response.data
+        
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+ }

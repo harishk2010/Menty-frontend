@@ -9,6 +9,8 @@ import PasswordField from "@/app/components/common/forms/PasswordField";
 import { adminLogin } from "@/api/adminAuthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { setAdmin } from "@/redux/slices/adminSlice";
+import { useDispatch } from "react-redux";
 
 export default function LoginPage(): ReactElement {
   // Define validation schema using Yup
@@ -21,12 +23,21 @@ export default function LoginPage(): ReactElement {
       .required("Password is required"),
   });
   const router= useRouter()
+  const dispatch = useDispatch()
   // Handle form submission
   const handleSubmit = async(values: { email: string; password: string }) => {
 
     const response= await adminLogin(values) 
+    const adminDetails=response.data
     if(response.success){
       toast.success(response.message)
+      dispatch((setAdmin({
+                adminId: adminDetails.adminId,
+                name: adminDetails.name,
+                email: adminDetails.email,
+                role: adminDetails.role,
+             
+              })))
       router.push('/admin/dashboard')
      
     }else{

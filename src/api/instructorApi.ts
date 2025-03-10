@@ -155,3 +155,30 @@ export async function getMentorExpertise(): Promise<{success: boolean, data: str
     return { success: false, data: [] };
   }
 }
+
+export const addMentorReview=async(mentorId:string,rating:number,comment:string)=>{
+try {
+
+  const response=await API.post(InstructorRoutes.addMentorReview,{mentorId,rating,comment},{
+    withCredentials:true
+  })
+  console.log(response.data,"respnse addMentorReview")
+  return response.data
+} catch (error) {
+  console.error('Error add Mentor Review:', error);
+  throw error
+}
+}
+export const getMentorReviews=async(mentorId:string)=>{
+try {
+
+  const response=await API.get(`${InstructorRoutes.getMentorReviews}${mentorId}`,{
+    withCredentials:true
+  })
+  console.log(response.data,"respnse getMentorReviews")
+  return response.data
+} catch (error) {
+  console.error('Error get Mentor Reviews:', error);
+  throw error
+}
+}

@@ -85,6 +85,17 @@ export default function PersonalDetailsForm() {
   }
   const handleImagePreview = (file: File | null) => {
     if (file) {
+      // Validate file is an image
+                if (!file.type.startsWith('image/')) {
+                 toast.warn("Choose Only Image Files!")
+                  return;
+                }
+                
+                // Validate file size (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                  toast.warn('Image size should be less than 5MB');
+                  return;
+                }
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result as string);

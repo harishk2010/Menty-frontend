@@ -430,3 +430,15 @@ export const GetCourseReviews=async(courseId:string)=>{
     console.log(error)
   }
 }
+export const getInstructorDashboard=async()=>{
+  try {
+    const response=await API.get(CourseRoutes.GET_INSTRUCTOR_DASHBOARD,{
+      withCredentials:true
+    })
+    console.log(response.data.data,"reviews")
+    return response.data
+    
+  } catch (error) {
+    console.log(error)
+  }
+}

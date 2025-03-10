@@ -49,6 +49,16 @@ const CourseCreation: React.FC = () => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('video/')) {
+        toast.warn("Choose Only Video Files!");
+        return;
+      }
+       
+      //  // Validate file size (5MB max)
+      //  if (file.size > 5 * 1024 * 1024) {
+      //    toast.warn('Video size should be less than 5MB');
+      //    return;
+      //  }
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -63,6 +73,19 @@ const CourseCreation: React.FC = () => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      
+          
+          // Validate file is an image
+          if (!file.type.startsWith('image/')) {
+           toast.warn("Choose Only Image Files!")
+            return;
+          }
+          
+          // Validate file size (5MB max)
+          if (file.size > 5 * 1024 * 1024) {
+            toast.warn('Image size should be less than 5MB');
+            return;
+          }
       const reader = new FileReader();
       reader.onloadend = () => {
         setThumbnailPreview(reader.result as string);

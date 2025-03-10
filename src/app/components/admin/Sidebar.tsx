@@ -13,14 +13,18 @@ import { adminLogout } from "@/api/adminAuthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { BookmarkPlusIcon, MessageCircleCodeIcon } from "lucide-react";
+import { clearAdminDetials } from "@/redux/slices/adminSlice";
+import { useDispatch } from "react-redux";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const router =useRouter()
+  const dispatch=useDispatch()
 
   const handleLogout=async ()=>{
       const response=await adminLogout()
       if(response.success){
+        dispatch((clearAdminDetials()))
         toast.success(response.message)
         router.replace('/admin/login')
         

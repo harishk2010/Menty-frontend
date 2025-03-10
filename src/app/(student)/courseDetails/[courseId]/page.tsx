@@ -278,7 +278,15 @@ const CourseDetails: React.FC = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column: Course Overview */}
-          <div className="lg:col-span-2 rounded-xl shadow-lg p-6">
+          <motion.div
+       
+          initial={{ opacity: 0, x: -50 }} 
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            duration: 1,
+            ease: "easeOut", 
+          }}
+          className="lg:col-span-2 rounded-xl shadow-lg p-6">
             {/* Video Container with fixed aspect ratio */}
             <div className="relative w-full" style={{ paddingTop: '56.25%' }}> {/* 16:9 Aspect Ratio */}
               <div 
@@ -358,7 +366,7 @@ const CourseDetails: React.FC = () => {
                 <div className="flex items-center space-x-1">
                   {renderStars(ratingAverage)}
                   <span className="text-gray-600 ml-2">
-                    {ratingAverage.toFixed(2)} ({reviews?.length} reviews)
+                  {(Number(ratingAverage) || 0).toFixed(2)} ({reviews?.length || 0} reviews)
                   </span>
                 </div>
                 <div className="flex items-center space-x-2 text-gray-600">
@@ -446,7 +454,7 @@ const CourseDetails: React.FC = () => {
                     <div className="flex items-center space-x-1">
                       {renderStars(ratingAverage)}
                       <span className="text-gray-600 ml-2">
-                      {ratingAverage.toFixed(2)} ({reviews?.length} reviews)
+                      {(Number(ratingAverage) || 0).toFixed(2)} ({reviews?.length || 0} reviews)
                       </span>
                     </div>
                   </div>
@@ -490,7 +498,15 @@ const CourseDetails: React.FC = () => {
                   {reviews?.length==0?<div className="bg-white text-black ">
                       No Reviews for this Course!
                   </div>:reviews?.map((review) => (
-                    <div key={review._id} className="bg-white flex space-x-3 p-4 rounded-lg shadow-md mb-4">
+                    <motion.div
+                   
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 1,
+              ease: "easeInOut", 
+            }}
+                    key={review._id} className="bg-white flex space-x-3 p-4 rounded-lg shadow-md mb-4">
                       
                       <div>
                         <img src={review.userId.profilePicUrl} className="w-12 rounded-full" alt="" />
@@ -508,17 +524,24 @@ const CourseDetails: React.FC = () => {
                       <p className="text-gray-700">{review.comment}</p>
                       </div>
                       
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
             )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Course Purchase & Instructor */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <motion.div 
+            initial={{ opacity: 0, x: 50 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            transition={{
+              duration: 1, 
+              ease: "easeOut", 
+            }}
+            className="bg-white rounded-xl shadow-lg p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-900">
                   ₹{course?.price}
@@ -541,9 +564,16 @@ const CourseDetails: React.FC = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <motion.div 
+            initial={{ opacity: 0, y: 50 }} 
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 1,
+              ease: "easeOut", 
+            }}
+            className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-xl text-black font-bold mb-4">
                 What You'll Learn
               </h3>
@@ -553,7 +583,7 @@ const CourseDetails: React.FC = () => {
                   <p className="text-gray-700">{outcome}</p>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

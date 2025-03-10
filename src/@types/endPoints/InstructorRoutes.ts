@@ -14,6 +14,10 @@ const InstructorRoutes={
     getRequestDataUrl:'/user/verification/request/',
     getAllRequestsUrl:'/user/verification/requests',
     approveRequestsUrl:'/user/verification/approveRequest',
-    updatePlanProfile:'/user/instructors/updatePlanPrice/'
+    updatePlanProfile:'/user/instructors/updatePlanPrice/',
+
+    //reviews
+    addMentorReview:'/user/mentorReview/addReview',
+    getMentorReviews:'/user/mentorReview/',
 }
 export default InstructorRoutes 

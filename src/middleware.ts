@@ -160,7 +160,7 @@ export async function middleware(req: NextRequest) {
   // Define public and protected routes for each role
   const adminPublicRoutes = ["/admin/login"];
   const adminProtectedRoutes = [
-    "/admin/dashboard",
+    // "/admin/dashboard",
     "/admin/users",
     "/admin/instructors",
     "/admin/addCategory",
