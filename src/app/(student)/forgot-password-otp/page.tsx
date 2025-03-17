@@ -115,37 +115,15 @@ export default function OtpPage() {
     <div className="bg-white  w-full h-screen flex  justify-center items-center ">
       
      
-{/*       
-      <div className="flex justify-center items-center ">
-      
-        
-      </div> */}
-      {/* <motion.div
-          initial={{ opacity: 0, x: -50 }} // Starts slightly below the viewport
-          animate={{ opacity: 1, x: 0 }} // Moves to its final position
-          transition={{
-            duration: 1, // Duration of the animation
-            ease: "easeOut", // Smooth easing
-          }}>
-      <Player
-      className="sm:block hidden lg:mr-32"
-          autoplay
-          loop
-          style={{ height: "400px", width: "400px" }}
-          src="https://lottie.host/cade60f0-bcd4-409a-b821-b36eeb4e8679/uMH9otOft0.json"
-        />
-
-      </motion.div> */}
-    
         
       
         
         <motion.div
-          initial={{ opacity: 0, x: 50 }} // Starts slightly below the viewport
-          animate={{ opacity: 1, x: 0 }} // Moves to its final position
+          initial={{ opacity: 0, x: 50 }} 
+          animate={{ opacity: 1, x: 0 }} 
           transition={{
-            duration: 1, // Duration of the animation
-            ease: "easeOut", // Smooth easing
+            duration: 1, 
+            ease: "easeOut", 
           }}
           
           className="flex border-black border-2 bg-violet-100 w-[300px] h-[320px] lg:w-[400px] lg:h-[420px] flex-col lg:mt-28  space-y-1 justify-center backdrop-blur-3xl shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] items-center rounded-lg bg-transparent "
