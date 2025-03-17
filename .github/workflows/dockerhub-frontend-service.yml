@@ -3,24 +3,20 @@ name: dockerhub-frontend-service
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - "**"  
+    paths: ["**"]
+
 
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Log in to Docker Hub
-        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and Push Docker Image
-        run: |
-          cd frontend-service
-          docker build -t harishk2001/menty-frontend-service .
-          docker push harishk2001/menty-frontend-service
+      -  uses: actions/checkout@v4
+      -  run: docker build --build-arg JWT_KEY=${{ secrets.JWT_KEY }} -t harishk2001/menty-frontend-service .
+      -  run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+         env: 
+             DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+             DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      -  run: docker push harishk2001/menty-frontend-service
