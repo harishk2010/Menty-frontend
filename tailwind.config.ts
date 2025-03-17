@@ -14,5 +14,8 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // ...other plugins
+    require('tailwind-scrollbar-hide')
+  ],
 } satisfies Config;

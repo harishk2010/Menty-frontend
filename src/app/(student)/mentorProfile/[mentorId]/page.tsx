@@ -193,11 +193,11 @@ export default function MentorProfile() {
         setNewReview({ rating: 0, comment: "" });
         setToggleReview(false);
       } else {
-        toast.error(response?.message || 'Failed to submit review');
+        toast.error(response?.message || 'Review Already submitted!');
       }
     } catch (error: any) {
       console.error('Review submission error:', error);
-      toast.error(error.message || 'An unexpected error occurred');
+      toast.error('Review Already submitted!');
     }
   };
 

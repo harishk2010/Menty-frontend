@@ -181,8 +181,8 @@ const SlotCheckout: React.FC = () => {
 
         <div className="p-6">
           <h4 className="text-lg font-semibold mb-4">Choose Payment Method</h4>
-          <div className="grid grid-cols-3 gap-4">
-            <button 
+          <div className="grid grid-cols-1 gap-4">
+            {/* <button 
               onClick={() => setPaymentMethod('upi')} 
               className={`flex items-center justify-center p-4 rounded-lg border-2 ${
                 paymentMethod === 'upi' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400'
@@ -197,7 +197,7 @@ const SlotCheckout: React.FC = () => {
               }`}
             >
               <Wallet className="mr-2" /> Wallet
-            </button>
+            </button> */}
             <button 
               onClick={() => setPaymentMethod('PayU')} 
               className={`flex items-center justify-center p-4 rounded-lg border-2 ${

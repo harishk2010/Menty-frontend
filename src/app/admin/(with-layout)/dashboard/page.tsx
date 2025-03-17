@@ -338,7 +338,7 @@ const AdminDashboard = () => {
       </div>
       
       {/* Verification Status Card */}
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 mb-8">
+      {/* <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 mb-8">
         <h3 className="text-lg text-indigo-300 font-semibold mb-4">Verification Status</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex items-center bg-gray-700/50 p-4 rounded-lg">
@@ -372,7 +372,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-      
+       */}
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
         {/* Revenue Chart */}
@@ -499,7 +499,7 @@ const AdminDashboard = () => {
                 <tr className="bg-gray-700 border-b border-gray-600">
                   <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Name</th>
                   <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Expertise</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Students</th>
+                  {/* <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Students</th> */}
                   <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Wallet Balance</th>
                   <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Rating</th>
                 </tr>
@@ -509,7 +509,7 @@ const AdminDashboard = () => {
                   <tr key={instructor._id} className="border-b border-gray-700 hover:bg-gray-700/50">
                     <td className="py-3 px-4 text-gray-100 text-sm font-medium">{instructor.username}</td>
                     <td className="py-3 px-4 text-gray-300 text-sm">{instructor.expertise || 'N/A'}</td>
-                    <td className="py-3 px-4 text-gray-300 text-sm">{instructor.totalStudents}</td>
+                    {/* <td className="py-3 px-4 text-gray-300 text-sm">{instructor.totalStudents}</td> */}
                     <td className="py-3 px-4 text-green-400 text-sm">₹{instructor.walletBalance.toLocaleString()}</td>
                     <td className="py-3 px-4 text-yellow-400 text-sm">
                       {instructor.rating ? `${instructor.rating.toFixed(1)}★` : 'N/A'}

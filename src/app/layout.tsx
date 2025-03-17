@@ -3,7 +3,7 @@ import {ToastContainer, toast, Slide, Flip, Zoom, Bounce } from "react-toastify"
 import { StoreProvider } from "./storeProvider";
 export const metadata = {
   title: "Menty",
-  description: "An example app with a header and collapsible sidebar",
+  description: "E-Learning with Mentor Suppport!",
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {

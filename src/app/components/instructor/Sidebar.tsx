@@ -1,178 +1,481 @@
+// "use client";
+
+// import { useState } from "react";
+// import Link from "next/link";
+// import DashboardIcon from '@mui/icons-material/Dashboard';
+// import InfoIcon from '@mui/icons-material/Info';
+// import PeopleIcon from '@mui/icons-material/People';
+// import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+// import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+// import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import { logout } from "@/api/userAuthentication";
+// import { toast } from "react-toastify";
+// import { useRouter , usePathname } from "next/navigation";
+// import { useDispatch } from "react-redux";
+// import { clearUserDetials } from "@/redux/slices/instructorSlice";
+// import { Book, MessageCircleCodeIcon, TicketCheck } from 'lucide-react'
+
+// const Sidebar = () => {
+//   const [isCollapsed, setIsCollapsed] = useState(true);
+//   const router=useRouter()
+//   const dispatch=useDispatch()
+
+//   const  pathname=usePathname()
+//   console.log(pathname)
+
+//   //logout
+//   const handleLogout=async ()=>{
+//     const response=await logout()
+//     if(response.success){
+//       // localStorage.removeItem('accestoken')
+//       // localStorage.removeItem('refreshToken')
+//       toast.success(response.message)
+//       dispatch((clearUserDetials()))
+      
+//       router.replace('/instructor/login')
+      
+//     }else{
+//       toast.error(response.message)
+//     }
+  
+
+//   }
+
+//   return (
+//     <div
+//       className={`h-full z-100 bg-purple-800 text-white flex flex-col justify-between  transition-all duration-500 ${
+//         isCollapsed ? "w-14" : "w-44"
+//       }`}
+//     >
+      
+//       <nav className="mt-4">
+//   <ul className="space-y-2">
+//     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/dashboard" className="flex w-full">
+//         <div className="block float-left">
+//           <DashboardIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           Home
+//         </div>
+//       </Link>
+//     </li>
+//     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/users" className="flex w-full">
+//         <div className="block float-left">
+//           <PeopleIcon className="mr-3 hover:bg-white hover:text-purple-500 text-gray-100  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           Users
+//         </div>
+//       </Link>
+//     </li>
+//     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/profile" className="flex w-full">
+//         <div className="block float-left">
+//           <AccountCircleIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           Profile
+//         </div>
+//       </Link>
+//     </li>
+//     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/about" className="flex w-full">
+//         <div className="block float-left">
+//           <InfoIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           About
+//         </div>
+//       </Link>
+//     </li>
+//     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/courses" className="flex w-full">
+//         <div className="block float-left">
+//           <Book className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           Courses
+//         </div>
+//       </Link>
+//     </li>
+//     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/slots" className="flex w-full">
+//         <div className="block float-left">
+//           <TicketCheck className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           slots
+//         </div>
+//       </Link>
+//     </li>
+//     <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/bookings" className="flex w-full">
+//         <div className="block float-left">
+//           <MessageCircleCodeIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           Bookings
+//         </div>
+//       </Link>
+//     </li>
+    
+//     <li onClick={handleLogout} className="px-4 flex py-2 hover:bg-white rounded-l-full">
+//       <Link href="/instructor/login" className="flex w-full">
+//         <div className="block float-left">
+//           <ExitToAppIcon className="mr-3 hover:bg-purple-500 text-gray-100 size-9  border-gray-300 rounded-full" />
+//         </div>
+//         <div
+//           className={`flex-1 text-base ${
+//             isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
+//           } ease-out transition-all duration-700`}
+//         >
+//           Logout
+//         </div>
+//       </Link>
+//     </li>
+//   </ul>
+// </nav>
+// <button
+//         onClick={() => setIsCollapsed(!isCollapsed)}
+//         className="  w-full p-2 text-sm ease-in-out"
+//       >
+//         {isCollapsed ?<KeyboardArrowRightIcon/> :  <KeyboardArrowLeftIcon/> }
+//       </button>
+
+//     </div>
+//   );
+// };
+
+// export default Sidebar;
+
+///////////////////////////////////////////////////////////
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import Link from "next/link";
+// import { useRouter, usePathname } from "next/navigation";
+// import { useDispatch } from "react-redux";
+// import { clearUserDetials } from "@/redux/slices/instructorSlice";
+// import { toast } from "react-toastify";
+// import { logout } from "@/api/userAuthentication";
+// import { 
+//   LayoutDashboard, 
+//   Users, 
+//   UserCircle, 
+//   Info, 
+//   BookOpen, 
+//   Calendar, 
+//   MessageCircleCode, 
+//   LogOut, 
+//   ChevronLeft, 
+//   ChevronRight,
+//   Layers,
+//   Settings,
+//   BarChart
+// } from 'lucide-react';
+
+// const Sidebar = () => {
+//   const [isCollapsed, setIsCollapsed] = useState(true);
+//   const router = useRouter();
+//   const dispatch = useDispatch();
+//   const pathname = usePathname();
+
+//   // Handle window resize to auto-expand on larger screens
+//   useEffect(() => {
+//     const handleResize = () => {
+//       if (window.innerWidth >= 1280) {
+//         setIsCollapsed(false);
+//       } else {
+//         setIsCollapsed(true);
+//       }
+//     };
+
+//     // Initialize based on current screen size
+//     handleResize();
+
+//     window.addEventListener('resize', handleResize);
+//     return () => window.removeEventListener('resize', handleResize);
+//   }, []);
+
+//   const handleLogout = async () => {
+//     try {
+//       const response = await logout();
+//       if (response.success) {
+//         toast.success(response.message);
+//         dispatch(clearUserDetials());
+//         router.replace('/instructor/login');
+//       } else {
+//         toast.error(response.message);
+//       }
+//     } catch (error) {
+//       toast.error("Logout failed. Please try again.");
+//     }
+//   };
+
+//   const navItems = [
+//     { href: "/instructor/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+//     { href: "/instructor/courses", icon: <BookOpen size={20} />, label: "Courses" },
+//     { href: "/instructor/slots", icon: <Calendar size={20} />, label: "Slots" },
+//     { href: "/instructor/bookings", icon: <MessageCircleCode size={20} />, label: "Bookings" },
+//     { href: "/instructor/analytics", icon: <BarChart size={20} />, label: "Analytics" },
+//     { href: "/instructor/profile", icon: <UserCircle size={20} />, label: "Profile" },
+//     { href: "/instructor/settings", icon: <Settings size={20} />, label: "Settings" },
+//     { href: "/instructor/about", icon: <Info size={20} />, label: "About" },
+//   ];
+
+//   return (
+//     <div className={`h-full bg-gradient-to-b from-purple-900 to-indigo-900 text-white flex flex-col justify-between transition-all duration-300 shadow-xl ${
+//       isCollapsed ? "w-16" : "w-64"
+//     }`}>
+//       {/* Logo for expanded state */}
+//       {!isCollapsed && (
+//         <div className="px-4 py-6 flex items-center justify-center">
+//           <div className="bg-white bg-opacity-10 rounded-lg p-2 w-full text-center">
+//             <span className="font-bold text-xl">Menty</span>
+//             <div className="text-xs text-purple-200">Instructor Portal</div>
+//           </div>
+//         </div>
+//       )}
+      
+//       <div className="flex-1 overflow-y-auto">
+//         <nav className="px-2 py-4">
+//           <ul className="space-y-1">
+//             {navItems.map((item) => {
+//               const isActive = pathname === item.href;
+//               return (
+//                 <li key={item.href}>
+//                   <Link href={item.href} className="block">
+//                     <div className={`flex items-center px-3 py-3 rounded-lg transition-all duration-200 ${
+//                       isActive 
+//                         ? "bg-purple-600 text-white" 
+//                         : "text-purple-100 hover:bg-purple-700/50"
+//                     }`}>
+//                       <div className="flex items-center justify-center">
+//                         {item.icon}
+//                       </div>
+//                       <span className={`ml-3 ${
+//                         isCollapsed 
+//                           ? "opacity-0 w-0 absolute" 
+//                           : "opacity-100 w-auto relative"
+//                       } transition-all duration-200`}>
+//                         {item.label}
+//                       </span>
+//                     </div>
+//                   </Link>
+//                 </li>
+//               );
+//             })}
+//           </ul>
+//         </nav>
+//       </div>
+      
+//       {/* Logout Button */}
+//       <div className="p-4 border-t border-purple-700/50">
+//         <button
+//           onClick={handleLogout}
+//           className={`flex items-center w-full px-3 py-3 rounded-lg text-white hover:bg-red-500 transition-all duration-200`}
+//         >
+//           <LogOut size={20} />
+//           <span className={`ml-3 ${
+//             isCollapsed 
+//               ? "opacity-0 w-0 absolute" 
+//               : "opacity-100 w-auto relative"
+//           } transition-all duration-200`}>
+//             Logout
+//           </span>
+//         </button>
+//       </div>
+      
+//       {/* Collapse Toggle */}
+//       <button
+//         onClick={() => setIsCollapsed(!isCollapsed)}
+//         className="py-4 flex justify-center items-center hover:bg-purple-800 transition-colors"
+//       >
+//         {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+//       </button>
+//     </div>
+//   );
+// };
+
+// export default Sidebar;
+
+//////////////////////
+
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import InfoIcon from '@mui/icons-material/Info';
-import PeopleIcon from '@mui/icons-material/People';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { logout } from "@/api/userAuthentication";
-import { toast } from "react-toastify";
-import { useRouter , usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { clearUserDetials } from "@/redux/slices/instructorSlice";
-import { Book, MessageCircleCodeIcon, TicketCheck } from 'lucide-react'
+import { toast } from "react-toastify";
+import { logout } from "@/api/userAuthentication";
+import { 
+  LayoutDashboard, 
+  Users, 
+  UserCircle, 
+  Info, 
+  BookOpen, 
+  Calendar, 
+  MessageCircleCode, 
+  LogOut, 
+  ChevronLeft, 
+  ChevronRight,
+  Layers,
+  Settings,
+  BarChart
+} from 'lucide-react';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const router=useRouter()
-  const dispatch=useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const pathname = usePathname();
 
-  const  pathname=usePathname()
-  console.log(pathname)
+  // Handle window resize to auto-expand on larger screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setIsCollapsed(false);
+      } else {
+        setIsCollapsed(true);
+      }
+    };
 
-  //logout
-  const handleLogout=async ()=>{
-    const response=await logout()
-    if(response.success){
-      // localStorage.removeItem('accestoken')
-      // localStorage.removeItem('refreshToken')
-      toast.success(response.message)
-      dispatch((clearUserDetials()))
-      
-      router.replace('/instructor/login')
-      
-    }else{
-      toast.error(response.message)
+    // Initialize based on current screen size
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await logout();
+      if (response.success) {
+        toast.success(response.message);
+        dispatch(clearUserDetials());
+        router.replace('/instructor/login');
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("Logout failed. Please try again.");
     }
-  
+  };
 
-  }
+  const navItems = [
+    { href: "/instructor/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { href: "/instructor/courses", icon: <BookOpen size={20} />, label: "Courses" },
+    { href: "/instructor/slots", icon: <Calendar size={20} />, label: "Slots" },
+    { href: "/instructor/bookings", icon: <MessageCircleCode size={20} />, label: "Bookings" },
+    { href: "/instructor/analytics", icon: <BarChart size={20} />, label: "Analytics" },
+    { href: "/instructor/profile", icon: <UserCircle size={20} />, label: "Profile" },
+    { href: "/instructor/settings", icon: <Settings size={20} />, label: "Settings" },
+    { href: "/instructor/about", icon: <Info size={20} />, label: "About" },
+  ];
 
   return (
-    <div
-      className={`h-full z-100 bg-purple-800 text-white flex flex-col justify-between  transition-all duration-500 ${
-        isCollapsed ? "w-14" : "w-44"
-      }`}
-    >
+    <div className={`h-full bg-gradient-to-b from-purple-900 to-indigo-900 text-white flex flex-col justify-between transition-all duration-300 shadow-xl ${
+      isCollapsed ? "w-16" : "w-64"
+    }`}>
+      {/* Logo for expanded state */}
+      {!isCollapsed && (
+        <div className="px-4 py-6 flex items-center justify-center">
+          <div className="bg-white bg-opacity-10 rounded-lg p-2 w-full text-center">
+            <span className="font-bold text-xl">Menty</span>
+            <div className="text-xs text-purple-200">Instructor Portal</div>
+          </div>
+        </div>
+      )}
       
-      <nav className="mt-4">
-  <ul className="space-y-2">
-    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/dashboard" className="flex w-full">
-        <div className="block float-left">
-          <DashboardIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <nav className="px-2 py-4">
+          <ul className="space-y-1">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <li key={item.href}>
+                  <Link href={item.href} className="block">
+                    <div className={`flex items-center px-3 py-3 rounded-lg transition-all duration-200 ${
+                      isActive 
+                        ? "bg-purple-600 text-white" 
+                        : "text-purple-100 hover:bg-purple-700/50"
+                    }`}>
+                      <div className="flex items-center justify-center">
+                        {item.icon}
+                      </div>
+                      <span className={`ml-3 ${
+                        isCollapsed 
+                          ? "opacity-0 w-0 absolute" 
+                          : "opacity-100 w-auto relative"
+                      } transition-all duration-200`}>
+                        {item.label}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
+      
+      {/* Logout Button */}
+      <div className="p-4 border-t border-purple-700/50">
+        <button
+          onClick={handleLogout}
+          className={`flex items-center w-full px-3 py-3 rounded-lg text-white hover:bg-red-500 transition-all duration-200`}
         >
-          Home
-        </div>
-      </Link>
-    </li>
-    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/users" className="flex w-full">
-        <div className="block float-left">
-          <PeopleIcon className="mr-3 hover:bg-white hover:text-purple-500 text-gray-100  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
-        >
-          Users
-        </div>
-      </Link>
-    </li>
-    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/profile" className="flex w-full">
-        <div className="block float-left">
-          <AccountCircleIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
-        >
-          Profile
-        </div>
-      </Link>
-    </li>
-    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/about" className="flex w-full">
-        <div className="block float-left">
-          <InfoIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
-        >
-          About
-        </div>
-      </Link>
-    </li>
-    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/courses" className="flex w-full">
-        <div className="block float-left">
-          <Book className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
-        >
-          Courses
-        </div>
-      </Link>
-    </li>
-    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/slots" className="flex w-full">
-        <div className="block float-left">
-          <TicketCheck className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
-        >
-          slots
-        </div>
-      </Link>
-    </li>
-    <li className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/bookings" className="flex w-full">
-        <div className="block float-left">
-          <MessageCircleCodeIcon className="mr-3 hover:bg-purple-500 text-gray-100  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
-        >
-          Bookings
-        </div>
-      </Link>
-    </li>
-    
-    <li onClick={handleLogout} className="px-4 flex py-2 hover:bg-white rounded-l-full">
-      <Link href="/instructor/login" className="flex w-full">
-        <div className="block float-left">
-          <ExitToAppIcon className="mr-3 hover:bg-purple-500 text-gray-100 size-9  border-gray-300 rounded-full" />
-        </div>
-        <div
-          className={`flex-1 text-base ${
-            isCollapsed ? "opacity-0 invisible" : "opacity-100 visible"
-          } ease-out transition-all duration-700`}
-        >
-          Logout
-        </div>
-      </Link>
-    </li>
-  </ul>
-</nav>
-<button
+          <LogOut size={20} />
+          <span className={`ml-3 ${
+            isCollapsed 
+              ? "opacity-0 w-0 absolute" 
+              : "opacity-100 w-auto relative"
+          } transition-all duration-200`}>
+            Logout
+          </span>
+        </button>
+      </div>
+      
+      {/* Collapse Toggle */}
+      <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="  w-full p-2 text-sm ease-in-out"
+        className="py-4 flex justify-center items-center hover:bg-purple-800 transition-colors"
       >
-        {isCollapsed ?<KeyboardArrowRightIcon/> :  <KeyboardArrowLeftIcon/> }
+        {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
       </button>
-
     </div>
   );
 };

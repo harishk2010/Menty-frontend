@@ -144,10 +144,11 @@ export const blockStudent = async (email: string | null): Promise<any> => {
 };
 export const blockInstructor = async (email: string | null): Promise<any> => {
   try {
-    const response = await API.patch(`${StudentRoutes.adminBlockInstructor}${email}`,{
+    console.log(email)
+    const response = await API.post(`${StudentRoutes.adminBlockInstructor}${email}`,{},{
       withCredentials: true,
     });
-    // console.log(response.data,"setstudent respone")
+    console.log(response.data,"setstudent respone")
     return response?.data;
   } catch (error) {
     console.log(error);

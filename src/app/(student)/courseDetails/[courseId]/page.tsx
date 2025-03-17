@@ -261,7 +261,8 @@ const CourseDetails: React.FC = () => {
         // Reset the form
         setNewReview({ rating: 0, comment: "" });
       } else {
-        toast.error(response?.message || 'Failed to submit review');
+        console.log(response,"res")
+        toast.error(response?.message || 'Review Already Submitted!');
       }
     } catch (error: any) {
       console.error('Review submission error:', error);

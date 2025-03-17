@@ -1,3 +1,4 @@
+
 "use client";
 import { ReactElement, useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -8,43 +9,40 @@ import Link from "next/link";
 import { logout } from "@/api/studentAuthentication";
 import { toast } from "react-toastify";
 import { usePathname, useRouter } from "next/navigation";
-import { studentHeader } from "@/app/utils/validationSchemas/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserDetials } from "@/redux/slices/userSlice";
-import { persistor, RootState } from "@/redux/store";
-
-interface Student {
-  email: string;
-}
+import { RootState } from "@/redux/store";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Image from "next/image";
 
 export default function Navbar(): ReactElement {
-  const [toggleMenu, setToggleMenu] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [student, setStudent] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const pathname = usePathname();
 
-  const Student = useSelector((state: RootState) => state.user.email);
+  // Simplified navigation items
+  const navItems = [
+    { name: "Home", href: "/home" },
+    { name: "About", href: "/about" },
+    { name: "Courses", href: "/courses" },
+    { name: "Mentors", href: "/mentors" },
+  ];
+
+  const Student = useSelector((state: RootState) => state.user.profilePicUrl);
+  
   useEffect(() => {
     if (Student) setStudent(true);
     else setStudent(false);
-    console.log(student, Student);
-  });
-
-  console.log(Student);
-
-  const handleToggleMenu = () => {
-    setToggleMenu((prev) => !prev);
-  };
-  const dispatch = useDispatch();
-  const pathname = usePathname();
+  }, [Student]);
 
   const handleLogout = async () => {
     const response = await logout();
     if (response.success) {
       toast.success(response.message);
       dispatch(clearUserDetials());
-
       router.replace("login");
     } else {
       toast.error(response.message);
@@ -64,13 +62,16 @@ export default function Navbar(): ReactElement {
 
           {/* Center - Brand Logo */}
           <Link href="/">
-            <h1 className="text-purple-600 font-bold text-2xl">Menty</h1>
+            <div className="flex items-center">
+              <img src="../MentyLogo.png" className="w-20" alt="Menty Logo" />
+              <h1 className="text-purple-600 font-bold text-2xl">Menty</h1>
+            </div>
           </Link>
 
           {/* Right - Desktop Navigation */}
           <div className="hidden md:flex space-x-8 items-center">
-            {studentHeader.map((link) => {
-              const isActive = pathname.startsWith(link.href);
+            {navItems.map((link) => {
+              const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
               return (
                 <Link key={link.name} href={link.href} className={`${isActive ? "text-purple-600 font-bold" : "text-gray-600"} hover:text-purple-600`}>
                   {link.name}
@@ -79,17 +80,50 @@ export default function Navbar(): ReactElement {
             })}
           </div>
 
-          {/* Right - Authentication Buttons */}
-          <div className="hidden md:flex gap-3">
-            {!student ? (
-              <Link href="/login">
-                <PlainButton name="Login" />
-              </Link>
-            ) : (
-              <span onClick={handleLogout}>
-                <MainButton name="Logout" />
-              </span>
-            )}
+          {/* Right - User Dropdown */}
+          <div className="hidden md:flex items-center">
+            <div className="relative">
+              <button 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center text-gray-600 hover:text-purple-600 focus:outline-none"
+              >
+                <span className="mr-1">{student ? <img src={Student||"https://freesvg.org/img/abstract-user-flat-4.png"} width={35} height={35} className="rounded-full" alt=""/> : "Account"}</span>
+                <KeyboardArrowDownIcon className="h-5 w-5" />
+              </button>
+              
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                  {!student ? (
+                    <>
+                      <Link href="/login">
+                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Login</div>
+                      </Link>
+                      <Link href="/signup">
+                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Register</div>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link href="/profile">
+                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Profile</div>
+                      </Link>
+                      <Link href="/myCourses">
+                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">My Courses</div>
+                      </Link>
+                      <Link href="/bookings">
+                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">My Bookings</div>
+                      </Link>
+                      <div 
+                        onClick={handleLogout} 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100 cursor-pointer"
+                      >
+                        Logout
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -98,19 +132,29 @@ export default function Navbar(): ReactElement {
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-lg absolute w-full left-0 top-16 z-10">
           <div className="px-4 py-3 space-y-2">
-            {studentHeader.map((link) => (
+            {navItems.map((link) => (
               <Link key={link.name} href={link.href} className="block px-3 py-2 text-gray-600 hover:text-purple-600">
                 {link.name}
               </Link>
             ))}
             {!student ? (
-              <Link href="/login" className="block text-center">
-                <PlainButton name="Login" />
-              </Link>
+              <>
+                <Link href="/login" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
+                  Login
+                </Link>
+                <Link href="/register" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
+                  Register
+                </Link>
+              </>
             ) : (
-              <span onClick={handleLogout} className="block text-center">
-                <MainButton name="Logout" />
-              </span>
+              <>
+                <Link href="/profile" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
+                  Profile
+                </Link>
+                <div onClick={handleLogout} className="block px-3 py-2 text-gray-600 hover:text-purple-600 cursor-pointer">
+                  Logout
+                </div>
+              </>
             )}
           </div>
         </div>

@@ -312,7 +312,7 @@ export default function CourseListing() {
                         className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
                       />
                       <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-sm font-medium text-purple-600">
-                        ${course.price}
+                        ₹{course.price}
                       </div>
                     </div>
                     <div className="p-4">

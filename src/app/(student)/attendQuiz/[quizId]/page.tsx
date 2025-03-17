@@ -81,6 +81,12 @@ const QuizAttempt = () => {
 
   const handleSubmit = async () => {
     if (!quiz || isSubmitted) return;
+    
+    if(quiz.questions.length!==Object.entries(selectedAnswers).length){
+      toast.error("Attend all the Questions!")
+      return 
+    }
+    
 
     const finalScore = calculateScore();
     setScore(finalScore);

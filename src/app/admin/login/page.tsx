@@ -41,6 +41,7 @@ export default function LoginPage(): ReactElement {
       router.push('/admin/dashboard')
      
     }else{
+      console.log(response)
       toast.error(response.message)
     }
     console.log("Form Values:", response);

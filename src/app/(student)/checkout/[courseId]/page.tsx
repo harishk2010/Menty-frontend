@@ -141,26 +141,26 @@ const path = '/payment/paymentFailure';
         <div className="p-6 bg-gray-50">
           <div className="flex justify-between mb-2">
             <span>Original Price</span>
-            <span className="line-through text-gray-500">${course?.price}</span>
+            <span className="line-through text-gray-500">₹{course?.price}</span>
           </div>
-          <div className="flex justify-between mb-2">
+          {/* <div className="flex justify-between mb-2">
             <span>Discount</span>
-            <span className="text-green-600">${discountedPrice} OFF</span>
-          </div>
+            <span className="text-green-600">₹{discountedPrice} OFF</span>
+          </div> */}
           <div className="flex justify-between font-bold text-xl border-t pt-3">
             <span>Total</span>
-            <span>${discountedPrice.toFixed(2)}</span>
+            <span>₹{discountedPrice.toFixed(2)}</span>
           </div>
         </div>
         <div className="p-6">
           <h4 className="text-lg font-semibold mb-4">Choose Payment Method</h4>
-          <div className="grid grid-cols-3 gap-4">
-            <button onClick={() => setPaymentMethod('upi')} className={`flex items-center justify-center p-4 rounded-lg border-2 ${paymentMethod === 'upi' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400'}`}>
+          <div className="grid grid-cols-1 gap-4">
+            {/* <button onClick={() => setPaymentMethod('upi')} className={`flex items-center justify-center p-4 rounded-lg border-2 ${paymentMethod === 'upi' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400'}`}>
               <QrCode className="mr-2" /> UPI
             </button>
             <button onClick={() => setPaymentMethod('wallet')} className={`flex items-center justify-center p-4 rounded-lg border-2 ${paymentMethod === 'wallet' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400'}`}>
               <Wallet className="mr-2" /> Wallet
-            </button>
+            </button> */}
             <button onClick={() => setPaymentMethod('PayU')} className={`flex items-center justify-center p-4 rounded-lg border-2 ${paymentMethod === 'PayU' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400'}`}>
               PayU
             </button>

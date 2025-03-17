@@ -46,7 +46,7 @@ import { API } from "@/service/axios"
  export const listOrUnlistCategory=async(id:string)=>{
     try {
 
-        const response=await API.put(`${adminRoutes.list_Unlist_category}${id}`,{
+        const response=await API.put(`${adminRoutes.list_Unlist_category}${id}`,{},{
             withCredentials:true
         })
         console.log(response,"listOrUnlistCategory adminAPi")
@@ -60,7 +60,7 @@ import { API } from "@/service/axios"
  export const getCategory=async(id:string)=>{
     try {
 
-        const response=await API.put(`${adminRoutes.get_category}${id}`,{
+        const response=await API.get(`${adminRoutes.get_category}${id}`,{
             withCredentials:true
         })
         console.log(response.data.data,"getCategory adminAPi")

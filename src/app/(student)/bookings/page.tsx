@@ -226,7 +226,7 @@ const StudentBookings = () => {
             }
         } catch (error: any) {
             console.error('Review submission error:', error);
-            toast.error(error.message || 'An unexpected error occurred');
+            toast.error( 'Already  submited review !');
         }
     };
 
@@ -366,7 +366,7 @@ const StudentBookings = () => {
                                                 onClick={() => handleLeaveFeedback(booking._id)}
                                                 className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                                             >
-                                                Leave Feedback
+                                                Leave Review
                                             </button>
                                         )}
                                         {booking.hasReview && (
@@ -391,7 +391,7 @@ const StudentBookings = () => {
                                                 </div>
                                             </div>
                                             <div className="mb-4">
-                                                <label className="block text-gray-700 mb-2">Your Feedback</label>
+                                                <label className="block text-gray-700 mb-2">Your Review</label>
                                                 <textarea 
                                                     className="w-full p-2 border rounded-lg text-gray-800"
                                                     rows={4}
@@ -413,7 +413,7 @@ const StudentBookings = () => {
                                                     type="submit" 
                                                     className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                                                 >
-                                                    Submit Feedback
+                                                    Submit Review
                                                 </button>
                                             </div>
                                         </form>
