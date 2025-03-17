@@ -35,7 +35,7 @@ import { API } from "@/service/axios"
         const response=await API.get(adminRoutes.get_All_categories,{
             withCredentials:true
         })
-        console.log(response.data.data,"responsegetCategories adminAPi")
+        // console.log(response.data.data,"responsegetCategories adminAPi")
         return response.data.data
         
     } catch (error) {
