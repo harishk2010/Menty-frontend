@@ -22,5 +22,5 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build --build-arg JWT_KEY=${{ secrets.JWT_KEY }} -t harishk2001/menty-frontend-service .
+          docker build -t harishk2001/menty-frontend-service .
           docker push harishk2001/menty-frontend-service
