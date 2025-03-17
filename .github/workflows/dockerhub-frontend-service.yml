@@ -14,9 +14,9 @@ jobs:
 
     steps:
       -  uses: actions/checkout@v4
-      -  run: docker build --build-arg JWT_KEY=${{ secrets.JWT_KEY }} -t harishk2001/menty-frontend .
+      -  run: docker build --build-arg JWT_KEY=${{ secrets.JWT_KEY }} -t harishk2001/menty-frontend-service .
       -  run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
          env: 
              DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
              DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      -  run: docker push harishk2001/menty-frontend
+      -  run: docker push harishk2001/menty-frontend-service
