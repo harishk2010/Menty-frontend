@@ -6,7 +6,7 @@ import Router from "next/router";
 
 
 export const API = axios.create({
-  baseURL:process.env.NEXT_PUBLIC_BASE_URL ,
+  baseURL:process.env.NEXT_PUBLIC_BASE_URL ||"https://menty.live" ,
   headers: {
     "Content-Type": "application/json",
     withCredentials: true,
