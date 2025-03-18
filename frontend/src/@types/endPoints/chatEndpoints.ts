@@ -1,7 +1,7 @@
 const chatRoutes={
 
-    CHAT_HISTORY:'/chat/history/',
-    CHAT_UPLOAD_IMAGE:'/chat/upload-image'
+    CHAT_HISTORY:'/api/chat/history/',
+    CHAT_UPLOAD_IMAGE:'/api/chat/upload-image'
 
 }
 

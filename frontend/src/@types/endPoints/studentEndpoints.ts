@@ -1,15 +1,15 @@
 const studentRoutes={
-    getStudentData:"/user/student/",
-    updateProfile:'/user/student/updateProfile',
-    updatePassword:'/user/student/updatePassword',
-    adminGetStudents:'/user/student/getStudents',
-    adminBlockStudent:'/user/student/blockStudent/',
-    getStudentDataById:'/user/student/student/',
-    adminSearchStudents:'/user/student/search',
+    getStudentData:"/api/user/student/",
+    updateProfile:'/api/user/student/updateProfile',
+    updatePassword:'/api/user/student/updatePassword',
+    adminGetStudents:'/api/user/student/getStudents',
+    adminBlockStudent:'/api/user/student/blockStudent/',
+    getStudentDataById:'/api/user/student/student/',
+    adminSearchStudents:'/api/user/student/search',
     
     
-    adminGetInstructors:'/user/instructors/getInstructors',
-    adminBlockInstructor:'/user/instructors/blockInstructor/',
+    adminGetInstructors:'/api/user/instructors/getInstructors',
+    adminBlockInstructor:'/api/user/instructors/blockInstructor/',
  
 }
 
