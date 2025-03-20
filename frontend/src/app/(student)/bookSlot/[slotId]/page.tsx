@@ -301,8 +301,8 @@ const SlotCheckout: React.FC = () => {
 
   useEffect(() => {
     if (!txnid || !slot) return;
-    const key = process.env.NEXT_PUBLIC_PAYU_KEY;
-    const salt = process.env.NEXT_PUBLIC_PAYU_SALT;
+    const key = process.env.NEXT_PUBLIC_PAYU_KEY|| 't4VOu4';
+    const salt = process.env.NEXT_PUBLIC_PAYU_SALT || 'h1r2JIjnHkpgtJrfBkfqKOS02hi3B0UB';
     const productinfo = slotId;
     const firstname = name || '';
     const userEmail = email || '';
@@ -371,10 +371,10 @@ const SlotCheckout: React.FC = () => {
         <form
           id="payuForm"
           method="POST"
-          action={process.env.NEXT_PUBLIC_PAYU_URL || ''}
+          action={process.env.NEXT_PUBLIC_PAYU_URL || 'https://test.payu.in/_payment'}
           style={{ display: 'none' }}
         >
-          <input type="hidden" name="key" value={process.env.NEXT_PUBLIC_PAYU_KEY || ''} />
+          <input type="hidden" name="key" value={process.env.NEXT_PUBLIC_PAYU_KEY || 't4VOu4'} />
           <input type="hidden" name="txnid" value={txnid} />
           <input type="hidden" name="productinfo" value={slotId} />
           <input type="hidden" name="amount" value={slot.price.toString()} />

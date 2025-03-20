@@ -72,10 +72,7 @@ const CourseCheckout: React.FC = () => {
     setHash(CryptoJS.SHA512(hashString).toString());
   }, [txnid, course]);
   console.log("hash,hash",hash)
-//   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-// const path = '/payment/paymentFailure';
 
-  // const fullUrl = new URL(path, baseUrl);
 
   const handlePayment = () => {
     if (!txnid || !course?.price || !courseId) {
