@@ -361,8 +361,8 @@ const SlotCheckout: React.FC = () => {
     );
   }
 
-  const surl = `${FRONTEND_URL}/api/booking-payment-success`;
-  const furl = `${FRONTEND_URL}/api/booking-payment-failure`;
+  const surl = `${FRONTEND_URL}/nextapi/booking-payment-success`;
+  const furl = `${FRONTEND_URL}/nextapi/booking-payment-failure`;
 
   return (
     <div className="min-h-screen bg-gray-100 text-black flex items-center justify-center p-4">

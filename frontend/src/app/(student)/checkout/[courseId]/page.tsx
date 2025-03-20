@@ -80,8 +80,8 @@ const CourseCheckout: React.FC = () => {
       return;
     }
 
-    const surl = `${FRONTEND_URL}/api/payment-success`;
-    const furl = `${FRONTEND_URL}/api/payment-failure`;
+    const surl = `${FRONTEND_URL}/nextapi/payment-success`;
+    const furl = `${FRONTEND_URL}/nextapi/payment-failure`;
     if (paymentMethod === 'PayU') {
       const formData = {
         key: process.env.NEXT_PUBLIC_PAYU_KEY || 't4VOu4',
