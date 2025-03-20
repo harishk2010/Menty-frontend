@@ -36,6 +36,7 @@ import { NextResponse } from 'next/server';
 import { payCourse } from '@/api/courseApi';
 import { verifyPayUResponse } from '@/app/utils/payuUtils';
 
+
 export async function POST(req: Request) {
   try {
     // Parse the form data from the request
@@ -64,10 +65,14 @@ export async function POST(req: Request) {
       String(lastname)
     );
     console.log('Payment processed:', response);
+    console.log('FRONTEND_URL:', process.env.NEXT_PUBLIC_FRONTEND_URL);
 
-    // Redirect to the success page with query parameters
-    const redirectUrl = `/BookingPaymentSuccess?mentorName=${lastname}&slotId=${productinfo}&txnid=${txnid}&amountPaid=${amount}&bankRefNum=${bank_ref_num}`;
-    return NextResponse.redirect(new URL(redirectUrl, req.url));
+    // Use FRONTEND_URL for the redirect URL
+    const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://menty.live";
+    const redirectUrl = `${FRONTEND_URL}/BookingPaymentSuccess?mentorName=${lastname}&slotId=${productinfo}&txnid=${txnid}&amountPaid=${amount}&bankRefNum=${bank_ref_num}`;
+
+    // Redirect to the success page
+    return NextResponse.redirect(redirectUrl);
   } catch (error) {
     console.error('Error processing payment:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });

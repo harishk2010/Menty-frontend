@@ -1,4 +1,5 @@
 //student Header
+import { configDotenv } from "dotenv";
 export const studentHeader = [
   {
     name: "Home",
@@ -68,4 +69,13 @@ export const profileSidebar = [
     href: "/settings",
   },
 ];
+if (process.env.NODE_ENV === "production") {
+  configDotenv({ path: ".env.production" });
+  console.log("prod")
+} else {
+ configDotenv({ path: ".env" });
+  console.log("dev")
+}
+
+
 export const FRONTEND_URL=process.env.NEXT_PUBLIC_FRONTEND_URL || "https://menty.live"
