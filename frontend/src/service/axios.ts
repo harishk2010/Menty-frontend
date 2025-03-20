@@ -3,7 +3,14 @@ import { deleteCookie } from "@/utils/deleteCookie";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Router from "next/router";
-
+import dotenv from "dotenv"
+if (process.env.NODE_ENV === 'production') {
+  dotenv.config({ path: '.env.production' });
+  console.log(process.env.MONGO_URI,"production")
+} else {
+  dotenv.config({ path: '.env.development' });
+  console.log(process.env.MONGO_URI,"dev")
+}
 
 export const API = axios.create({
   baseURL:process.env.NEXT_PUBLIC_BASE_URL ||"https://menty.live" ,

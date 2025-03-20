@@ -68,4 +68,4 @@ export const profileSidebar = [
     href: "/settings",
   },
 ];
-
+export const FRONTEND_URL=process.env.NEXT_PUBLIC_FRONTEND_URL || "https://menty.live"
