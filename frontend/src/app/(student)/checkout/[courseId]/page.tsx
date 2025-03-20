@@ -56,8 +56,8 @@ const CourseCheckout: React.FC = () => {
 
   useEffect(() => {
     if (!txnid || !course) return;
-    const key = process.env.NEXT_PUBLIC_PAYU_KEY;
-    const salt = process.env.NEXT_PUBLIC_PAYU_SALT;
+    const key = process.env.NEXT_PUBLIC_PAYU_KEY || 't4VOu4';
+    const salt = process.env.NEXT_PUBLIC_PAYU_SALT || "h1r2JIjnHkpgtJrfBkfqKOS02hi3B0UB";
     const productinfo = courseId || "";
     const firstname = name || '';
     const userEmail = email || '';
@@ -84,7 +84,7 @@ const CourseCheckout: React.FC = () => {
     const furl = `${FRONTEND_URL}/api/payment-failure`;
     if (paymentMethod === 'PayU') {
       const formData = {
-        key: process.env.NEXT_PUBLIC_PAYU_KEY,
+        key: process.env.NEXT_PUBLIC_PAYU_KEY || 't4VOu4',
         txnid: txnid,
         productinfo: courseId,
         amount: course?.price,
