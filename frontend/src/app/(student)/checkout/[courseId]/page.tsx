@@ -9,6 +9,7 @@ import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
+import { FRONTEND_URL } from '@/app/utils/validationSchemas/constants';
 
 interface ICourse {
   courseName: string;
@@ -71,10 +72,10 @@ const CourseCheckout: React.FC = () => {
     setHash(CryptoJS.SHA512(hashString).toString());
   }, [txnid, course]);
   console.log("hash,hash",hash)
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-const path = '/payment/paymentFailure';
+//   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+// const path = '/payment/paymentFailure';
 
-  const fullUrl = new URL(path, baseUrl);
+  // const fullUrl = new URL(path, baseUrl);
 
   const handlePayment = () => {
     if (!txnid || !course?.price || !courseId) {
@@ -82,8 +83,8 @@ const path = '/payment/paymentFailure';
       return;
     }
 
-    const surl = `${window.location.origin}/api/payment-success`;
-    const furl = `${window.location.origin}/api/payment-failure`;
+    const surl = `${FRONTEND_URL}/api/payment-success`;
+    const furl = `${FRONTEND_URL}/api/payment-failure`;
     if (paymentMethod === 'PayU') {
       const formData = {
         key: process.env.NEXT_PUBLIC_PAYU_KEY,
