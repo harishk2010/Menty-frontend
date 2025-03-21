@@ -36,11 +36,11 @@ const Player = dynamic(
   }
 );
 
-// Banner images array
+
 const bannerImages = [
   "/homeBanner.jpg",
-  "/banner2.jpg", // Add your additional banner images here
-  "/banner3.jpg",
+  "/homeBanner2.jpg", 
+  "/homeBanner3.jpg",
 ];
 
 interface Course {
