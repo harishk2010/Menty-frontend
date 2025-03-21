@@ -60,7 +60,7 @@ export default function LoginPage(): ReactElement {
       console.log(response,"responsee");
       const user = response?.user;
       console.log("userrr",user)
-      if (response) {
+      if (response.success) {
         // console.log(response,user,"ll")
         // localStorage.setItem('accesToken', response.token.accessToken)
         // localStorage.setItem('refreshToken', response.token.refreshToken)
@@ -95,10 +95,10 @@ export default function LoginPage(): ReactElement {
 
       if (user) {
       
-        localStorage.setItem("user", JSON.stringify(user));
-        console.log(response,user,"ll")
-        localStorage.setItem('accesToken', response.token.accesstoken)
-        localStorage.setItem('refreshToken', response.token.refreshToken)
+        // localStorage.setItem("user", JSON.stringify(user));
+        // console.log(response,user,"ll")
+        // localStorage.setItem('accesToken', response.token.accesstoken)
+        // localStorage.setItem('refreshToken', response.token.refreshToken)
         toast.success("Welcome to Menty");
         console.log('user data ___________>', user)
 

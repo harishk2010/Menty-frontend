@@ -260,12 +260,12 @@ export default function Home(): ReactElement {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <Link href="/signup?role=student" className="flex-1">
+                <Link href="/signup" className="flex-1">
                   <button className="w-full py-4 px-6 bg-white text-purple-700 font-medium rounded-lg hover:bg-gray-100 transition-colors">
                     Sign Up as Student
                   </button>
                 </Link>
-                <Link href="/signup?role=instructor" className="flex-1">
+                <Link href="/instructor/signup=" className="flex-1">
                   <button className="w-full py-4 px-6 bg-purple-600 text-white font-medium rounded-lg border border-purple-400 hover:bg-purple-700 transition-colors">
                     Sign Up as Instructor
                   </button>

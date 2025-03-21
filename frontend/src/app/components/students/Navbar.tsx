@@ -1,4 +1,3 @@
-
 "use client";
 import { ReactElement, useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -32,7 +31,7 @@ export default function Navbar(): ReactElement {
   ];
 
   const Student = useSelector((state: RootState) => state.user.profilePicUrl);
-  
+
   useEffect(() => {
     if (Student) setStudent(true);
     else setStudent(false);
@@ -55,8 +54,15 @@ export default function Navbar(): ReactElement {
         <div className="flex justify-between h-16 items-center">
           {/* Left - Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 hover:text-gray-900">
-              {isMenuOpen ? <ChevronLeftIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              {isMenuOpen ? (
+                <ChevronLeftIcon className="h-6 w-6" />
+              ) : (
+                <MenuIcon className="h-6 w-6" />
+              )}
             </button>
           </div>
 
@@ -71,9 +77,17 @@ export default function Navbar(): ReactElement {
           {/* Right - Desktop Navigation */}
           <div className="hidden md:flex space-x-8 items-center">
             {navItems.map((link) => {
-              const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+              const isActive =
+                pathname === link.href ||
+                (link.href !== "/" && pathname.startsWith(link.href));
               return (
-                <Link key={link.name} href={link.href} className={`${isActive ? "text-purple-600 font-bold" : "text-gray-600"} hover:text-purple-600`}>
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`${
+                    isActive ? "text-purple-600 font-bold" : "text-gray-600"
+                  } hover:text-purple-600`}
+                >
                   {link.name}
                 </Link>
               );
@@ -83,45 +97,74 @@ export default function Navbar(): ReactElement {
           {/* Right - User Dropdown */}
           <div className="hidden md:flex items-center">
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center text-gray-600 hover:text-purple-600 focus:outline-none"
               >
-                <span className="mr-1">{student ? <img src={Student||"https://freesvg.org/img/abstract-user-flat-4.png"} width={35} height={35} className="rounded-full fixed" alt=""/> : "Account"}</span>
+                <span className="mr-1">
+                  {student ? (
+                    <div className="w-9 h-9 overflow-hidden rounded-full">
+                      <img
+                        src={
+                          Student ||
+                          "https://freesvg.org/img/abstract-user-flat-4.png"
+                        }
+                        className="w-full h-full object-cover"
+                        alt="User profile"
+                      />
+                    </div>
+                  ) : (
+                    "Account"
+                  )}
+                </span>{" "}
                 <KeyboardArrowDownIcon className="h-5 w-5" />
               </button>
-              
+
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                  {!student ? (
-                    <>
-                      <Link href="/login">
-                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Login</div>
-                      </Link>
-                      <Link href="/signup">
-                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Register</div>
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Link href="/profile">
-                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Profile</div>
-                      </Link>
-                      <Link href="/myCourses">
-                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">My Courses</div>
-                      </Link>
-                      <Link href="/bookings">
-                        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">My Bookings</div>
-                      </Link>
-                      <div 
-                        onClick={handleLogout} 
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100 cursor-pointer"
-                      >
-                        Logout
-                      </div>
-                    </>
-                  )}
-                </div>
+                // For the desktop dropdown menu
+<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+  {!student ? (
+    <>
+      <Link href="/login" onClick={() => setIsDropdownOpen(false)}>
+        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          Login
+        </div>
+      </Link>
+      <Link href="/signup" onClick={() => setIsDropdownOpen(false)}>
+        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          Register
+        </div>
+      </Link>
+    </>
+  ) : (
+    <>
+      <Link href="/profile" onClick={() => setIsDropdownOpen(false)}>
+        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          Profile
+        </div>
+      </Link>
+      <Link href="/myCourses" onClick={() => setIsDropdownOpen(false)}>
+        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          My Courses
+        </div>
+      </Link>
+      <Link href="/bookings" onClick={() => setIsDropdownOpen(false)}>
+        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          My Bookings
+        </div>
+      </Link>
+      <div 
+        onClick={() => {
+          setIsDropdownOpen(false);
+          handleLogout();
+        }} 
+        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100 cursor-pointer"
+      >
+        Logout
+      </div>
+    </>
+  )}
+</div>
               )}
             </div>
           </div>
@@ -129,42 +172,74 @@ export default function Navbar(): ReactElement {
       </div>
 
       {/* Mobile Navigation Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg absolute w-full left-0 top-16 z-10">
-          <div className="px-4 py-3 space-y-2">
-            {navItems.map((link) => (
-              <Link key={link.name} href={link.href} className="block px-3 py-2 text-gray-600 hover:text-purple-600">
-                {link.name}
-              </Link>
-            ))}
-            {!student ? (
-              <>
-                <Link href="/login" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
-                  Login
-                </Link>
-                <Link href="/register" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
-                  Register
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/profile" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
-                  Profile
-                </Link>
-                <Link href="/myCourses" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
-                  MyCourses
-                </Link>
-                <Link href="/bookings" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
-                  Bookings
-                </Link>
-                <div onClick={handleLogout} className="block px-3 py-2 text-gray-600 hover:text-purple-600 cursor-pointer">
-                  Logout
-                </div>
-              </>
-            )}
+     {/* Mobile Navigation Menu */}
+{isMenuOpen && (
+  <div className="md:hidden bg-white shadow-lg absolute w-full left-0 top-16 z-10">
+    <div className="px-4 py-3 space-y-2">
+      {navItems.map((link) => (
+        <Link
+          key={link.name}
+          href={link.href}
+          onClick={() => setIsMenuOpen(false)}
+          className="block px-3 py-2 text-gray-600 hover:text-purple-600"
+        >
+          {link.name}
+        </Link>
+      ))}
+      {!student ? (
+        <>
+          <Link
+            href="/login"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 text-gray-600 hover:text-purple-600"
+          >
+            Login
+          </Link>
+          <Link
+            href="/register"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 text-gray-600 hover:text-purple-600"
+          >
+            Register
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link
+            href="/profile"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 text-gray-600 hover:text-purple-600"
+          >
+            Profile
+          </Link>
+          <Link
+            href="/myCourses"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 text-gray-600 hover:text-purple-600"
+          >
+            MyCourses
+          </Link>
+          <Link
+            href="/bookings"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 text-gray-600 hover:text-purple-600"
+          >
+            Bookings
+          </Link>
+          <div
+            onClick={() => {
+              setIsMenuOpen(false);
+              handleLogout();
+            }}
+            className="block px-3 py-2 text-gray-600 hover:text-purple-600 cursor-pointer"
+          >
+            Logout
           </div>
-        </div>
+        </>
       )}
+    </div>
+  </div>
+)}
     </nav>
   );
 }
