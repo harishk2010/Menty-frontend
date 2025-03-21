@@ -78,7 +78,7 @@ export default function Navbar(): ReactElement {
                   alt="Menty Logo" 
                   width={80} 
                   height={40} 
-                  style={{ objectFit: "contain" }}
+                 
                 />
               </div>
               <h1 className="text-purple-600 font-bold text-2xl">Menty</h1>
@@ -108,7 +108,7 @@ export default function Navbar(): ReactElement {
                   {student ? (
                     <div className="relative w-8 h-8 overflow-hidden rounded-full">
                       <Image 
-                        src={imageError || !Student ? "/default-avatar.png" : Student}
+                        src={imageError || !Student ? "https://freesvg.org/img/abstract-user-flat-4.png" : Student}
                         alt="User Profile"
                         width={32}
                         height={32}
