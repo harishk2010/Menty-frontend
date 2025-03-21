@@ -324,7 +324,8 @@ export default function LoginPage(): ReactElement {
         );
         
         toast.success(response.message);
-        router.replace("/home");
+        // router.replace("/home");
+        window.location.href = "/home";//forece to redierct sunce replace is inconsistent
       } else {
         toast.error(response.message || "Google login failed");
       }
@@ -356,7 +357,8 @@ export default function LoginPage(): ReactElement {
         );
   
         // Use replace for cleaner navigation history
-        router.replace("/home");
+        // router.replace("/home");
+        window.location.href = "/home";
       } else {
         toast.error(response.message || "Login failed");
       }
