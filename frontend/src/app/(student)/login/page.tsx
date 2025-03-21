@@ -48,8 +48,6 @@ export default function LoginPage(): ReactElement {
   const googleUrl=process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
   console.log(googleUrl,"googleUrl")
   const googleSubmit = async (credentialResponse: any) => {
-
-
     console.log('gooogle')
     try {
       const decoded: any = jwtDecode(credentialResponse.credential)
@@ -59,9 +57,10 @@ export default function LoginPage(): ReactElement {
       const user = response?.user;
       console.log(user,"USERRRRR");
       if (response) {
-        // localStorage.setItem('accesToken', response.token.accessToken)
-        // localStorage.setItem('refreshToken', response.token.refreshToken)
-        // localStorage.setItem('role', response.token.role)
+        localStorage.setItem('accesToken', response.token.accessToken)
+        localStorage.setItem('refreshToken', response.token.refreshToken)
+        localStorage.setItem('role', response.token.role)
+        
         dispatch((setUser({
           userId: user._id,
           name: user.name,
@@ -69,14 +68,17 @@ export default function LoginPage(): ReactElement {
           role: user.role,
           profilePicUrl:user.profilePicUrl
         })))
+        
         toast.success(response.message)
-        router.push('/home')
-
+        
+        // Use setTimeout to ensure state updates complete before navigation
+        setTimeout(() => {
+          router.replace('/home');
+        }, 100);
       } else {
         const { message } = response.response?.data
         toast.error(message)
       }
-      // const user = response.data.user;
     } catch (error) {
       console.log(error)
     }
@@ -85,36 +87,42 @@ export default function LoginPage(): ReactElement {
   const onSubmit = async (data: Login) => {
     try {
       // Perform the login request
-       console.log("Response received:",data);
-      const response = await login(data.email,data.password); // Assuming `login` is an API function
+      console.log("Response received:", data);
+      const response = await login(data.email, data.password);
       console.log("Response received:>", response.message);
 
       const user = response?.user;
 
       if (user) {
-        // Store user data in localStorage and show success toast
+        // Store user data and tokens in localStorage
         localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem('accesToken', response.token.accesstoken)
+        localStorage.setItem('refreshToken', response.token.refreshToken)
+        localStorage.setItem('role', user.role)
+        
         toast.success("Welcome to Menty");
       
+        // Update Redux state
         dispatch((setUser({
           userId: user._id,
           name: user.username,
           email: user.email,
           role: user.role,
-          profilePicUrl:user.profilePicUrl
+          profilePicUrl: user.profilePicUrl
         })))
-        // Redirect to home page after a  delay 
-        router.replace(`/home`);
         
+        // Use setTimeout to ensure state updates complete before navigation
+        setTimeout(() => {
+          router.replace("/home");
+        }, 100);
       } else {
         // Log error and handle different error messages
         toast.error(response.message)
         console.log("res msg =>>>>", response?.message)
-        
-
       }
     } catch (error) {
       console.log(error)
+      toast.error("Login failed. Please try again.")
     }
   };
 

@@ -1,4 +1,3 @@
-
 "use client";
 import { ReactElement, useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -19,6 +18,7 @@ export default function Navbar(): ReactElement {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [student, setStudent] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
@@ -36,6 +36,9 @@ export default function Navbar(): ReactElement {
   useEffect(() => {
     if (Student) setStudent(true);
     else setStudent(false);
+    
+    // Reset image error state when profile pic URL changes
+    setImageError(false);
   }, [Student]);
 
   const handleLogout = async () => {
@@ -47,6 +50,11 @@ export default function Navbar(): ReactElement {
     } else {
       toast.error(response.message);
     }
+  };
+
+  // Handle profile image error
+  const handleImageError = () => {
+    setImageError(true);
   };
 
   return (
@@ -63,7 +71,16 @@ export default function Navbar(): ReactElement {
           {/* Center - Brand Logo */}
           <Link href="/">
             <div className="flex items-center">
-              <img src="../MentyLogo.png" className="w-20" alt="Menty Logo" />
+              {/* Use Next.js Image component with fixed dimensions */}
+              <div className="relative w-20 h-10">
+                <Image 
+                  src="/MentyLogo.png" 
+                  alt="Menty Logo" 
+                  width={80} 
+                  height={40} 
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
               <h1 className="text-purple-600 font-bold text-2xl">Menty</h1>
             </div>
           </Link>
@@ -87,7 +104,23 @@ export default function Navbar(): ReactElement {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center text-gray-600 hover:text-purple-600 focus:outline-none"
               >
-                <span className="mr-1">{student ? <img src={Student||"https://freesvg.org/img/abstract-user-flat-4.png"} width={35} height={35} className="rounded-full" alt=""/> : "Account"}</span>
+                <span className="mr-1">
+                  {student ? (
+                    <div className="relative w-8 h-8 overflow-hidden rounded-full">
+                      <Image 
+                        src={imageError || !Student ? "/default-avatar.png" : Student}
+                        alt="User Profile"
+                        width={32}
+                        height={32}
+                        className="rounded-full object-cover"
+                        onError={handleImageError}
+                        priority
+                      />
+                    </div>
+                  ) : (
+                    "Account"
+                  )}
+                </span>
                 <KeyboardArrowDownIcon className="h-5 w-5" />
               </button>
               
@@ -150,6 +183,12 @@ export default function Navbar(): ReactElement {
               <>
                 <Link href="/profile" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
                   Profile
+                </Link>
+                <Link href="/myCourses" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
+                  MyCourses
+                </Link>
+                <Link href="/bookings" className="block px-3 py-2 text-gray-600 hover:text-purple-600">
+                  Bookings
                 </Link>
                 <div onClick={handleLogout} className="block px-3 py-2 text-gray-600 hover:text-purple-600 cursor-pointer">
                   Logout
