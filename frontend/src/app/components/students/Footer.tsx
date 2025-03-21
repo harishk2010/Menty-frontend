@@ -8,9 +8,9 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">Company</h3>
           <ul className="space-y-2">
-            <li><a href="#" className="text-gray-300 hover:text-white">About Us</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-white">Careers</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-white">Blog</a></li>
+            <li><a href="/about" className="text-gray-300 hover:text-white">About Us</a></li>
+            <li><a href="/courses" className="text-gray-300 hover:text-white">Courses</a></li>
+            <li><a href="/mentors" className="text-gray-300 hover:text-white">Mentors</a></li>
             <li><a href="#" className="text-gray-300 hover:text-white">Press</a></li>
           </ul>
         </div>
@@ -66,7 +66,7 @@ const Footer = () => {
             <div className="mt-2">
               <a href="mailto:info@example.com" className="text-gray-300 hover:text-white flex items-center">
                 <Mail className="h-4 w-4 mr-2" />
-                info@example.com
+                menty@gmail.com
               </a>
               <a href="tel:+1234567890" className="text-gray-300 hover:text-white flex items-center mt-2">
                 <Phone className="h-4 w-4 mr-2" />
@@ -78,7 +78,7 @@ const Footer = () => {
       </div>
       <div className="mt-12 border-t border-gray-800 pt-8">
         <p className="text-center text-gray-400 text-sm">
-          &copy; {new Date().getFullYear()} YourCompanyName. All rights reserved.
+          &copy; {new Date().getFullYear()} Menty . All rights reserved.
         </p>
       </div>
     </div>
