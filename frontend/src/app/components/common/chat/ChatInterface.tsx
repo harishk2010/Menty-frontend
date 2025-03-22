@@ -358,7 +358,11 @@ const ChatInterface = ({
   }, [currentUser, studentId, instructorId, router]);
 
   useEffect(() => {
-    const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL);
+    // const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL);
+    const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+      transports: ['websocket'], // ✅ Forces WebSocket usage
+      reconnectionDelayMax: 10000,
+  });
     
     socketInstance.on('connect', () => {
       console.log('Connected to chat server');
