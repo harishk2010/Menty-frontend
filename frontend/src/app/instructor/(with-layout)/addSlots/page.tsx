@@ -101,12 +101,12 @@ const SlotCreationForm = () => {
     try {
       const instructorId = instructorData?._id;
       const price = instructorData?.planPrice;
-
-      // Create Date objects with the correct time zone information
-      const startDateTime = new Date(`${data.startDate}T${data.startTime}`);
-      const endDateTime = new Date(`${data.endDate}T${data.endTime}`);
-
-      // Pass ISO strings to maintain time zone information
+  
+      // Create Date objects in UTC
+      const startDateTime = new Date(`${data.startDate}T${data.startTime}:00Z`);
+      const endDateTime = new Date(`${data.endDate}T${data.endTime}:00Z`);
+  
+      // Format as ISO strings (UTC)
       const formattedData = {
         ...data,
         startTime: startDateTime.toISOString(),
@@ -114,16 +114,18 @@ const SlotCreationForm = () => {
         instructorId,
         price,
       };
-
+  
+      console.log("Sending data to backend:", formattedData);
+  
       const response = await createSlots(formattedData);
-
+  
       if (response.success) {
-        router.replace("/instructor/slots");
-        toast.success("Slots created successfully!");
+        router.replace('/instructor/slots');
+        toast.success('Slots created successfully!');
       }
     } catch (error) {
-      console.error("Failed to create slots:", error);
-      alert("Failed to create slots. Please try again.");
+      console.error('Failed to create slots:', error);
+      toast.error('Failed to create slots. Please try again.');
     }
   };
   if (!instructorData?.isVerified) return <GetVerified />;
