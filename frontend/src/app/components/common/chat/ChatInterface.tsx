@@ -363,13 +363,14 @@ const ChatInterface = ({
   //     transports: ['websocket'], // ✅ Forces WebSocket usage
   //     reconnectionDelayMax: 10000,
   // });
+  console.log("first",process.env.NEXT_PUBLIC_SOCKET_URL)
   const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
     transports: ['websocket'],
     path: '/socket.io', // Add the Socket.IO path if your server uses this
     reconnectionDelayMax: 10000,
     reconnectionAttempts: 5
   });
-  
+
     socketInstance.on('connect', () => {
       console.log('Connected to chat server');
       socketInstance.emit('join-room', bookingId);
