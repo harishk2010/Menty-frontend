@@ -97,22 +97,70 @@ const SlotCreationForm = () => {
   //   }
   // };
   // In your onSubmit function
+  // const onSubmit = async (data: SlotFormData) => {
+  //   try {
+  //     const instructorId = instructorData?._id;
+  //     const price = instructorData?.planPrice;
+  
+  //     // Get the user's timezone offset (e.g., "+05:30" for IST)
+  //     const timezoneOffset = new Date().getTimezoneOffset();
+  //     const offsetHours = Math.abs(Math.floor(timezoneOffset / 60));
+  //     const offsetMinutes = Math.abs(timezoneOffset % 60);
+  //     const timezoneSign = timezoneOffset > 0 ? '-' : '+';
+  //     const timezoneString = `${timezoneSign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`;
+  
+  //     // Send local time and timezone offset to the backend
+  //     const formattedData = {
+  //       ...data,
+  //       startTime: `${data.startDate}T${data.startTime}:00${timezoneString}`, // Local time with offset
+  //       endTime: `${data.endDate}T${data.endTime}:00${timezoneString}`, // Local time with offset
+  //       instructorId,
+  //       price,
+  //       timezone: timezoneString, // Send the timezone offset
+  //     };
+  
+  //     console.log("Sending data to backend:", formattedData);
+  
+  //     const response = await createSlots(formattedData);
+  
+  //     if (response.success) {
+  //       router.replace('/instructor/slots');
+  //       toast.success('Slots created successfully!');
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to create slots:', error);
+  //     toast.error('Failed to create slots. Please try again.');
+  //   }
+  // };
+  const getUTCTime = (localTime: string, timezoneOffset: string) => {
+    const date = new Date(`${localTime}${timezoneOffset}`);
+    return date.toISOString(); // Convert to UTC
+  };
+  
   const onSubmit = async (data: SlotFormData) => {
     try {
       const instructorId = instructorData?._id;
       const price = instructorData?.planPrice;
   
-      // Create Date objects in UTC
-      const startDateTime = new Date(`${data.startDate}T${data.startTime}:00Z`);
-      const endDateTime = new Date(`${data.endDate}T${data.endTime}:00Z`);
+      // Get the user's timezone offset (e.g., "+05:30" for IST)
+      const timezoneOffset = new Date().getTimezoneOffset();
+      const offsetHours = Math.abs(Math.floor(timezoneOffset / 60));
+      const offsetMinutes = Math.abs(timezoneOffset % 60);
+      const timezoneSign = timezoneOffset > 0 ? '-' : '+';
+      const timezoneString = `${timezoneSign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`;
   
-      // Format as ISO strings (UTC)
+      // Convert local times to UTC
+      const startTimeUTC = getUTCTime(`${data.startDate}T${data.startTime}:00`, timezoneString);
+      const endTimeUTC = getUTCTime(`${data.endDate}T${data.endTime}:00`, timezoneString);
+  
+      // Send UTC times to the backend
       const formattedData = {
         ...data,
-        startTime: startDateTime.toISOString(),
-        endTime: endDateTime.toISOString(),
+        startTime: startTimeUTC, // UTC time
+        endTime: endTimeUTC,     // UTC time
         instructorId,
         price,
+        timezone: timezoneString, // Send the timezone offset
       };
   
       console.log("Sending data to backend:", formattedData);
