@@ -75,9 +75,9 @@ interface Booking {
 // Define tooltip formatter function with proper type
 const currencyFormatter = (value: number | string | Array<number | string>, name: string) => {
   if (typeof value === 'number') {
-    return [`$${value}`, name || 'Value'];
+    return [`₹${value}`, name || 'Value'];
   }
-  return [`${value}`, name || 'Value'];
+  return [`₹${value}`, name || 'Value'];
 };
 
 const InstructorDashboard: React.FC = () => {
@@ -210,7 +210,7 @@ const InstructorDashboard: React.FC = () => {
           <div className="flex justify-between items-start">
             <div>
               <p className="text-sm text-gray-500 mb-1">Total Revenue</p>
-              <h3 className="text-2xl text-violet-800 font-bold">${statistics.totalRevenue.toLocaleString()}</h3>
+              <h3 className="text-2xl text-violet-800 font-bold">₹{statistics.totalRevenue.toLocaleString()}</h3>
             </div>
             <div className="p-2 bg-green-50 rounded-lg">
               <IndianRupeeIcon className="w-6 h-6 text-green-500" />
@@ -409,7 +409,7 @@ const InstructorDashboard: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 text-black px-4 text-sm">${course.totalRevenue}</td>
+                    <td className="py-3 text-black px-4 text-sm">₹{course.totalRevenue}</td>
                     <td className="py-3 text-black px-4 text-sm">{formatDate(course.publishedDate)}</td>
                   </tr>
                 ))}
