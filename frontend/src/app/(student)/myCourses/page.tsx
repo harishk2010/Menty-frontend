@@ -1,4 +1,3 @@
-
 // "use client"
 // import React, { useEffect, useState } from "react";
 // import { Clock, BookOpen, Award, Play, AwardIcon } from "lucide-react";
@@ -30,9 +29,9 @@
 //     purchasedAt: string;
 //     createdAt: string;
 //     updatedAt: string;
-    
+
 //   }
-  
+
 // const PurchasedCoursesPage = () => {
 //   const [loading, setLoading] = useState(true);
 //   const [purchasedCourses, setPurchasedCourses] = useState<Course[]>([]);
@@ -136,7 +135,7 @@
 //                     </Link>
 
 //                     }
-                    
+
 //                   </div>
 
 //                   <div className="mb-4">
@@ -183,19 +182,19 @@
 // };
 
 // export default PurchasedCoursesPage;
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
-import { 
-  Clock, 
-  BookOpen, 
-  Award, 
-  Play, 
+import {
+  Clock,
+  BookOpen,
+  Award,
+  Play,
   ArrowUpDown,
   Sparkles,
   Filter,
   ArrowRight,
   UsersIcon,
-  CheckCircle2Icon
+  CheckCircle2Icon,
 } from "lucide-react";
 import { getAllBoughtCourses } from "@/api/courseApi";
 import { RootState } from "@/redux/store";
@@ -235,7 +234,7 @@ const PurchasedCoursesPage = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortOption, setSortOption] = useState("recent");
   const [isVisible, setIsVisible] = useState(false);
-  
+
   const router = useRouter();
   const userDetails = useSelector((state: RootState) => state.user);
   const { userId } = userDetails;
@@ -270,17 +269,17 @@ const PurchasedCoursesPage = () => {
   // Apply filters and sorting
   useEffect(() => {
     let filtered = [...purchasedCourses];
-    
+
     // Apply status filter
     if (statusFilter === "inProgress") {
-      filtered = filtered.filter(course => !course.isCourseCompleted);
+      filtered = filtered.filter((course) => !course.isCourseCompleted);
     } else if (statusFilter === "completed") {
-      filtered = filtered.filter(course => course.isCourseCompleted);
+      filtered = filtered.filter((course) => course.isCourseCompleted);
     }
-    
+
     // Apply sorting
     if (sortOption === "alphabetical") {
-      filtered.sort((a, b) => 
+      filtered.sort((a, b) =>
         a.courseDetails.courseName.localeCompare(b.courseDetails.courseName)
       );
     } else if (sortOption === "progress") {
@@ -290,30 +289,38 @@ const PurchasedCoursesPage = () => {
         return progressB - progressA;
       });
     } else if (sortOption === "recent") {
-      filtered.sort((a, b) => 
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      filtered.sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
     }
-    
+
     setDisplayedCourses(filtered);
   }, [statusFilter, sortOption, purchasedCourses]);
 
   // Calculate progress percentage
   const getProgressPercentage = (course: Course): number => {
-    if (!course.completedChapters || course.completedChapters.length === 0) return 0;
-    const completedCount = course.completedChapters.filter(chapter => chapter.isCompleted).length;
+    if (!course.completedChapters || course.completedChapters.length === 0)
+      return 0;
+    const completedCount = course.completedChapters.filter(
+      (chapter) => chapter.isCompleted
+    ).length;
     return Math.round((completedCount / course.completedChapters.length) * 100);
   };
 
   // Calculate estimated hours
-  const estimateHours = (course: Course): { completed: number, total: number } => {
+  const estimateHours = (
+    course: Course
+  ): { completed: number; total: number } => {
     const totalChapters = course.completedChapters.length;
-    const completedChapters = course.completedChapters.filter(chapter => chapter.isCompleted).length;
+    const completedChapters = course.completedChapters.filter(
+      (chapter) => chapter.isCompleted
+    ).length;
     // Assuming each chapter takes approximately 1 hour
     const hourPerChapter = 1;
     return {
       completed: completedChapters * hourPerChapter,
-      total: totalChapters * hourPerChapter
+      total: totalChapters * hourPerChapter,
     };
   };
 
@@ -322,7 +329,9 @@ const PurchasedCoursesPage = () => {
       <div className="min-h-screen flex justify-center items-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
-          <p className="mt-4 text-lg text-gray-600">Loading your learning journey...</p>
+          <p className="mt-4 text-lg text-gray-600">
+            Loading your learning journey...
+          </p>
         </div>
       </div>
     );
@@ -336,9 +345,9 @@ const PurchasedCoursesPage = () => {
           <div className="absolute inset-0 bg-purple-900 opacity-50"></div>
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -346,7 +355,7 @@ const PurchasedCoursesPage = () => {
           >
             My Learning Journey
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -372,7 +381,7 @@ const PurchasedCoursesPage = () => {
               {purchasedCourses.length} Courses
             </span>
           </div>
-          
+
           <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -388,7 +397,7 @@ const PurchasedCoursesPage = () => {
                 <option value="completed">Completed</option>
               </select>
             </div>
-            
+
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <ArrowUpDown className="h-4 w-4 text-gray-400" />
@@ -411,8 +420,13 @@ const PurchasedCoursesPage = () => {
             <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
               <BookOpen className="h-8 w-8 text-purple-600" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No courses found</h3>
-            <p className="text-gray-600 mb-6">Looks like you don't have any courses matching your current filters.</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No courses found
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Looks like you don't have any courses matching your current
+              filters.
+            </p>
             <Link href="/courses">
               <button className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
                 Explore Courses
@@ -424,8 +438,135 @@ const PurchasedCoursesPage = () => {
             {displayedCourses.map((course, index) => {
               const progress = getProgressPercentage(course);
               const hours = estimateHours(course);
-              
+
               return (
+                // <motion.div
+                //   key={course._id}
+                //   initial={{ opacity: 0, y: 20 }}
+                //   animate={{ opacity: 1, y: 0 }}
+                //   transition={{ duration: 0.5, delay: index * 0.1 }}
+                //   className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
+                // >
+                //   <div className="flex flex-col md:flex-row">
+                //     <div className="md:w-72 h-48 md:h-auto relative">
+                //       <img
+                //         src={course.courseDetails.thumbnailUrl || "/api/placeholder/400/300"}
+                //         alt={course.courseDetails.courseName}
+                //         className="w-full h-full object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
+                //       />
+                //       <div className="absolute top-0 right-0 m-2">
+                //         <span className={`px-2 py-1 rounded-md text-xs font-medium ${
+                //           course.courseDetails.level === "Beginner" ? "bg-green-100 text-green-800" :
+                //           course.courseDetails.level === "Intermediate" ? "bg-yellow-100 text-yellow-800" :
+                //           "bg-red-100 text-red-800"
+                //         }`}>
+                //           {course.courseDetails.level || "All Levels"}
+                //         </span>
+                //       </div>
+                //     </div>
+
+                //     <div className="flex-1 p-6">
+                //       <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
+                //         <div>
+                //           <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                //             {course.courseDetails.courseName}
+                //           </h2>
+
+                //           {course.isCourseCompleted && (
+                //             <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+                //               <CheckCircle2Icon className="w-4 h-4 mr-1" />
+                //               Course Completed
+                //             </span>
+                //           )}
+                //         </div>
+
+                //         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                //           <Link href={`/coursePlay/${course._id}`}>
+                //             <button className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors w-full">
+                //               <Play size={18} />
+                //               Continue Learning
+                //             </button>
+                //           </Link>
+
+                //           {course.isCourseCompleted ? (
+                //             <button
+                //               onClick={() => router.push(`/certificate/${course._id}`)}
+                //               className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors w-full"
+                //             >
+                //               <Award size={18} />
+                //               Get Certificate
+                //             </button>
+                //           ) : (
+                //             <Link href={`/attendQuiz/${course.courseDetails?.quizId}`}>
+                //               <button className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors w-full">
+                //                 <BookOpen size={18} />
+                //                 Attend Quiz
+                //               </button>
+                //             </Link>
+                //           )}
+                //         </div>
+                //       </div>
+
+                //       {/* <div className="mb-4">
+                //         <div className="flex justify-between mb-2">
+                //           <span className="text-sm text-gray-600">Progress</span>
+                //           <span className="text-sm font-medium text-gray-900">{progress}%</span>
+                //         </div>
+                //         <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                //           <div
+                //             className={`h-2.5 rounded-full transition-all duration-300 ${
+                //               progress >= 100 ? 'bg-green-600' : 'bg-purple-600'
+                //             }`}
+                //             style={{ width: `${progress}%` }}
+                //           ></div>
+                //         </div>
+                //       </div> */}
+                //       <div className="mb-4">
+                //         <div className="flex justify-between mb-2">
+                //           <span className="text-sm text-gray-600">Progress</span>
+                //           <span className="text-sm font-medium text-gray-900">{progress}%</span>
+                //         </div>
+                //         <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                //           <div
+                //             className={`h-2.5 rounded-full transition-all duration-300 ${
+                //               progress >= 100 ? 'bg-green-600' : 'bg-purple-600'
+                //             }`}
+                //             style={{ width: `${progress}%` }}
+                //           ></div>
+                //         </div>
+                //       </div>
+
+                //       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-600">
+                //         {/* <div className="flex items-center gap-2">
+                //           <Clock size={16} className="text-purple-600" />
+                //           <span>
+                //             {hours.completed} / {hours.total} hours
+                //           </span>
+                //         </div> */}
+                //         <div className="flex items-center gap-2">
+                //           <BookOpen size={16} className="text-purple-600" />
+                //           <span>
+                //             {course.completedChapters.filter(chapter => chapter?.isCompleted).length || 0} / {course.completedChapters.length} lessons
+                //           </span>
+                //         </div>
+                //         <div className="flex items-center gap-2">
+                //           <Award size={16} className="text-purple-600" />
+                //           <span>{course.isCourseCompleted ? "Certificate Ready" : "Complete to earn"}</span>
+                //         </div>
+                //       </div>
+
+                //       <div className="mt-4 pt-4 border-t border-gray-100">
+                //         <div className="text-xs text-gray-500">
+                //           Purchased: {new Date(course.purchasedAt).toLocaleDateString('en-US', {
+                //             year: 'numeric',
+                //             month: 'short',
+                //             day: 'numeric'
+                //           })}
+                //         </div>
+                //       </div>
+                //     </div>
+                //   </div>
+                // </motion.div>
                 <motion.div
                   key={course._id}
                   initial={{ opacity: 0, y: 20 }}
@@ -434,18 +575,27 @@ const PurchasedCoursesPage = () => {
                   className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div className="flex flex-col md:flex-row">
-                    <div className="md:w-72 h-48 md:h-auto relative">
-                      <img
-                        src={course.courseDetails.thumbnailUrl || "/api/placeholder/400/300"}
-                        alt={course.courseDetails.courseName}
-                        className="w-full h-full object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
-                      />
+                    <div className="md:w-72 h-48 md:h-64 relative overflow-hidden">
+                      <div className="absolute inset-0">
+                        <img
+                          src={
+                            course.courseDetails.thumbnailUrl ||
+                            "/api/placeholder/400/300"
+                          }
+                          alt={course.courseDetails.courseName}
+                          className="w-full h-full object-cover object-center rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
+                        />
+                      </div>
                       <div className="absolute top-0 right-0 m-2">
-                        <span className={`px-2 py-1 rounded-md text-xs font-medium ${
-                          course.courseDetails.level === "Beginner" ? "bg-green-100 text-green-800" :
-                          course.courseDetails.level === "Intermediate" ? "bg-yellow-100 text-yellow-800" :
-                          "bg-red-100 text-red-800"
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded-md text-xs font-medium ${
+                            course.courseDetails.level === "Beginner"
+                              ? "bg-green-100 text-green-800"
+                              : course.courseDetails.level === "Intermediate"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
                           {course.courseDetails.level || "All Levels"}
                         </span>
                       </div>
@@ -457,7 +607,7 @@ const PurchasedCoursesPage = () => {
                           <h2 className="text-xl font-semibold text-gray-900 mb-2">
                             {course.courseDetails.courseName}
                           </h2>
-                          
+
                           {course.isCourseCompleted && (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
                               <CheckCircle2Icon className="w-4 h-4 mr-1" />
@@ -465,7 +615,7 @@ const PurchasedCoursesPage = () => {
                             </span>
                           )}
                         </div>
-                        
+
                         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
                           <Link href={`/coursePlay/${course._id}`}>
                             <button className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors w-full">
@@ -473,17 +623,21 @@ const PurchasedCoursesPage = () => {
                               Continue Learning
                             </button>
                           </Link>
-                          
+
                           {course.isCourseCompleted ? (
                             <button
-                              onClick={() => router.push(`/certificate/${course._id}`)}
+                              onClick={() =>
+                                router.push(`/certificate/${course._id}`)
+                              }
                               className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors w-full"
                             >
                               <Award size={18} />
                               Get Certificate
                             </button>
                           ) : (
-                            <Link href={`/attendQuiz/${course.courseDetails?.quizId}`}>
+                            <Link
+                              href={`/attendQuiz/${course.courseDetails?.quizId}`}
+                            >
                               <button className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors w-full">
                                 <BookOpen size={18} />
                                 Attend Quiz
@@ -493,29 +647,19 @@ const PurchasedCoursesPage = () => {
                         </div>
                       </div>
 
-                      {/* <div className="mb-4">
-                        <div className="flex justify-between mb-2">
-                          <span className="text-sm text-gray-600">Progress</span>
-                          <span className="text-sm font-medium text-gray-900">{progress}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                          <div
-                            className={`h-2.5 rounded-full transition-all duration-300 ${
-                              progress >= 100 ? 'bg-green-600' : 'bg-purple-600'
-                            }`}
-                            style={{ width: `${progress}%` }}
-                          ></div>
-                        </div>
-                      </div> */}
                       <div className="mb-4">
                         <div className="flex justify-between mb-2">
-                          <span className="text-sm text-gray-600">Progress</span>
-                          <span className="text-sm font-medium text-gray-900">{progress}%</span>
+                          <span className="text-sm text-gray-600">
+                            Progress
+                          </span>
+                          <span className="text-sm font-medium text-gray-900">
+                            {progress}%
+                          </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                           <div
                             className={`h-2.5 rounded-full transition-all duration-300 ${
-                              progress >= 100 ? 'bg-green-600' : 'bg-purple-600'
+                              progress >= 100 ? "bg-green-600" : "bg-purple-600"
                             }`}
                             style={{ width: `${progress}%` }}
                           ></div>
@@ -523,31 +667,36 @@ const PurchasedCoursesPage = () => {
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-600">
-                        {/* <div className="flex items-center gap-2">
-                          <Clock size={16} className="text-purple-600" />
-                          <span>
-                            {hours.completed} / {hours.total} hours
-                          </span>
-                        </div> */}
                         <div className="flex items-center gap-2">
                           <BookOpen size={16} className="text-purple-600" />
                           <span>
-                            {course.completedChapters.filter(chapter => chapter?.isCompleted).length || 0} / {course.completedChapters.length} lessons
+                            {course.completedChapters.filter(
+                              (chapter) => chapter?.isCompleted
+                            ).length || 0}{" "}
+                            / {course.completedChapters.length} lessons
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Award size={16} className="text-purple-600" />
-                          <span>{course.isCourseCompleted ? "Certificate Ready" : "Complete to earn"}</span>
+                          <span>
+                            {course.isCourseCompleted
+                              ? "Certificate Ready"
+                              : "Complete to earn"}
+                          </span>
                         </div>
                       </div>
-                      
+
                       <div className="mt-4 pt-4 border-t border-gray-100">
                         <div className="text-xs text-gray-500">
-                          Purchased: {new Date(course.purchasedAt).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                          })}
+                          Purchased:{" "}
+                          {new Date(course.purchasedAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}
                         </div>
                       </div>
                     </div>
@@ -564,9 +713,13 @@ const PurchasedCoursesPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Keep Learning, Keep Growing</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                Keep Learning, Keep Growing
+              </h2>
               <p className="text-lg opacity-90 mb-6">
-                Your journey of growth never stops. Build new skills, expand your knowledge, and achieve your goals with our expert-led courses.
+                Your journey of growth never stops. Build new skills, expand
+                your knowledge, and achieve your goals with our expert-led
+                courses.
               </p>
               <Link href="/courses">
                 <button className="inline-flex items-center px-5 py-3 bg-white text-purple-700 rounded-lg hover:bg-gray-100 transition-colors font-medium">
@@ -583,7 +736,10 @@ const PurchasedCoursesPage = () => {
                   </div>
                   <h3 className="font-medium">Learn at Your Pace</h3>
                 </div>
-                <p className="text-sm opacity-80">Access your courses anytime, anywhere, and learn at your own schedule.</p>
+                <p className="text-sm opacity-80">
+                  Access your courses anytime, anywhere, and learn at your own
+                  schedule.
+                </p>
               </div>
               <div className="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-3">
@@ -592,7 +748,10 @@ const PurchasedCoursesPage = () => {
                   </div>
                   <h3 className="font-medium">Earn Certificates</h3>
                 </div>
-                <p className="text-sm opacity-80">Complete courses to earn verified certificates that showcase your skills.</p>
+                <p className="text-sm opacity-80">
+                  Complete courses to earn verified certificates that showcase
+                  your skills.
+                </p>
               </div>
               <div className="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-3">
@@ -601,7 +760,9 @@ const PurchasedCoursesPage = () => {
                   </div>
                   <h3 className="font-medium">Quality Content</h3>
                 </div>
-                <p className="text-sm opacity-80">Learn from industry experts with carefully crafted curriculum.</p>
+                <p className="text-sm opacity-80">
+                  Learn from industry experts with carefully crafted curriculum.
+                </p>
               </div>
               <div className="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-3">
@@ -610,7 +771,10 @@ const PurchasedCoursesPage = () => {
                   </div>
                   <h3 className="font-medium">Join Community</h3>
                 </div>
-                <p className="text-sm opacity-80">Connect with fellow learners and exchange knowledge and experiences.</p>
+                <p className="text-sm opacity-80">
+                  Connect with fellow learners and exchange knowledge and
+                  experiences.
+                </p>
               </div>
             </div>
           </div>

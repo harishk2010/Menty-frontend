@@ -358,7 +358,8 @@ export default function LoginPage(): ReactElement {
   
         // Use replace for cleaner navigation history
         // router.replace("/home");
-        window.location.href = "/home";
+        setTimeout(()=>{ window.location.href = "/home"},500);
+       
       } else {
         toast.error(response.message || "Login failed");
       }

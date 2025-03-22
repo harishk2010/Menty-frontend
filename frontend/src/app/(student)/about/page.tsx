@@ -61,27 +61,27 @@ export default function AboutPage() {
   // Core team members
   const teamMembers = [
     {
-      name: "Priya Sharma",
+      name: "Harish K",
       role: "Founder & CEO",
-      image: "/api/placeholder/300/300",
+      image: "/harishProfImage.jpg",
       bio: "With over 15 years in education technology, Priya founded this platform with a vision to make expert-led learning accessible to everyone."
     },
     {
-      name: "Amit Patel",
+      name: "Vignesh S",
       role: "Chief Learning Officer",
-      image: "/api/placeholder/300/300",
+      image: "/vigneshProfImage.jpg",
       bio: "Former education director with experience in curriculum development and instructional design across multiple disciplines."
     },
     {
-      name: "Neha Gupta",
+      name: "Abin Babu",
       role: "Head of Mentorship",
-      image: "/api/placeholder/300/300",
+      image: "/AbinProfImage.jpg",
       bio: "Passionate about connecting learners with industry experts to provide personalized guidance and career support."
     },
     {
-      name: "Raj Mehta",
+      name: "Logesh C",
       role: "Chief Technology Officer",
-      image: "/api/placeholder/300/300",
+      image: "/LogeshProfImage.jpg",
       bio: "Tech innovator with expertise in creating scalable learning platforms focused on user experience and accessibility."
     }
   ];
@@ -207,10 +207,10 @@ export default function AboutPage() {
             {/* Mission */}
             <div 
               id="mission" 
-              className={`transition-opacity duration-1000 ${isVisible.mission ? 'opacity-100' : 'opacity-0'}`}
+              className={`transition-opacity on-hover:shadow-lg shadow-purple-500  duration-1000 ${isVisible.mission ? 'opacity-100' : 'opacity-0'}`}
             >
-              <div className="h-full bg-purple-50 p-8 rounded-xl border border-purple-100">
-                <div className="flex justify-center mb-6">
+              <div className="h-full bg-purple-50 p-8 rounded-xl border border-purple-100  ">
+                <div className="flex justify-center mb-6 on-hover:shadow-md shadow-purple-500">
                   <div className="p-3 bg-purple-100 rounded-full">
                     <Target className="h-10 w-10 text-purple-600" />
                   </div>
@@ -219,7 +219,7 @@ export default function AboutPage() {
                 <p className="text-gray-600 mb-4">
                   Our mission is to empower individuals worldwide through accessible, high-quality education and personalized mentorship. We strive to:
                 </p>
-                <ul className="space-y-3">
+                <ul className="space-y-3 text-black">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-purple-600 mr-2 flex-shrink-0 mt-0.5" />
                     <span>Provide affordable access to expert-led courses across diverse disciplines</span>
@@ -245,7 +245,7 @@ export default function AboutPage() {
               id="vision" 
               className={`transition-opacity duration-1000 ${isVisible.vision ? 'opacity-100' : 'opacity-0'}`}
             >
-              <div className="h-full bg-indigo-50 p-8 rounded-xl border border-indigo-100">
+              <div className="h-full bg-indigo-50 p-8 rounded-xl border border-indigo-100 on-hover:shadow-md shadow-purple-500">
                 <div className="flex justify-center mb-6">
                   <div className="p-3 bg-indigo-100 rounded-full">
                     <Lightbulb className="h-10 w-10 text-indigo-600" />
@@ -255,7 +255,7 @@ export default function AboutPage() {
                 <p className="text-gray-600 mb-4">
                   We envision a world where quality education and mentorship are accessible to everyone, regardless of geographical or economic barriers. We aspire to:
                 </p>
-                <ul className="space-y-3">
+                <ul className="space-y-3 text-black">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-indigo-600 mr-2 flex-shrink-0 mt-0.5" />
                     <span>Become the leading platform for integrated learning and mentorship worldwide</span>
@@ -350,7 +350,7 @@ export default function AboutPage() {
             <Link href="/courses" className="bg-white text-purple-700 hover:bg-gray-100 transition-colors py-3 px-6 rounded-md font-medium">
               Explore Courses
             </Link>
-            <Link href="/mentorship" className="bg-purple-600 hover:bg-purple-700 transition-colors py-3 px-6 rounded-md font-medium">
+            <Link href="/mentors" className="bg-purple-600 hover:bg-purple-700 transition-colors py-3 px-6 rounded-md font-medium">
               Find a Mentor
             </Link>
           </div>
