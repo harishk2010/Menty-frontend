@@ -278,6 +278,7 @@ import { motion } from "framer-motion";
 import PrimaryButton from '../../buttons/PrimaryButton';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { SOCKET_URL } from '@/utils/constants';
 
 interface Message {
   content: string;
@@ -363,8 +364,8 @@ const ChatInterface = ({
   //     transports: ['websocket'], // ✅ Forces WebSocket usage
   //     reconnectionDelayMax: 10000,
   // });
-  console.log("first",process.env.NEXT_PUBLIC_SOCKET_URL)
-  const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+  console.log("firste",SOCKET_URL)
+  const socketInstance = io(SOCKET_URL, {
     transports: ['websocket'],
     // path: '/socket.io', // Add the Socket.IO path if your server uses this
     reconnectionDelayMax: 10000,
