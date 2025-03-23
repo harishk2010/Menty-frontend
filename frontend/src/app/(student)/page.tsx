@@ -612,7 +612,7 @@ export default function Home(): ReactElement {
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {[
               {
-                name: "Priya Sharma",
+                name: "Harish",
                 role: "Software Developer",
                 image: "/api/placeholder/150/150",
                 quote: "The courses were incredibly comprehensive and the mentor sessions helped me solve complex problems in my projects. I landed my dream job within months!"

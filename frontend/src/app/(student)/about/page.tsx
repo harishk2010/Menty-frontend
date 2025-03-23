@@ -64,7 +64,7 @@ export default function AboutPage() {
       name: "Harish K",
       role: "Founder & CEO",
       image: "/harishProfImage.jpg",
-      bio: "With over 15 years in education technology, Priya founded this platform with a vision to make expert-led learning accessible to everyone."
+      bio: "With over 15 years in education technology, Harish founded this platform with a vision to make expert-led learning accessible to everyone."
     },
     {
       name: "Vignesh S",
@@ -188,7 +188,7 @@ export default function AboutPage() {
               Founded in 2019, our learning platform began with a simple yet powerful vision: to democratize access to quality education and expert mentorship for learners worldwide. What started as a small collection of online courses has evolved into a comprehensive educational ecosystem that serves thousands of students across the globe.
             </p>
             <p>
-              Our founder, Priya Sharma, experienced firsthand the transformative power of personalized mentorship during her own career journey. Recognizing that such guidance remained inaccessible to many, she assembled a team of passionate educators and technologists to bridge this gap.
+              Our founder, Harish , experienced firsthand the transformative power of personalized mentorship during her own career journey. Recognizing that such guidance remained inaccessible to many, she assembled a team of passionate educators and technologists to bridge this gap.
             </p>
             <p>
               Over the years, we've expanded beyond course delivery to create a truly holistic learning experience. Our platform now combines expertly crafted courses with personalized mentorship, vibrant learning communities, and practical skill development opportunities.
