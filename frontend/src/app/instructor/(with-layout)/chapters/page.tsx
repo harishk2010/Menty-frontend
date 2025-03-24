@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { getInstructorDataById } from '@/api/instructorApi';
 import GetVerified from '@/app/components/instructor/GetVerified';
+import Loading from '@/app/components/fallbacks/Loading';
 
 // Interface for course data
 interface CourseData {
@@ -45,16 +46,21 @@ const CourseCreation: React.FC = () => {
 
      const [instructorData, setInstructorData] = useState<Instructor>();
   const [chapters, setChapters] = useState<ChapterData[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeStep, setActiveStep] = useState<ActiveStep>('course');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
+
       try {
         const instructor = await getInstructorDataById(Instructor.userId);
         setInstructorData(instructor);
       } catch (error) {
         // alert('Error fetching quiz data');
         // router.push('/quizzes'); // Redirect to quizzes list on error
+      }finally {      
+        setIsLoading(false);
       }
     };
 
@@ -162,6 +168,8 @@ useEffect(() => {
       setIsSubmitting(false);
     }
   };
+  if (isLoading || instructorData === null) return <Loading />;
+
   if (!instructorData?.isVerified) return <GetVerified/>
 
   return (
