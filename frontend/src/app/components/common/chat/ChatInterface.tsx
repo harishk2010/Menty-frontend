@@ -99,7 +99,7 @@ const ChatInterface = ({
   //     transports: ['websocket'], // ✅ Forces WebSocket usage
   //     reconnectionDelayMax: 10000,
   // });
-  console.log("firstey",SOCKET_URL)
+  console.log("first socket",SOCKET_URL)
   // const socketInstance = io(SOCKET_URL, {
   //   transports: ['websocket'],
   //   // path: '/socket.io', // Add the Socket.IO path if your server uses this
