@@ -95,9 +95,9 @@ const ChatInterface = ({
 
   useEffect(() => {
  
-  console.log("first socket / https://menty.live /",SOCKET_URL)
+  console.log("first socket / wss://menty.live /",SOCKET_URL)
  
-  const socketInstance = io("https://menty.live", {
+  const socketInstance = io("wss://menty.live", {
     transports: ['websocket'],
     path: '/socket.io', // Change this to match the default Socket.IO path
     reconnectionDelayMax: 10000,
