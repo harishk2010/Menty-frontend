@@ -94,25 +94,10 @@ const ChatInterface = ({
   }, [currentUser, studentId, instructorId, router]);
 
   useEffect(() => {
-    // const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL);
-  //   const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
-  //     transports: ['websocket'], // ✅ Forces WebSocket usage
-  //     reconnectionDelayMax: 10000,
-  // });
-  console.log("first socket",SOCKET_URL)
-  // const socketInstance = io(SOCKET_URL, {
-  //   transports: ['websocket'],
-  //   // path: '/socket.io', // Add the Socket.IO path if your server uses this
-  //   reconnectionDelayMax: 10000,
-  //   reconnectionAttempts: 5
-  // });
-  // const socketInstance = io(SOCKET_URL, {
-  //   transports: ['websocket'], // Force WebSocket only
-  //   path: '/api/chat', // Ensure this matches the server path
-  //   reconnectionDelayMax: 10000,
-  //   reconnectionAttempts: 5,
-  // });
-  const socketInstance = io(SOCKET_URL, {
+ 
+  console.log("first socket / https://menty.live /",SOCKET_URL)
+ 
+  const socketInstance = io("https://menty.live", {
     transports: ['websocket'],
     path: '/socket.io', // Change this to match the default Socket.IO path
     reconnectionDelayMax: 10000,
