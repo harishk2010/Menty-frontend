@@ -106,12 +106,18 @@ const ChatInterface = ({
   //   reconnectionDelayMax: 10000,
   //   reconnectionAttempts: 5
   // });
+  // const socketInstance = io(SOCKET_URL, {
+  //   transports: ['websocket'], // Force WebSocket only
+  //   path: '/api/chat', // Ensure this matches the server path
+  //   reconnectionDelayMax: 10000,
+  //   reconnectionAttempts: 5,
+  // });
   const socketInstance = io(SOCKET_URL, {
-    transports: ['websocket'], // Force WebSocket only
-    path: '/api/chat/socket.io', // Match the backend path
+    transports: ['websocket'],
+    path: '/socket.io', // Change this to match the default Socket.IO path
     reconnectionDelayMax: 10000,
     reconnectionAttempts: 5,
-});
+  });
 
     socketInstance.on('connect', () => {
       console.log('Connected to chat server');
