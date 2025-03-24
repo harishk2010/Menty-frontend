@@ -10,14 +10,15 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { getInstructorDataById } from "@/api/instructorApi";
 import GetVerified from "@/app/components/instructor/GetVerified";
+import Loading from "@/app/components/fallbacks/Loading";
 
 interface CourseData {
   courseName: string;
   description: string;
-  price: string ;
+  price: string;
   category: string;
   level: string;
-  duration: string ;
+  duration: string;
   thumbnail: FileList | null;
   demoVideos: FileList | null;
 }
@@ -34,15 +35,14 @@ const CourseCreation: React.FC = () => {
     watch,
     formState: { errors },
   } = useForm<CourseData>();
-  const router=useRouter()
+  const router = useRouter();
   const Instructor = useSelector((state: RootState) => state.instructor);
-
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [demoVideoPreview, setDemoVideoPreview] = useState<string | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-   const [instructorData, setInstructorData] = useState<Instructor>();
+  const [instructorData, setInstructorData] = useState<Instructor | null>(null);
 
   const handleDemoVideoChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -95,18 +95,28 @@ const CourseCreation: React.FC = () => {
   };
 
   useEffect(() => {
-    try {
-      const fetchCategories = async () => {
-        const response = await getCategories();
-                const instructor = await getInstructorDataById(Instructor.userId);
-                setInstructorData(instructor);
-
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch both data in parallel
+        const [categoriesResponse, instructorResponse] = await Promise.all([
+          getCategories(),
+          getInstructorDataById(Instructor.userId)
+        ]);
         
-        setCategories(response || "[]");
-      };
-      fetchCategories();
-    } catch (error) {}
-  }, []);
+        setCategories(categoriesResponse || []);
+        setInstructorData(instructorResponse);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to load necessary data");
+      } finally {
+        // Only set loading to false once both requests are complete
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, [Instructor.userId]);
 
   const onSubmit = async (data: CourseData) => {
     console.log("Submitting Data:", data);
@@ -156,7 +166,12 @@ const CourseCreation: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-  if (!instructorData?.isVerified) return <GetVerified/>
+
+  // Keep showing loading until we have both categories and instructor data
+  if (isLoading || instructorData === null) return <Loading />;
+
+  // After loading, check verification status
+  if (!instructorData.isVerified) return <GetVerified />;
 
   return (
     <div className="min-h-screen rounded-md p-8">
@@ -309,10 +324,11 @@ const CourseCreation: React.FC = () => {
                     <img
                       src={thumbnailPreview}
                       className="mx-auto h-full w-full"
-                    ></img>
+                      alt="Thumbnail preview"
+                    />
                   ) : (
                     <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                  )}{" "}
+                  )}
                   <input
                     id="thumbnailInput"
                     {...register("thumbnail", {
@@ -332,7 +348,7 @@ const CourseCreation: React.FC = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">
-                  DemoVideo
+                  Demo Video
                 </label>
                 <div
                   id="demoVideos"
@@ -345,7 +361,7 @@ const CourseCreation: React.FC = () => {
                     <video
                       src={demoVideoPreview}
                       controls
-                      className="mx-auto "
+                      className="mx-auto"
                     ></video>
                   ) : (
                     <Upload className="mx-auto h-12 w-12 text-gray-400" />
@@ -354,16 +370,16 @@ const CourseCreation: React.FC = () => {
                   <input
                     id="demoVideoInput"
                     {...register("demoVideos", {
-                      required: "DemoVideos is required",
+                      required: "Demo Video is required",
                       onChange: handleDemoVideoChange,
                     })}
                     type="file"
                     className="hidden"
                     accept="video/*"
                   />
-                  {errors.thumbnail && (
+                  {errors.demoVideos && (
                     <p className="text-red-500 text-sm">
-                      {errors.thumbnail.message}
+                      {errors.demoVideos.message}
                     </p>
                   )}
                 </div>

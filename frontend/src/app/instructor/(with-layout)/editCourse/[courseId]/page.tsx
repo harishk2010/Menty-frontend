@@ -12,6 +12,7 @@ import { getInstructorDataById } from "@/api/instructorApi";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import GetVerified from "@/app/components/instructor/GetVerified";
+import Loading from "@/app/components/fallbacks/Loading";
 
 interface CourseData {
   courseName: string;
@@ -41,12 +42,13 @@ const CourseCreation: React.FC = () => {
   const router = useRouter();
   const Instructor = useSelector((state: RootState) => state.instructor);
 
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [demoVideoPreview, setDemoVideoPreview] = useState<string | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-     const [instructorData, setInstructorData] = useState<Instructor>();
+  const [instructorData, setInstructorData] = useState<Instructor | null>(null);
+  const [courseLoaded, setCourseLoaded] = useState<boolean>(false);
   
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [demoVideoUrl, setDemoVideoUrl] = useState<string | null>(null);
@@ -100,20 +102,25 @@ const CourseCreation: React.FC = () => {
   };
 
   useEffect(() => {
-    try {
-      const fetchCategories = async () => {
-        const response = await getCategories();
-         const instructor = await getInstructorDataById(Instructor.userId);
-                        setInstructorData(instructor);
-        setCategories(response || "[]");
-      };
-      fetchCategories();
-
-      const fetchCourse = async () => {
-        const response = await getCourse(courseId);
-        if (response) {
-          const fetchedCourse = response;
-          console.log(fetchedCourse, "fetcheddd");
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch all data in parallel
+        const [categoriesResponse, instructorResponse, courseResponse] = await Promise.all([
+          getCategories(),
+          getInstructorDataById(Instructor.userId),
+          getCourse(courseId)
+        ]);
+        
+        // Set categories
+        setCategories(categoriesResponse || []);
+        
+        // Set instructor data
+        setInstructorData(instructorResponse);
+        
+        // Set course data
+        if (courseResponse) {
+          const fetchedCourse = courseResponse;
           setValue("courseName", fetchedCourse.courseName);
           setValue("description", fetchedCourse.description);
           setValue("category", fetchedCourse.category);
@@ -122,11 +129,19 @@ const CourseCreation: React.FC = () => {
           setValue("price", fetchedCourse.price);
           setThumbnailPreview(fetchedCourse.thumbnailUrl);
           setDemoVideoPreview(fetchedCourse.demoVideo?.url);
+          setCourseLoaded(true);
         }
-      };
-      fetchCourse();
-    } catch (error) {}
-  }, []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to load necessary data");
+      } finally {
+        // Only set loading to false once all requests are complete
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, [courseId, Instructor.userId, setValue]);
 
   const onSubmit = async (data: CourseData) => {
     console.log("Submitting Data:", data);
@@ -176,9 +191,11 @@ const CourseCreation: React.FC = () => {
     handleSubmit(onSubmit)();  // Call the form submission function
   };
 
-    if (!instructorData?.isVerified) return <GetVerified/>
+  // Show loading screen until all data is fetched
+  if (isLoading || instructorData === null || !courseLoaded) return <Loading />;
 
-
+  // After loading, check verification status
+  if (!instructorData.isVerified) return <GetVerified />;
   
   return (
     <div className="min-h-screen rounded-md p-8">
@@ -186,7 +203,7 @@ const CourseCreation: React.FC = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Edit Course</h1>
           <p className="text-gray-600 mt-2">
-            Share your knowledge by creating a comprehensive course
+            Update your course details
           </p>
         </div>
 
@@ -195,7 +212,7 @@ const CourseCreation: React.FC = () => {
             <h3 className="text-2xl font-semibold">Course Information</h3>
           </div>
           <div className="p-6">
-            <form  onSubmit={e=>e.preventDefault()} className="space-y-6">
+            <form onSubmit={e => e.preventDefault()} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">
@@ -316,100 +333,95 @@ const CourseCreation: React.FC = () => {
                   </p>
                 )}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 space-x-3 ">
-
-              <div className="space-y-2 w-[400px] ">
-                <label className="text-sm font-medium text-gray-700">
-                  Thumbnail
-                </label>
-                <div
-                  onClick={() =>
-                    document.getElementById(`thumbnailInput`)?.click()
-                  }
-                  className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer"
-                >
-                  {thumbnailPreview ? (
-                    <img
-                    onContextMenu={(e)=>e.preventDefault()}
-                      src={thumbnailPreview}
-                      className="mx-auto h-full w-full"
-                    ></img>
-                  ) : (
-                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                  )}{" "}
-                  <input
-                    id="thumbnailInput"
-                    {...register("thumbnail", {
-                      onChange: handleThumbnailPreview,
-                     
-                    })}
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                  />
-                  {errors.thumbnail && (
-                    <p className="text-red-500 text-sm">
-                      {errors.thumbnail.message}
-                    </p>
-                  )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 space-x-3">
+                <div className="space-y-2 w-[400px]">
+                  <label className="text-sm font-medium text-gray-700">
+                    Thumbnail
+                  </label>
+                  <div
+                    onClick={() =>
+                      document.getElementById(`thumbnailInput`)?.click()
+                    }
+                    className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer"
+                  >
+                    {thumbnailPreview ? (
+                      <img
+                        onContextMenu={(e) => e.preventDefault()}
+                        src={thumbnailPreview}
+                        alt="Course thumbnail"
+                        className="mx-auto h-full w-full"
+                      />
+                    ) : (
+                      <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                    )}
+                    <input
+                      id="thumbnailInput"
+                      {...register("thumbnail", {
+                        onChange: handleThumbnailPreview,
+                      })}
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                    />
+                    {errors.thumbnail && (
+                      <p className="text-red-500 text-sm">
+                        {errors.thumbnail.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="space-y-2 w-[400px] ">
-                <label className="text-sm font-medium text-gray-700">
-                  DemoVideo
-                </label>
-                <div
-                  id="demoVideos"
-                  onClick={() =>
-                    document.getElementById(`demoVideoInput`)?.click()
-                  }
-                  className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer"
-                >
-                  {demoVideoPreview ? (
-                    <video
-                    controlsList="nodownload"
-                    onContextMenu={(e)=>e.preventDefault()}
-                      src={demoVideoPreview}
-                      controls
-                      className="mx-auto "
-                    ></video>
-                  ) : (
-                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                  )}
+                <div className="space-y-2 w-[400px]">
+                  <label className="text-sm font-medium text-gray-700">
+                    Demo Video
+                  </label>
+                  <div
+                    id="demoVideos"
+                    onClick={() =>
+                      document.getElementById(`demoVideoInput`)?.click()
+                    }
+                    className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer"
+                  >
+                    {demoVideoPreview ? (
+                      <video
+                        controlsList="nodownload"
+                        onContextMenu={(e) => e.preventDefault()}
+                        src={demoVideoPreview}
+                        controls
+                        className="mx-auto"
+                      ></video>
+                    ) : (
+                      <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                    )}
 
-                  <input
-                    id="demoVideoInput"
-                    {...register("demoVideos", {
-                     
-                      onChange: handleDemoVideoChange,
-                    })}
-                    type="file"
-                    className="hidden"
-                    accept="video/*"
-                  />
-                  {errors.thumbnail && (
-                    <p className="text-red-500 text-sm">
-                      {errors.thumbnail.message}
-                    </p>
-                  )}
+                    <input
+                      id="demoVideoInput"
+                      {...register("demoVideos", {
+                        onChange: handleDemoVideoChange,
+                      })}
+                      type="file"
+                      className="hidden"
+                      accept="video/*"
+                    />
+                    {errors.demoVideos && (
+                      <p className="text-red-500 text-sm">
+                        {errors.demoVideos.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
               </div>
               <AlertDialog2
-              title="Confirm Changes"
-              alert="Are you sure you want to update your details?"
-              onConfirm={handleConfirmSubmission}
+                title="Confirm Changes"
+                alert="Are you sure you want to update your course details?"
+                onConfirm={handleConfirmSubmission}
               >
-
-
-              <button
-                // type="submit"
-                className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
-                disabled={isSubmitting}
+                <button
+                  className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+                  disabled={isSubmitting}
                 >
-                {isSubmitting ? "Saving..." : "Save & Continue"}
-              </button>
-                </AlertDialog2>
+                  {isSubmitting ? "Saving..." : "Save & Continue"}
+                </button>
+              </AlertDialog2>
             </form>
           </div>
         </div>

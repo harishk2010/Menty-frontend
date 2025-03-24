@@ -1,6 +1,7 @@
 "use client";
 import { createSlots } from "@/api/bookingApi";
 import { getInstructorData } from "@/api/instructorApi";
+import Loading from "@/app/components/fallbacks/Loading";
 import GetVerified from "@/app/components/instructor/GetVerified";
 import { RootState } from "@/redux/store";
 import Link from "next/link";
@@ -27,6 +28,8 @@ interface InstructorData {
 
 const SlotCreationForm = () => {
   const [instructorData, setInstructorData] = useState<InstructorData>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+  
   const instructorEmail = useSelector(
     (state: RootState) => state.instructor.email
   );
@@ -50,11 +53,16 @@ const SlotCreationForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const userData = await getInstructorData(instructorEmail);
         setInstructorData(userData || {});
+        
       } catch (error) {
         console.log(error);
         toast.error("something Wrong!");
+      }
+      finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -176,6 +184,8 @@ const SlotCreationForm = () => {
       toast.error('Failed to create slots. Please try again.');
     }
   };
+    if (isLoading) return <Loading />;
+  
   if (!instructorData?.isVerified) return <GetVerified />;
 
   return (
