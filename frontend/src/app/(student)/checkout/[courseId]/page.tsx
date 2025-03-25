@@ -122,6 +122,7 @@ const CourseCheckout: React.FC = () => {
         productinfo: courseId,
         amount: course?.price,
         email: email,
+        udf1: userId,
         firstname: name,
         lastname: course?.courseName,
         phone: phone,
