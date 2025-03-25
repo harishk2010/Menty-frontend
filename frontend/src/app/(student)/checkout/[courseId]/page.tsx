@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Wallet, QrCode, CheckCircle } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { getCourse } from '@/api/courseApi';
+import { getAllBoughtCourses, getCourse, isBoughtCourse } from '@/api/courseApi';
 import CryptoJS from 'crypto-js';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,25 @@ interface ICourse {
   description: string;
   thumbnailUrl: string;
 }
+interface Course {
+  _id: string;
+  courseDetails: {
+    _id: string;
+    courseName: string;
+    level: string;
+    thumbnailUrl: string;
+    quizId: string;
+  };
+  userId: string;
+  instructorId: string;
+  transactionId: string;
+
+  isCourseCompleted: boolean;
+  purchasedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 const CourseCheckout: React.FC = () => {
   // const { courseId } = useParams<{ courseId: string }>();
@@ -74,11 +93,25 @@ const CourseCheckout: React.FC = () => {
   console.log("hash,hash",hash)
 
 
-  const handlePayment = () => {
+  const handlePayment =async () => {
     if (!txnid || !course?.price || !courseId) {
       toast.error('Invalid payment details. Please refresh and try again.');
       return;
     }
+    if (!userId) {
+      toast.error('Invalid user details. Please login and try again.');
+      
+      return;
+    }
+    console.log(userId,"userId")
+    const response=await isBoughtCourse(userId,courseId)
+    if(response.success){
+      toast.error(response.message);
+      return;
+    }
+    
+    
+    
 
     const surl = `${FRONTEND_URL}/nextapi/payment-success`;
     const furl = `${FRONTEND_URL}/nextapi/payment-failure`;
@@ -137,17 +170,17 @@ const CourseCheckout: React.FC = () => {
           </div>
         </div>
         <div className="p-6 bg-gray-50">
-          <div className="flex justify-between mb-2">
+          {/* <div className="flex justify-between mb-2">
             <span>Original Price</span>
             <span className="line-through text-gray-500">₹{course?.price}</span>
-          </div>
+          </div> */}
           {/* <div className="flex justify-between mb-2">
             <span>Discount</span>
             <span className="text-green-600">₹{discountedPrice} OFF</span>
           </div> */}
           <div className="flex justify-between font-bold text-xl border-t pt-3">
             <span>Total</span>
-            <span>₹{discountedPrice.toFixed(2)}</span>
+            <span>₹{course?.price}</span>
           </div>
         </div>
         <div className="p-6">

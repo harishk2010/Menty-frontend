@@ -25,6 +25,20 @@ export const addCouse = async (formData: FormData) => {
     console.log(error);
   }
 };
+export const isBoughtCourse = async (userId:string,coureId:string) => {
+  try {
+    const response = await API.post(`${CourseRoutes.IS_ALREADY_PURCHASED}${coureId}`, {userId}, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+    console.log(response, "response from isBoughtCourse");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const updateCourse = async (courseId: string, formData: FormData) => {
   try {
     console.log("🚀 FormData Entries:", [...formData]);
@@ -229,7 +243,7 @@ export const getAllBoughtCourses = async (userId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from getAllBoughtCourses");
+    console.log(response.data, "response from getAllBoughtCourses");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -279,13 +293,14 @@ export const getPlayCourse = async (courseId: string) => {
 };
 
 export const payCourse = async (
+  userId: string,
   courseId: string,
   txnid: string,
   amount: number,
   courseName: string
 ) => {
   try {
-    const data = { courseId, txnid, amount, courseName };
+    const data = {userId, courseId, txnid, amount, courseName };
     const response = await API.post(CourseRoutes.PAYMENT, data, {
       withCredentials: true,
     });

@@ -292,65 +292,65 @@ export default function CourseListing() {
                   <Link
                     href={`/courseDetails/${course._id}`}
                     key={course._id}
-                    className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                    className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md  hover:shadow-purple-300 transition-shadow"
                   >
-                    <div className="group relative h-48">
-                      <img
-                        src={course.thumbnailUrl}
-                        alt={course.courseName}
-                        onContextMenu={(e) => e.preventDefault()}
-                        className="w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
-                      />
-                      <video
-                        muted
-                        autoPlay
-                        loop
-                        playsInline
-                        onContextMenu={(e) => e.preventDefault()}
-                        controlsList="nodownload noremoteplayback"
-                        src={course.demoVideo.url}
-                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
-                      />
-                      <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-sm font-medium text-purple-600">
-                        ₹{course.price}
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-lg text-gray-900 line-clamp-2">
-                        {course.courseName}
-                      </h3>
-                      <p className="mt-1 text-sm text-gray-500 line-clamp-2">
-                        {course.description || "No description available"}
-                      </p>
-                      <div className="mt-4 flex items-center justify-between">
-                        <div className="flex items-center space-x-2 text-sm text-gray-500">
-                          <Clock className="h-4 w-4" />
-                          <span>{course.duration}</span>
-                        </div>
-                        {course.rating && (
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                            <span className="text-sm text-gray-600">{course.rating}</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                        {course.studentsEnrolled && (
-                          <div className="flex items-center space-x-1">
-                            <Users className="h-4 w-4" />
-                            <span>{course.studentsEnrolled} students</span>
-                          </div>
-                        )}
-                        {course.level && (
-                          <span className="px-2 py-1 bg-purple-100 text-purple-600 rounded-full">
-                            {course.level}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex justify-end w-full">
-                        <PrimaryButton type={"button"} name="Enroll Now"/>
-                      </div>
-                    </div>
+                   <div 
+    key={course._id} 
+    className="bg-white rounded-lg shadow-md overflow-hidden group"
+  >
+    <div className="relative h-48 overflow-hidden">
+      <img 
+        src={course.thumbnailUrl} 
+        alt={course.courseName}
+        className="w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
+      />
+      <video 
+        src={course.demoVideo.url}
+        controls={false}
+        controlsList="nodownload noremoteplayback"
+        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+      />
+    </div>
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-lg font-bold text-green-600">
+          ₹{course.price}
+        </span>
+      </div>
+      <h2 className="text-xl font-bold mb-2 line-clamp-1 text-purple-700">
+        {course.courseName}
+      </h2>
+      <p className="text-gray-600 mb-2 line-clamp-2">
+        {course.description || "No description available"}
+      </p>
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center space-x-2">
+          <Clock className="w-4 h-4 text-black" />
+          <span className="text-gray-600">{course.duration} hrs</span>
+        </div>
+        {course.rating && (
+          <div className="flex items-center space-x-1">
+            <Star className="w-4 h-4 text-yellow-500" />
+            <span className="text-gray-600">{course.rating||0}</span>
+          </div>
+        )}
+      </div>
+      <div className="mt-2 text-sm text-gray-500 flex justify-between items-center">
+        
+        {course.level && (
+          <span className="capitalize bg-purple-200 text-purple-800 px-2 py-1 rounded-md">
+            {course.level}
+          </span>
+        )}
+      </div>
+      <button 
+        onClick={() => {/* Add enrollment logic */}}
+        className="w-full mt-4 bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors"
+      >
+        Enroll Now
+      </button>
+    </div>
+  </div>
                   </Link>
                 ))}
               </div>

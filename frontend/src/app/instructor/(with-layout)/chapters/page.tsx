@@ -44,12 +44,13 @@ const CourseCreation: React.FC = () => {
   });
   const Instructor = useSelector((state: RootState) => state.instructor);
 
-     const [instructorData, setInstructorData] = useState<Instructor>();
+     const [instructorData, setInstructorData] = useState<Instructor | null>(null);
   const [chapters, setChapters] = useState<ChapterData[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeStep, setActiveStep] = useState<ActiveStep>('course');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-useEffect(() => {
+
+  useEffect(() => {
     const fetchUser = async () => {
       setIsLoading(true);
 
@@ -57,15 +58,15 @@ useEffect(() => {
         const instructor = await getInstructorDataById(Instructor.userId);
         setInstructorData(instructor);
       } catch (error) {
-        // alert('Error fetching quiz data');
-        // router.push('/quizzes'); // Redirect to quizzes list on error
-      }finally {      
+        console.error('Error fetching instructor data:', error);
+      } finally {      
         setIsLoading(false);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [Instructor.userId]);
+
   const handleCourseSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -93,6 +94,7 @@ useEffect(() => {
       setActiveStep('chapters');
     } catch (error) {
       console.error('Error submitting course:', error);
+      
     } finally {
       setIsSubmitting(false);
     }
@@ -168,10 +170,11 @@ useEffect(() => {
       setIsSubmitting(false);
     }
   };
-  if (isLoading || instructorData === null) return <Loading />;
+   // Conditional rendering moved to the main return
+   if (isLoading || instructorData === null) return <Loading />;
 
-  if (!instructorData?.isVerified) return <GetVerified/>
-
+  // After loading, check verification status
+  if (!instructorData.isVerified) return <GetVerified />;
   return (
     <div className="min-h-screen rounded-md  p-8">
       <div className="max-w-6xl mx-auto">

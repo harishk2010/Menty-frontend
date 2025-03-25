@@ -265,7 +265,7 @@ export default function Home(): ReactElement {
                     Sign Up as Student
                   </button>
                 </Link>
-                <Link href="/instructor/signup=" className="flex-1">
+                <Link href="/instructor/signup" className="flex-1">
                   <button className="w-full py-4 px-6 bg-purple-600 text-white font-medium rounded-lg border border-purple-400 hover:bg-purple-700 transition-colors">
                     Sign Up as Instructor
                   </button>

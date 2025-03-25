@@ -5,9 +5,13 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { payCourse } from '@/api/courseApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { logout } from '@/api/studentAuthentication';
 // import { cookies } from 'next/headers';
 
 const PaymentSuccess = () => {
+    const user=useSelector((state:RootState)=>state.user)
     const [isLoading, setIsLoading] = useState(true);
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -24,11 +28,18 @@ const PaymentSuccess = () => {
         if (!courseId || hasPaid.current) return; // Prevent duplicate API calls
         
         hasPaid.current = true; // Mark API as called before making the request
-        
+        const userId=user.userId
+        if(!userId){
+            logout()
+            router.replace('/login')
+            toast.error('Please login to continue')
+            return
+        }
         try {
             console.log("inside try")
-            console.log(txnid,amountPaid,courseId)
+            console.log(txnid,amountPaid,courseId,userId)
             const response = await payCourse(
+                String(userId),
                 String(courseId),
                 String(txnid),
                 Number(amountPaid),
@@ -50,7 +61,7 @@ const PaymentSuccess = () => {
     }, [processPayment]);
 
     const handleNavigateToCourses = () => {
-        router.replace('/courses');
+        router.replace('/myCourses');
     };
 
     if (isLoading) {

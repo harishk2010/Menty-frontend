@@ -19,7 +19,8 @@ import {
   Phone, 
   Award, 
   IndianRupee,
-  Calendar
+  Calendar,
+  Star
 } from "lucide-react";
 import Link from "next/link";
 import { getAllCourses } from "@/api/courseApi";
@@ -48,6 +49,7 @@ interface Course {
   duration: string;
   courseName: string;
   thumbnailUrl: string;
+  rating:number;
   demoVideo: {
     url: string;
   };
@@ -357,7 +359,7 @@ export default function Home(): ReactElement {
       <Link href={`/courseDetails/${course._id}`}>
         <div className="h-full bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
           <div className="group relative h-40 w-full">
-            <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-opacity z-10"></div>
+            <div className="absolute inset-0 bg-black bg-opacity-20 hover-purple-500 group-hover:bg-opacity-30 transition-opacity z-10"></div>
             <img
               src={course.thumbnailUrl}
               alt={course.courseName}
@@ -378,8 +380,8 @@ export default function Home(): ReactElement {
               <span>{course.duration} hrs</span>
             </div>
             <div className="mt-2 flex items-center text-sm text-gray-500">
-              <Users className="flex-shrink-0 mr-1.5 h-5 w-5" />
-              <span>{course.studentsCount || "200+"} students</span>
+              <Star className="flex-shrink-0 mr-1.5 h-5 w-5 text-yellow-400" />
+              <span>{course.rating || 0}/5</span>
             </div>
             <div className="mt-4 flex items-center justify-between">
               <span className="text-lg font-bold text-purple-600">₹{course.price}</span>

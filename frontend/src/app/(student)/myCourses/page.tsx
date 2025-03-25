@@ -246,7 +246,7 @@ const PurchasedCoursesPage = () => {
           console.error("User ID is invalid");
           return;
         }
-        const response = await getAllBoughtCourses(userId);
+        const response = await getAllBoughtCourses(userId)
         if (Array.isArray(response?.data?.courses)) {
           setPurchasedCourses(response.data.courses || []);
           setDisplayedCourses(response.data.courses || []);
@@ -568,38 +568,43 @@ const PurchasedCoursesPage = () => {
                 //   </div>
                 // </motion.div>
                 <motion.div
-                  key={course._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <div className="flex flex-col md:flex-row">
-                    <div className="md:w-72 h-48 md:h-64 relative overflow-hidden">
-                      <div className="absolute inset-0">
-                        <img
-                          src={
-                            course.courseDetails.thumbnailUrl ||
-                            "/api/placeholder/400/300"
-                          }
-                          alt={course.courseDetails.courseName}
-                          className="w-full h-full object-cover object-center rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
-                        />
-                      </div>
-                      <div className="absolute top-0 right-0 m-2">
-                        <span
-                          className={`px-2 py-1 rounded-md text-xs font-medium ${
-                            course.courseDetails.level === "Beginner"
-                              ? "bg-green-100 text-green-800"
-                              : course.courseDetails.level === "Intermediate"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-red-100 text-red-800"
-                          }`}
-                        >
-                          {course.courseDetails.level || "All Levels"}
-                        </span>
-                      </div>
-                    </div>
+            key={course._id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <div className="flex flex-col md:flex-row">
+              <div className="md:w-72 h-48 md:h-64 relative overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    src={
+                      course.courseDetails.thumbnailUrl ||
+                      "/api/placeholder/400/300"
+                    }
+                    alt={course.courseDetails.courseName}
+                    className="absolute w-full h-full object-cover object-center rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/api/placeholder/400/300";
+                      target.onerror = null;
+                    }}
+                  />
+                </div>
+                <div className="absolute top-0 right-0 m-2">
+                  <span
+                    className={`px-2 py-1 rounded-md text-xs font-medium ${
+                      course.courseDetails.level === "Beginner"
+                        ? "bg-green-100 text-green-800"
+                        : course.courseDetails.level === "Intermediate"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {course.courseDetails.level || "All Levels"}
+                  </span>
+                </div>
+              </div>
 
                     <div className="flex-1 p-6">
                       <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">

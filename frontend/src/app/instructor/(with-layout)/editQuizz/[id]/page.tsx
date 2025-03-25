@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { getInstructorDataById } from '@/api/instructorApi';
 import GetVerified from '@/app/components/instructor/GetVerified';
+import Loading from '@/app/components/fallbacks/Loading';
 
 interface Question {
   questionText: string;
@@ -30,12 +31,12 @@ interface Instructor {
 }
 
 const EditQuizForm: React.FC = () => {
-  const {id}=useParams<{id:string}>()
+  const {id} = useParams<{id:string}>()
   const router = useRouter();
   const Instructor = useSelector((state: RootState) => state.instructor);
-  const [instructorData, setInstructorData] = useState<Instructor>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [instructorData, setInstructorData] = useState<Instructor | null>(null);
 
-  
   const {
     register,
     control,
@@ -65,17 +66,22 @@ const EditQuizForm: React.FC = () => {
 
   // Fetch existing quiz data
   useEffect(() => {
-    const fetchQuiz = async () => {
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
-        const response = await getQuizData(id);
+        const [quizResponse, instructor] = await Promise.all([
+          getQuizData(id),
+          getInstructorDataById(Instructor.userId)
+        ]);
 
+        if (!quizResponse.success) {
+          toast.error("Couldn't get quiz data");
+          return;
+        }
 
-        if (!response.success) toast.error("couldint get quiz data")
-   const instructor = await getInstructorDataById(Instructor.userId);
-                        setInstructorData(instructor);
-
-        const quizData =  response.data;
-
+        setInstructorData(instructor);
+        
+        const quizData = quizResponse.data;
         
         // Reset form with existing data
         reset({
@@ -84,15 +90,17 @@ const EditQuizForm: React.FC = () => {
           questions: quizData.questions,
         });
       } catch (error) {
-        // alert('Error fetching quiz data');
-        // router.push('/quizzes'); // Redirect to quizzes list on error
+        console.error('Error fetching data:', error);
+        toast.error('Failed to load quiz data');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     if (id) {
-      fetchQuiz();
+      fetchData();
     }
-  }, [id, reset, router]);
+  }, [id, reset, Instructor.userId]);
 
   const handleAddOption = (questionIndex: number) => {
     const currentQuestions = watch('questions');
@@ -126,7 +134,12 @@ const EditQuizForm: React.FC = () => {
       toast.error(error.message)
     }
   };
-  if (!instructorData?.isVerified) return <GetVerified/>
+
+  // Keep showing loading until we have both quiz data and instructor data
+  if (isLoading || instructorData === null) return <Loading />;
+
+  // After loading, check verification status
+  if (!instructorData.isVerified) return <GetVerified/>;
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">

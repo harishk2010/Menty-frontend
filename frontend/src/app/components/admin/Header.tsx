@@ -1,39 +1,40 @@
 "use client";
-
-import { useSelector } from "react-redux";
-import { Bell, HelpCircle } from "lucide-react";
-import Link from "next/link";
 import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import Link from "next/link";
 
 const Header = () => {
-  const admin = useSelector((state:RootState) => state.admin);
+  const admin = useSelector((state: RootState) => state.admin);
 
   return (
-    <header className="bg-gray-800 text-white p-4 shadow-md z-50">
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
+    <header className="bg-gradient-to-r from-gray-800 to-gray-700 text-white py-2 shadow-md z-50">
+      <div className="flex items-center justify-between max-w-7xl mx-auto px-4">
         <div className="flex items-center">
-          <Link href="/admin/dashboard">
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-300">
-              Menty<span className="text-white font-normal"> | Admin</span>
-            </h1>
+          <Link href="/admin/dashboard" className="flex items-center">
+            <img 
+              src="../MentyLogo.png" 
+              className="w-12 h-12 mr-3" 
+              alt="Menty Logo" 
+            />
+            <div>
+              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 leading-tight">
+                Menty<span className="text-white font-normal text-base"> | Admin</span>
+              </h1>
+            </div>
           </Link>
         </div>
 
         <div className="flex items-center space-x-4">
-          <button className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors">
-            <Bell className="h-5 w-5" />
-          </button>
-          <button className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors">
-            <HelpCircle className="h-5 w-5" />
-          </button>
           <div className="flex items-center">
-          <div className="h-9 w-9 rounded-full bg-gray-700 flex items-center justify-center border-2 border-gray-600">
-                <span className="font-medium text-sm">
+            
+              <div className="h-8 w-8 rounded-full bg-gray-600 flex items-center justify-center border-2 border-gray-300">
+                <span className="font-medium text-xs">
                   {admin?.name ? admin.name.charAt(0).toUpperCase() : "A"}
                 </span>
               </div>
-            <span className="ml-2 font-medium hidden md:block">
-              {admin?.name || "Admin"}
+            
+            <span className="ml-2 font-medium hidden md:block text-sm">
+              {admin.name || "Admin"}
             </span>
           </div>
         </div>

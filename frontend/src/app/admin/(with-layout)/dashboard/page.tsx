@@ -21,6 +21,7 @@ import { RootState } from '@/redux/store';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import RevenueAnalytics from '@/app/components/admin/RevenueAnalytics';
+import Loading from '@/app/components/fallbacks/Loading';
 // Define types directly within the file
 interface InstructorDetail {
   _id: string;
@@ -144,7 +145,7 @@ const AdminDashboard = () => {
   }, []);
 
   if (loading) {
-    return <div className="bg-gray-900 text-gray-100 p-6">Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {

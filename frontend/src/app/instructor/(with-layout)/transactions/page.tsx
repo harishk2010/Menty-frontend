@@ -174,7 +174,7 @@ const WalletTransactions = () => {
                               : 'text-red-600'
                           }
                         >
-                          ${transaction.amount.toFixed(2)}
+                          ₹{transaction.amount.toFixed(2)}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-600">

@@ -251,7 +251,7 @@ export default function MentorListing() {
                 {mentors.map((mentor) => (
                   <div
                     key={mentor._id}
-                    className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                    className="bg-white rounded-lg hover:shadow-purple-300 shadow-sm overflow-hidden hover:shadow-md transition-shadow"
                   >
                     <div className="p-4">
                       <div className="flex items-center space-x-4">
@@ -278,7 +278,7 @@ export default function MentorListing() {
                       <div className="mt-4">
                         <p className="text-sm text-gray-600">
                           <Award className="h-4 w-4 inline mr-2" />
-                          {mentor.expertise}
+                          {mentor.expertise||"Instructor"}
                         </p>
                         <p className="mt-2 text-sm font-semibold text-purple-500 line-clamp-2">
                           <IndianRupee className="h-4 w-4 inline mr-2" />
@@ -296,7 +296,7 @@ export default function MentorListing() {
                         </Link>
                         <p className="flex items-center text-sm text-gray-600">
                           <Phone className="h-4 w-4 mr-2" />
-                          {mentor.mobile}
+                          {mentor.mobile || 'Not provided'}
                         </p>
                       </div>
 

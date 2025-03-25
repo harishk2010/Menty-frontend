@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { getInstructorDataById } from "@/api/instructorApi";
 import GetVerified from "@/app/components/instructor/GetVerified";
+import Loading from "@/app/components/fallbacks/Loading";
 
 interface Question {
   questionText: string;
@@ -36,7 +37,9 @@ const QuizForm: React.FC = () => {
   const router = useRouter();
   const Instructor = useSelector((state: RootState) => state.instructor);
 
-  const [instructorData, setInstructorData] = useState<Instructor>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [instructorData, setInstructorData] = useState<Instructor | null>(null);
+
   const {
     register,
     control,
@@ -57,19 +60,23 @@ const QuizForm: React.FC = () => {
       ],
     },
   });
+
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
         const instructor = await getInstructorDataById(Instructor.userId);
         setInstructorData(instructor);
       } catch (error) {
-        // alert('Error fetching quiz data');
-        // router.push('/quizzes'); // Redirect to quizzes list on error
+        console.error("Error fetching instructor data:", error);
+        toast.error("Failed to load instructor information");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchUser();
-  }, []);
+    fetchData();
+  }, [Instructor.userId]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -108,7 +115,13 @@ const QuizForm: React.FC = () => {
       alert(error instanceof Error ? error.message : "An error occurred");
     }
   };
-  if (!instructorData?.isVerified) return <GetVerified />;
+
+  // Keep showing loading until we have instructor data
+  if (isLoading || instructorData === null) return <Loading />;
+
+  // After loading, check verification status
+  if (!instructorData.isVerified) return <GetVerified />;
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Create New Quiz</h1>

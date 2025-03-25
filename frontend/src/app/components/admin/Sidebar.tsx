@@ -64,8 +64,8 @@ const Sidebar = () => {
     { href: "/admin/instructors", icon: <UserCircle size={20} />, label: "Instructors" },
     { href: "/admin/verifyInstructors", icon: <BadgeInfo size={20} />, label: "Verify Instructors" },
     { href: "/admin/category", icon: <BookmarkPlus size={20} />, label: "Category" },
-    { href: "/admin/analytics", icon: <BarChart size={20} />, label: "Analytics" },
-    { href: "/admin/settings", icon: <Settings size={20} />, label: "Settings" },
+    // { href: "/admin/analytics", icon: <BarChart size={20} />, label: "Analytics" },
+    // { href: "/admin/settings", icon: <Settings size={20} />, label: "Settings" },
   ];
 
   return (

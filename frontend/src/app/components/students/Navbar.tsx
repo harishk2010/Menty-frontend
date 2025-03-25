@@ -67,12 +67,15 @@ export default function Navbar(): ReactElement {
           </div>
 
           {/* Center - Brand Logo */}
+          <div className="flex items-center justify-center md:justify-start">
+
           <Link href="/">
             <div className="flex items-center">
               <img src="../MentyLogo.png" className="w-20" alt="Menty Logo" />
               <h1 className="text-purple-600 font-bold text-2xl">Menty</h1>
             </div>
           </Link>
+          </div>
 
           {/* Right - Desktop Navigation */}
           <div className="hidden md:flex space-x-8 items-center">
