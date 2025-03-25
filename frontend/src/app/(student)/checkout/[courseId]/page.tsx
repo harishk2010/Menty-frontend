@@ -80,7 +80,7 @@ const CourseCheckout: React.FC = () => {
     const productinfo = courseId || "";
     const firstname = name || '';
     const userEmail = email || '';
-    const udf1 = '';
+    const udf1 = userId;
     const udf2 = '';
     const udf3 = '';
     const udf4 = '';
