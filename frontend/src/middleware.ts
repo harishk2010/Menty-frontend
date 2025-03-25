@@ -333,8 +333,8 @@ export async function middleware(req: NextRequest) {
 
   // Handle student routes
   if (studentPublicRoutes.includes(pathname)) {
-    if (role === "instructor") {
-      url.pathname = "/instructor/dashboard";
+    if (role === "student") {
+      url.pathname = "/home";
       return NextResponse.redirect(url);
     }
   }

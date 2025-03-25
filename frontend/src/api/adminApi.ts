@@ -7,11 +7,9 @@ import { API } from "@/service/axios"
         const response=await API.post(adminRoutes.add_category,{categoryName},{
             withCredentials:true
         })
-        console.log(response,"response add category adminAPi")
         return response.data
         
     } catch (error) {
-        console.log(error)
         throw error
     }
  }
@@ -21,11 +19,9 @@ import { API } from "@/service/axios"
         const response=await API.put(adminRoutes.edit_category,{id,categoryName},{
             withCredentials:true
         })
-        console.log(response,"editCategory  adminAPi")
         return response.data
         
     } catch (error) {
-        console.log(error)
         throw error
     }
  }
@@ -35,11 +31,10 @@ import { API } from "@/service/axios"
         const response=await API.get(adminRoutes.get_All_categories,{
             withCredentials:true
         })
-        // console.log(response.data.data,"responsegetCategories adminAPi")
         return response.data.data
         
     } catch (error) {
-        console.log(error)
+        
         throw error
     }
  }
@@ -49,11 +44,10 @@ import { API } from "@/service/axios"
         const response=await API.put(`${adminRoutes.list_Unlist_category}${id}`,{},{
             withCredentials:true
         })
-        console.log(response,"listOrUnlistCategory adminAPi")
         return response.data
         
     } catch (error) {
-        console.log(error)
+        
         throw error
     }
  }
@@ -63,11 +57,10 @@ import { API } from "@/service/axios"
         const response=await API.get(`${adminRoutes.get_category}${id}`,{
             withCredentials:true
         })
-        console.log(response.data.data,"getCategory adminAPi")
         return response.data.data
         
     } catch (error) {
-        console.log(error)
+        
         throw error
     }
  }
@@ -77,11 +70,10 @@ import { API } from "@/service/axios"
         const response=await API.get(adminRoutes.get_adminDashboard,{
             withCredentials:true
         })
-        console.log(response.data.data,"adminDashboard adminAPi")
         return response.data
         
     } catch (error) {
-        console.log(error)
+        
         throw error
     }
  }
@@ -91,11 +83,10 @@ import { API } from "@/service/axios"
         const response=await API.get(`${adminRoutes.get_adminDetails}${email}`,{
             withCredentials:true
         })
-        console.log(response.data.data,"getAdminData adminAPi")
         return response.data
         
     } catch (error) {
-        console.log(error)
+        
         throw error
     }
  }

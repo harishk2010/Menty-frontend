@@ -7,10 +7,9 @@ export const getChatHistoryById = async (bookingId:string) => {
       const response=await API.get(`${chatRoutes.CHAT_HISTORY}${bookingId}`,{
           withCredentials:true
       })
-      console.log(response.data.data,"response from getChatHistoryById API")
       return response.data
     } catch (error) {
-      console.log(error)
+      
       throw error
     }
   };
@@ -29,7 +28,6 @@ export const getChatHistoryById = async (bookingId:string) => {
       
       return response.data;
     } catch (error) {
-      console.error('Error uploading image:', error);
       throw error;
     }
   }

@@ -22,7 +22,7 @@ export const addCouse = async (formData: FormData) => {
     console.log(response, "response from add course");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const isBoughtCourse = async (userId:string,coureId:string) => {
@@ -36,7 +36,7 @@ export const isBoughtCourse = async (userId:string,coureId:string) => {
     console.log(response, "response from isBoughtCourse");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const updateCourse = async (courseId: string, formData: FormData) => {
@@ -56,7 +56,7 @@ export const updateCourse = async (courseId: string, formData: FormData) => {
     console.log(response, "response from add course");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const updateChapter = async (chapterId: string, formData: FormData) => {
@@ -76,7 +76,7 @@ export const updateChapter = async (chapterId: string, formData: FormData) => {
     console.log(response, "response from updateChapter");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getChapter = async (chapterId: string) => {
@@ -90,7 +90,7 @@ export const getChapter = async (chapterId: string) => {
     console.log(response, "response from getChapter");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getAllCourses = async () => {
@@ -101,7 +101,7 @@ export const getAllCourses = async () => {
     console.log(response.data, "response from getAllCourses");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getAllInstructorCourses = async (userId: string) => {
@@ -115,7 +115,7 @@ export const getAllInstructorCourses = async (userId: string) => {
     console.log(response.data, "response from getAllCourses");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getAllFilteredInstructorCourses = async (instructorId:string,
@@ -133,10 +133,9 @@ export const getAllFilteredInstructorCourses = async (instructorId:string,
         withCredentials: true,
       }
     );
-    console.log(response.data, "response from getAllCourses");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getCourse = async (coureId: string) => {
@@ -144,10 +143,9 @@ export const getCourse = async (coureId: string) => {
     const response = await API.get(`${CourseRoutes.GET_COURSE}${coureId}`, {
       withCredentials: true,
     });
-    console.log(response, "response from getCourse");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const submitResult = async (
@@ -168,10 +166,9 @@ export const submitResult = async (
         withCredentials: true,
       }
     );
-    console.log(response, "response from getCourse");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const handlePublish = async (coureId: string) => {
@@ -182,10 +179,9 @@ export const handlePublish = async (coureId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from handlePublish");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const handleListingCourse = async (coureId: string) => {
@@ -196,10 +192,9 @@ export const handleListingCourse = async (coureId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from handleListingCourse");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -215,10 +210,9 @@ export const addChapter = async (formData: FormData, courseId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from add course");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getAllChapter = async (courseId: string) => {
@@ -229,10 +223,9 @@ export const getAllChapter = async (courseId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from addAllChapter");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getAllBoughtCourses = async (userId: string) => {
@@ -246,7 +239,7 @@ export const getAllBoughtCourses = async (userId: string) => {
     console.log(response.data, "response from getAllBoughtCourses");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getBoughtCourse = async (courseId: string) => {
@@ -260,7 +253,7 @@ export const getBoughtCourse = async (courseId: string) => {
     console.log(response, "response from getAllBoughtCourseee");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const chapterCompleted = async (chapterId: string) => {
@@ -274,7 +267,7 @@ export const chapterCompleted = async (chapterId: string) => {
     console.log(response.data, "response from chapterCompleted");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getPlayCourse = async (courseId: string) => {
@@ -288,7 +281,7 @@ export const getPlayCourse = async (courseId: string) => {
     console.log(response, "response from getAllBoughtCourses");
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -318,7 +311,7 @@ export const addQuizz = async (quizData: object) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const editQuiz = async (id: string, quizData: object) => {
@@ -334,7 +327,7 @@ export const editQuiz = async (id: string, quizData: object) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getQuizData = async (id: string) => {
@@ -347,7 +340,7 @@ export const getQuizData = async (id: string) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const deleteCourse = async (id: string) => {
@@ -360,7 +353,7 @@ export const deleteCourse = async (id: string) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getCourseCategories = async () => {
@@ -373,7 +366,7 @@ export const getCourseCategories = async () => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 export const getAllPaginatedCourses = async (
@@ -412,11 +405,9 @@ export const getAllPaginatedCourses = async (
       withCredentials:true
     });
     
-    console.log(response.data,"filtered courseeeee")
     const data = await response.data
     return data;
   } catch (error) {
-    console.error('Error fetching courses:', error);
     throw error;
   }
 };
@@ -430,7 +421,7 @@ export const addReview=async(courseId:string,rating:number,comment:string)=>{
     return response.data
     
   } catch (error) {
-    console.log(error)
+    throw error
   }
 }
 export const GetCourseReviews=async(courseId:string)=>{
@@ -442,7 +433,7 @@ export const GetCourseReviews=async(courseId:string)=>{
     return response.data
     
   } catch (error) {
-    console.log(error)
+    throw error
   }
 }
 export const getInstructorDashboard=async()=>{
@@ -454,6 +445,6 @@ export const getInstructorDashboard=async()=>{
     return response.data
     
   } catch (error) {
-    console.log(error)
+    throw error
   }
 }
