@@ -11,7 +11,7 @@ interface PricingProps {
 }
 
 const InstructorPricing: React.FC<PricingProps> = ({
-  initialPrice = 20,
+  initialPrice = 100,
   onSave = async () => {},
 }) => {
   const [currentPrice, setCurrentPrice] = useState(initialPrice);
@@ -97,8 +97,8 @@ const InstructorPricing: React.FC<PricingProps> = ({
               <span className="absolute left-3 top-2 text-gray-500">₹</span>
               <input
                 type="number"
-                min="1"
-                step="0.01"
+                min="100"
+                
                 value={newPrice}
                 onChange={(e) => setNewPrice(Number(e.target.value))}
                 className="w-full pl-7 pr-4 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

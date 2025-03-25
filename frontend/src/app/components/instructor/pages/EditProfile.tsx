@@ -222,7 +222,7 @@ export default function EditProfile() {
                         errors.username && touched.username 
                           ? "border-red-500" 
                           : "border-gray-300"
-                      } rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm`}
+                      } rounded-md shadow-sm text-gray-900 focus:ring-purple-500 focus:border-purple-500 sm:text-sm`}
                     />
                   </div>
                   {errors.username && touched.username && (
@@ -276,7 +276,7 @@ export default function EditProfile() {
                         errors.expertise && touched.expertise 
                           ? "border-red-500" 
                           : "border-gray-300"
-                      } rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none`}
+                      } rounded-md shadow-sm text-gray-800 focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none`}
                     >
                       <option value="" disabled>Select your expertise</option>
                       {expertiseOptions?.map((option) => (

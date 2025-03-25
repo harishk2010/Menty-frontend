@@ -8,6 +8,8 @@ interface instructor {
     email: string | null,
     role: string | null,
     profilePicUrl: string | null
+    planPrice?: number;
+
 }
 
 // Initialize state
@@ -16,7 +18,9 @@ const initialState: instructor = {
     name: null,
     email: null,
     role: null,
-    profilePicUrl:null
+    profilePicUrl:null,
+    planPrice: 100, // default price
+
 };
 
 const instructorSlice = createSlice({
@@ -46,9 +50,13 @@ const instructorSlice = createSlice({
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('instructor');
             }
-        }
+        },
+        updateInstructorPrice: (state, action: PayloadAction<number>) => {
+            state.planPrice = action.payload;
+          },
     }
 })
 
-export const { setUser, clearUserDetials } = instructorSlice.actions
+export const { setUser, clearUserDetials ,  updateInstructorPrice 
+} = instructorSlice.actions
 export default instructorSlice.reducer
