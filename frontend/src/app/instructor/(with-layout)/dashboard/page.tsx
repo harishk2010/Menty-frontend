@@ -75,7 +75,7 @@ interface Booking {
 // Define tooltip formatter function with proper type
 const currencyFormatter = (value: number | string | Array<number | string>, name: string) => {
   if (typeof value === 'number') {
-    return [`₹${value}`, name || 'Value'];
+    return [`₹${value.toFixed(2)}`, name || 'Value'];
   }
   return [`₹${value}`, name || 'Value'];
 };
@@ -331,7 +331,7 @@ const InstructorDashboard: React.FC = () => {
                   fill="#8884d8"
                   paddingAngle={5}
                   dataKey="value"
-                  label={({name, percent}) =>  `${name} ${(percent || 0) * 100}%`}
+                  label={({name, percent}) =>  `${name} ${((percent || 0) *100).toFixed(2)}%`}
                 >
                   {revenueBreakdownData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

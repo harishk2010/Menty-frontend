@@ -28,7 +28,7 @@ interface InstructorData {
 
 const SlotCreationForm = () => {
   const [instructorData, setInstructorData] = useState<InstructorData>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   
   const instructorEmail = useSelector(
     (state: RootState) => state.instructor.email
@@ -50,6 +50,10 @@ const SlotCreationForm = () => {
       endTime: "",
     },
   });
+  
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -88,58 +92,7 @@ const SlotCreationForm = () => {
     setValue("days", newDays, { shouldValidate: true });
   };
 
-  // const onSubmit = async (data: SlotFormData) => {
-  //   try {
-  //       const instructorId=instructorData?._id
-  //       const price=instructorData?.planPrice
-  //       console.log(instructorId,price)
-  //     const response = await createSlots({instructorId,...data,price})
-
-  //     if (response.success) {
-  //       router.replace('/instructor/slots')
-  //      toast.success('Slots created successfully!');
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to create slots:', error);
-  //     alert('Failed to create slots. Please try again.');
-  //   }
-  // };
-  // In your onSubmit function
-  // const onSubmit = async (data: SlotFormData) => {
-  //   try {
-  //     const instructorId = instructorData?._id;
-  //     const price = instructorData?.planPrice;
   
-  //     // Get the user's timezone offset (e.g., "+05:30" for IST)
-  //     const timezoneOffset = new Date().getTimezoneOffset();
-  //     const offsetHours = Math.abs(Math.floor(timezoneOffset / 60));
-  //     const offsetMinutes = Math.abs(timezoneOffset % 60);
-  //     const timezoneSign = timezoneOffset > 0 ? '-' : '+';
-  //     const timezoneString = `${timezoneSign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`;
-  
-  //     // Send local time and timezone offset to the backend
-  //     const formattedData = {
-  //       ...data,
-  //       startTime: `${data.startDate}T${data.startTime}:00${timezoneString}`, // Local time with offset
-  //       endTime: `${data.endDate}T${data.endTime}:00${timezoneString}`, // Local time with offset
-  //       instructorId,
-  //       price,
-  //       timezone: timezoneString, // Send the timezone offset
-  //     };
-  
-  //     console.log("Sending data to backend:", formattedData);
-  
-  //     const response = await createSlots(formattedData);
-  
-  //     if (response.success) {
-  //       router.replace('/instructor/slots');
-  //       toast.success('Slots created successfully!');
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to create slots:', error);
-  //     toast.error('Failed to create slots. Please try again.');
-  //   }
-  // };
   const getUTCTime = (localTime: string, timezoneOffset: string) => {
     const date = new Date(`${localTime}${timezoneOffset}`);
     return date.toISOString(); // Convert to UTC
@@ -202,7 +155,12 @@ const SlotCreationForm = () => {
             </label>
             <input
               type="date"
-              {...register("startDate", { required: "Start date is required" })}
+              min={today}  // Add this line to prevent selecting past dates
+              {...register("startDate", { 
+                required: "Start date is required",
+                validate: (value) => 
+                  value >= today || "Start date cannot be in the past"
+              })}
               className="w-full text-black px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.startDate && (
@@ -218,13 +176,14 @@ const SlotCreationForm = () => {
             </label>
             <input
               type="date"
+              min={today}  // Add this line to prevent selecting past dates
               {...register("endDate", {
                 required: "End date is required",
                 validate: (value) => {
                   const startDate = watch("startDate");
                   return (
-                    !startDate ||
-                    value >= startDate ||
+                    (!startDate || value >= startDate) &&
+                    (value >= today || "End date cannot be in the past") ||
                     "End date must be after start date"
                   );
                 },

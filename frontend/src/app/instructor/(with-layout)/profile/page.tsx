@@ -815,10 +815,10 @@ const ProfileHeader = () => {
                       <span className="font-medium">Email:</span> {instructorData.email}
                     </p>
                     <p className="text-gray-600">
-                      <span className="font-medium">Mobile:</span> {instructorData.mobile}
+                      <span className="font-medium">Mobile:</span> {instructorData.mobile|| "Not Provided"}
                     </p>
                     <p className="text-gray-600">
-                      <span className="font-medium">Expertise:</span> {instructorData.expertise}
+                      <span className="font-medium">Expertise:</span> {instructorData.expertise || "Not Provided"}
                     </p>
                   </div>
                 </div>

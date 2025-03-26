@@ -6,14 +6,16 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import VerifiedBadge from "../common/badges/VerifiedBadge";
 import RejectedBadge from "../common/badges/RejectedBadge";
-import AlertDialog from "../common/alertBoxes/AlertDialogBox";
+import AlertDialogWithComment from "../common/alertBoxes/AlertWithComment";
 import { ChevronLeft, ChevronRight, ArrowUpDown, ClipboardCheck, Search } from "lucide-react";
 import { motion } from "framer-motion";
+import AlertDialog from "../common/alertBoxes/AlertDialogBox";
 
 interface Instructor {
   username: string;
   email: string;
   status: "approved" | "pending" | "rejected";
+  comment?: string;
 }
 
 interface SortConfig {
@@ -49,11 +51,11 @@ const VerifyTable: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleVerify = async (email: string) => {
+  const handleVerify = async (email: string, comment: string = "") => {
     try {
       console.log("Verifying:", email);
       const status = "approved";
-      const response = await approveRequest(email, status);
+      const response = await approveRequest(email, status, comment);
       console.log("API Response (Verify):", response);
 
       if (response.success) {
@@ -61,7 +63,7 @@ const VerifyTable: React.FC = () => {
         setRequests((prevInstructor:Instructor[]) =>
           prevInstructor.map((instructor) =>
             instructor.email === email
-              ? { ...instructor, status: "approved" }
+              ? { ...instructor, status: "approved", comment }
               : instructor
           )
         );
@@ -74,11 +76,11 @@ const VerifyTable: React.FC = () => {
     }
   };
 
-  const handleReject = async (email: string) => {
+  const handleReject = async (email: string, comment: string = "") => {
     try {
       console.log("Rejecting:", email);
       const status = "rejected";
-      const response = await approveRequest(email, status);
+      const response = await approveRequest(email, status, comment);
       console.log("API Response (Reject):", response);
 
       if (response.success) {
@@ -86,14 +88,13 @@ const VerifyTable: React.FC = () => {
         setRequests((prevInstructor: Instructor[]) => {
           const updatedInstructors = prevInstructor.map((instructor) =>
             instructor.email === email
-              ? { ...instructor, status: "rejected" as const } // Explicitly cast the status
+              ? { ...instructor, status: "rejected" as const, comment } // Explicitly cast the status
               : instructor
           );
           console.log("Updated Instructors:", updatedInstructors);
           return updatedInstructors;
         });
-      }
-       else {
+      } else {
         toast.error(response.message);
       }
       
@@ -290,21 +291,23 @@ const VerifyTable: React.FC = () => {
                         ) : (
                           <div className="flex justify-center gap-2">
                             <AlertDialog
-                              onConfirm={() => handleVerify(user.email)}
-                              alert={"Do you want to approve this request?"}
-                            >
+                            onConfirm={() => handleVerify(user.email)}
+                            alert={"Do you want to Verify this Instructor?"}
+                          >
                               <button className="bg-green-600 hover:bg-green-700 text-white text-xs px-4 py-2 rounded-md transition-colors duration-200">
                                 Approve
                               </button>
                             </AlertDialog>
-                            <AlertDialog
-                              onConfirm={() => handleReject(user.email)}
+                            <AlertDialogWithComment
+                              onConfirm={(comment:string) => handleReject(user.email, comment)}
                               alert={"Do you want to reject this request?"}
+                              showCommentField={true}
+                              commentLabel="Rejection Reason"
                             >
                               <button className="bg-red-600 hover:bg-red-700 text-white text-xs px-4 py-2 rounded-md transition-colors duration-200">
                                 Reject
                               </button>
-                            </AlertDialog>
+                            </AlertDialogWithComment>
                           </div>
                         )}
                       </td>

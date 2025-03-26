@@ -316,7 +316,7 @@ export default function LoginPage(): ReactElement {
         dispatch(
           setUser({
             userId: user._id,
-            name: user.name,
+            name: user.username,
             email: user.email,
             role: user.role,
             profilePicUrl: user.profilePicUrl,

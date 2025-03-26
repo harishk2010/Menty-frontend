@@ -28,7 +28,7 @@ const Player = dynamic(
 export default function OtpPage() {
 
   const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
-  const [counter, setCounter] = useState<number>(10);
+  const [counter, setCounter] = useState<number>(60);
   const [resendAtive,setResendActive]=useState(false)
   const [submitActive,setSubmitActive]=useState(false)
 
@@ -51,7 +51,7 @@ export default function OtpPage() {
   ,[counter,otp])
   const handleResend=async()=>{
     setResendActive(false)
-    setCounter(10)
+    setCounter(60)
 
     let email= localStorage.getItem("email")|| ""
     let username= localStorage.getItem("username")|| ""

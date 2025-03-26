@@ -58,10 +58,10 @@ export const getAllRequests=async ()=>{
         console.log(error)
     }
 }
-export const approveRequest=async (email:string,status:string)=>{
+export const approveRequest=async (email:string,status:string,comment:string)=>{
     try {
         console.log("insideeeee getAllRequests")
-        const response=await API.post(InstructorRoutes.approveRequestsUrl,{email,status},{
+        const response=await API.post(InstructorRoutes.approveRequestsUrl,{email,status,comment},{
             withCredentials:true
         })
         console.log(response.data,"response approveRequest...")

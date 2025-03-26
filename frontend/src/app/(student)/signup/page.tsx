@@ -59,6 +59,7 @@ export default function SignupPage(): ReactElement {
       email: "",
       password: "",
       confirmPassword: "",
+      username:""
     }),
     []
   );
@@ -79,6 +80,7 @@ export default function SignupPage(): ReactElement {
         if (response.success) {
           localStorage.setItem("verificationTokenStudent", response.token);
           localStorage.setItem("email", values.email);
+          localStorage.setItem("username", values.username);
           toast.success(response.message);
           router.replace("/otp");
         } else {
