@@ -57,6 +57,7 @@ export default function SignupPage(): ReactElement {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const initialValues = {
+    username:"",
     email: "",
     password: "",
     confirmPassword: "",
@@ -73,7 +74,7 @@ export default function SignupPage(): ReactElement {
        
         localStorage.setItem("verificationToken",response.token);
         localStorage.setItem("email",values.email)
-        console.log("sucess");
+        localStorage.setItem("username",values.username)
 
         toast.success(response.message);
         router.replace("/instructor/otp");
