@@ -275,6 +275,7 @@ export async function middleware(req: NextRequest) {
     "/editProfile",
     "/changePassword",
     "/myCourses",
+    "/myCertificates",
     "/paymentFailure",
     "/paymentSuccess",
     "/course/[id]",

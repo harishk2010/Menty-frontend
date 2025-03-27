@@ -1,11 +1,4 @@
-// import ProfilePage from "@/app/components/students/pages/Profile";
 
-// export default function profile(){
-//     return (
-//         <ProfilePage/>
-
-//     )
-// }
 "use client";
 
 import { useState, useEffect } from "react";
@@ -250,47 +243,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white shadow rounded-lg p-6 text-center flex flex-col items-center"
-          >
-            <div className="bg-purple-100 p-3 rounded-full mb-4">
-              <Book className="w-8 h-8 text-purple-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800">12</h2>
-            <p className="text-gray-600 mt-2">Enrolled Courses</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white shadow rounded-lg p-6 text-center flex flex-col items-center"
-          >
-            <div className="bg-purple-100 p-3 rounded-full mb-4">
-              <Award className="w-8 h-8 text-purple-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800">7</h2>
-            <p className="text-gray-600 mt-2">Certificates Earned</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white shadow rounded-lg p-6 text-center flex flex-col items-center"
-          >
-            <div className="bg-purple-100 p-3 rounded-full mb-4">
-              <Clock className="w-8 h-8 text-purple-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800">98%</h2>
-            <p className="text-gray-600 mt-2">Completion Rate</p>
-          </motion.div>
-        </div>
 
         {/* Personal Details Section */}
         <motion.div

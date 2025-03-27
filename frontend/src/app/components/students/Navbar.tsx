@@ -28,6 +28,7 @@ export default function Navbar(): ReactElement {
     { name: "About", href: "/about" },
     { name: "Courses", href: "/courses" },
     { name: "Mentors", href: "/mentors" },
+    // { name: "My Certificates", href: "/myCertificates" },
   ];
 
   const Student = useSelector((state: RootState) => state.user.profilePicUrl);
@@ -151,6 +152,11 @@ export default function Navbar(): ReactElement {
           My Courses
         </div>
       </Link>
+      <Link href="/myCertificates" onClick={() => setIsDropdownOpen(false)}>
+        <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          My Certificates
+        </div>
+      </Link>
       <Link href="/bookings" onClick={() => setIsDropdownOpen(false)}>
         <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
           My Bookings
@@ -222,6 +228,15 @@ export default function Navbar(): ReactElement {
           >
             MyCourses
           </Link>
+          <Link
+            href="/myCertificates"
+            onClick={() => setIsMenuOpen(false)}
+            className="block px-3 py-2 text-gray-600 hover:text-purple-600"
+          >
+            My Certificates
+          </Link>
+          
+          
           <Link
             href="/bookings"
             onClick={() => setIsMenuOpen(false)}

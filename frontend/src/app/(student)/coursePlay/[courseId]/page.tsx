@@ -159,9 +159,9 @@ const CourseStudyPage = () => {
     }
   };
   
-  const handleChapterCompletion = async(chapterId: string) => {
+  const handleChapterCompletion = async(chapterId: string,courseId:string) => {
     try {
-      const response = await chapterCompleted(chapterId);
+      const response = await chapterCompleted(chapterId,courseId);
       if (response.success) {
         toast.success(response.message);
         setCourse((prevCourse) => {
@@ -327,7 +327,7 @@ const CourseStudyPage = () => {
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onContextMenu={(e) => e.preventDefault()}
-              onEnded={() => handleChapterCompletion(activeChapter?._id || "")}
+              onEnded={() => handleChapterCompletion(activeChapter?._id || "",courseId)}
             >
               {activeChapter?.captionsUrl && (
                 <track
@@ -477,3 +477,5 @@ const CourseStudyPage = () => {
 };
 
 export default CourseStudyPage;
+
+

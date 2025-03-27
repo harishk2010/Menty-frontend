@@ -14,11 +14,12 @@ import { Login } from "@/@types/LoginTypes";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { setUser } from "@/redux/slices/instructorSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { instructorGoogleLogin, login } from "@/api/userAuthentication";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import Link from "next/link";
 import { GOOGLE_CLIENT_ID } from "@/utils/constants";
+import { RootState } from "@/redux/store";
 // Dynamically import the Player component from Lottie with SSR disabled
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
@@ -44,6 +45,11 @@ export default function LoginPage(): ReactElement {
 
   const router= useRouter()
   const dispatch = useDispatch()
+  const isLoggedIn = useSelector((state:RootState) => state.instructor.userId?true:false);
+
+  if(isLoggedIn){
+    router.replace(`/instructor/dashboard`);
+  }
 
   const initialValues = {
     email: "",

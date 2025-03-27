@@ -179,10 +179,10 @@ const InstructorCourses: React.FC<InstructorCoursesProps> = ({ instructorId }) =
                       <PlayCircle className="flex-shrink-0 mr-1.5 h-5 w-5" />
                       <span>{course.duration} hrs</span>
                     </div>
-                    <div className="mt-2 flex items-center text-sm text-gray-500">
+                    {/* <div className="mt-2 flex items-center text-sm text-gray-500">
                       <Users className="flex-shrink-0 mr-1.5 h-5 w-5" />
                       <span>{course.studentsCount || "200+"} students</span>
-                    </div>
+                    </div> */}
                     <div className="mt-4 flex items-center justify-between">
                       <span className="text-lg font-bold text-purple-600">₹{course.price}</span>
                       <span className="text-sm bg-purple-100 text-purple-800 px-2 py-1 rounded">

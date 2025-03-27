@@ -274,10 +274,7 @@ export default function MentorProfile() {
                       <Award className="h-5 w-5 inline mr-2" />
                       {mentor.expertise || "Expertise not specified"}
                     </p>
-                    <p className="text-gray-600">
-                      <Star className="h-5 w-5 inline mr-2" />
-                      Skills: {mentor.skills || "Skills not specified"}
-                    </p>
+                    
                     <div className="space-y-2">
                       <p className="flex items-center text-gray-600">
                         <Mail className="h-5 w-5 mr-2" />

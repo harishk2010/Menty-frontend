@@ -13,12 +13,13 @@ import { Login } from "@/@types/LoginTypes";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { setUser } from "@/redux/slices/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { StudentGoogleLogin, login } from "@/api/studentAuthentication";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Link from "next/link";
 import { GOOGLE_CLIENT_ID } from "@/utils/constants";
 import dynamic from "next/dynamic";
+import { RootState } from "@/redux/store";
 
 const GoogleLogin = dynamic(
   () => import("@react-oauth/google").then((mod) => mod.GoogleLogin),
@@ -41,7 +42,11 @@ const loginSchema = Yup.object().shape({
 export default function LoginPage(): ReactElement {
   const router = useRouter();
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state:RootState) => state.user.userId?true:false);
 
+    if(isLoggedIn){
+      window.location.href = "/home";
+    }
   const initialValues = {
     email: "",
     password: "",

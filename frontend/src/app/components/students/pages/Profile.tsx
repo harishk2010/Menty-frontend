@@ -1,8 +1,7 @@
 "use client";
-import { profileSidebar } from "@/app/utils/validationSchemas/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+
 
 const ProfilePage = () => {
 

@@ -24,6 +24,7 @@ const CourseRoutes = {
 
   //bought courses
   GET_BOUGHT_COURSES: "/api/course/course/boughtCourses/",
+  GET_COMPLETED_COURSES: "/api/course/course/completedCourses/",
   GET_BOUGHT_COURSE: "/api/course/course/boughtCourse/",
   GET_Play_COURSE_DETAILS: "/api/course/course/playCourseDetails/",
   CHAPTER_COMPLETED: "/api/course/course/chapterCompleted/",

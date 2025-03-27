@@ -244,6 +244,19 @@ export const getAllBoughtCourses = async (userId: string) => {
     throw error;
   }
 };
+export const getAllCompletedCourses = async (userId: string) => {
+  try {
+    const response = await API.get(
+      `${CourseRoutes.GET_COMPLETED_COURSES}${userId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 export const getBoughtCourse = async (courseId: string) => {
   try {
     const response = await API.get(
@@ -257,10 +270,10 @@ export const getBoughtCourse = async (courseId: string) => {
     throw error;
   }
 };
-export const chapterCompleted = async (chapterId: string) => {
+export const chapterCompleted = async (chapterId: string,courseId:string) => {
   try {
-    const response = await API.put(
-      `${CourseRoutes.CHAPTER_COMPLETED}${chapterId}`,{},
+    const response = await API.post(
+      `${CourseRoutes.CHAPTER_COMPLETED}${chapterId}/course/${courseId}`,{},
       {
         withCredentials: true,
       }
