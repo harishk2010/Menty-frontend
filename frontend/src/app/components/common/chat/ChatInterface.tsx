@@ -571,16 +571,13 @@ const ChatInterface = ({
     });
 
     socketInstance.on('connect', () => {
-      console.log('Connected to chat server');
       socketInstance.emit('join-room', bookingId);
     });
     
     socketInstance.on('receive-message', async (newMessage: Message) => {
       if (newMessage.messageType === 'image') {
         try {
-          console.log('Image message detected, refreshing chat history');
           const updatedMessages = await getChatHistoryById(bookingId);
-          console.log('Updated messages:', updatedMessages);
           setMessages(updatedMessages);
         } catch (err) {
           console.error("Error refreshing chat history:", err);

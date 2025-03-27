@@ -119,7 +119,6 @@ const CourseCreation: React.FC = () => {
   }, [Instructor.userId]);
 
   const onSubmit = async (data: CourseData) => {
-    console.log("Submitting Data:", data);
     setIsSubmitting(true);
   
     try {
@@ -139,14 +138,9 @@ const CourseCreation: React.FC = () => {
         }
       }
   
-      // Debugging: Check FormData
-      for (const pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
-      }
-  
+      
       // Send request
       const response = await addCouse(formData);
-      console.log("Server Response:", response);
   
       if (response.success) {
         toast.success(response.message);

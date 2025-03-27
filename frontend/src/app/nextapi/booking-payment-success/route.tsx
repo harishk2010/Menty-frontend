@@ -12,10 +12,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ product
     const data: { [key: string]: any } = {};
     formData.forEach((value: any, key: string) => {
       data[key] = value;
-    });
-
-    console.log(data);
-   
+    });   
 
     const redirectUrl = `/BookingPaymentSuccess?mentorName=${data.lastname}&slotId=${data.productinfo}&txnid=${data.txnid}&amountPaid=${data.amount}&bankRefNum=${data.bank_ref_num}`
 

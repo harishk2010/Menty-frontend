@@ -338,7 +338,6 @@ const SlotCheckout: React.FC = () => {
       const paymentForm = document.getElementById('payuForm') as HTMLFormElement;
       if (paymentForm) {
         try {
-          console.log('Submitting payment form...');
           paymentForm.submit();
         } catch (error) {
           console.error('Error submitting form:', error);

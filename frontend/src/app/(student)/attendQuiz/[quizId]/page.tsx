@@ -93,8 +93,7 @@ const QuizAttempt = () => {
     setIsSubmitted(true);
 
     try {
-      // const scored=((score / quiz.questions.length) * 100)
-      // console.log(scored,"Scoreddd")
+     
       const response=await submitResult(quiz.courseId,{score:finalScore ,total:quiz.questions.length})
       if(response.success){
         toast.success(response.message)

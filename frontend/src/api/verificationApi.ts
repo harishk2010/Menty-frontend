@@ -10,7 +10,7 @@ export const sendVerification=async (formData:FormData)=>{
             },
             withCredentials:true
         })
-        console.log(response.data,"response verification...")
+       
         return response.data
         
     } catch (error) {
@@ -25,7 +25,7 @@ export const reVerifyRequest=async (formData:FormData)=>{
             },
             withCredentials:true
         })
-        console.log(response.data,"response verification...")
+      
         return response.data
         
     } catch (error) {
@@ -34,11 +34,11 @@ export const reVerifyRequest=async (formData:FormData)=>{
 }
 export const getRequestData=async (email:string)=>{
     try {
-        console.log("insideeeee")
+     
         const response=await API.get(`${InstructorRoutes.getRequestDataUrl}${email}`,{
             withCredentials:true
         })
-        console.log(response,"response getRequestData...")
+      
         return response.data
         
     } catch (error) {
@@ -47,11 +47,11 @@ export const getRequestData=async (email:string)=>{
 }
 export const getAllRequests=async ()=>{
     try {
-        console.log("insideeeee getAllRequests")
+      
         const response=await API.get(InstructorRoutes.getAllRequestsUrl,{
             withCredentials:true
         })
-        console.log(response,"response getAllRequests...")
+        
         return response.data
         
     } catch (error) {
@@ -60,11 +60,11 @@ export const getAllRequests=async ()=>{
 }
 export const approveRequest=async (email:string,status:string,comment:string)=>{
     try {
-        console.log("insideeeee getAllRequests")
+  
         const response=await API.post(InstructorRoutes.approveRequestsUrl,{email,status,comment},{
             withCredentials:true
         })
-        console.log(response.data,"response approveRequest...")
+        
         return response.data
         
     } catch (error) {

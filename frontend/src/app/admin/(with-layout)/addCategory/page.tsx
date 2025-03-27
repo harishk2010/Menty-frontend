@@ -18,11 +18,9 @@ const MyForm = () => {
     const router=useRouter()
   const handleSubmit = async(values: { categoryName: string }) => {
     const {categoryName}=values
-    console.log("Form Submitted with values:", values);
 
     try {
       const response=await addCategory(categoryName)
-    console.log(response,"response add category")
     if(response.success){
       toast.success(response.message)
         router.replace('/admin/category')
@@ -31,7 +29,6 @@ const MyForm = () => {
     }
       
     } catch (error:any) {
-      console.log(error,"servereroor")
       toast.error(error.message)
       
     }

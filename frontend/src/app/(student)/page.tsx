@@ -600,64 +600,6 @@ export default function Home(): ReactElement {
         </div>
       </div>
 
-      {/* Testimonials Section */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900">
-              What Our Students Say
-            </h2>
-          </div>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {[
-              {
-                name: "Harish",
-                role: "Software Developer",
-                image: "/api/placeholder/150/150",
-                quote: "The courses were incredibly comprehensive and the mentor sessions helped me solve complex problems in my projects. I landed my dream job within months!"
-              },
-              {
-                name: "Rahul Patel",
-                role: "UX Designer",
-                image: "/api/placeholder/150/150",
-                quote: "The personalized feedback from my mentor transformed my design process. The community support and networking opportunities were invaluable."
-              },
-              {
-                name: "Anjali Gupta",
-                role: "Data Scientist",
-                image: "/api/placeholder/150/150",
-                quote: "From beginner to professional in just six months! The structured curriculum and expert guidance made all the difference in my career transition."
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
-                <div className="flex items-center">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
-                  <div className="ml-4">
-                    <h4 className="text-lg font-medium text-gray-900">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
-                  </div>
-                </div>
-                <blockquote className="mt-4 text-gray-700">
-                  "{testimonial.quote}"
-                </blockquote>
-                <div className="mt-4 flex text-yellow-400">
-  {[...Array(5)].map((_, i) => (
-    <svg key={i} className="h-5 w-5 fill-current" viewBox="0 0 20 20">
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-    </svg>
-  ))}
-</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* CTA Section */}
       <div className="bg-gradient-to-r from-indigo-800 to-purple-700">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
@@ -688,7 +630,7 @@ export default function Home(): ReactElement {
       </div>
 
       {/* Stats Section */}
-      <div className="py-12 bg-white">
+      {/* <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {[
@@ -704,7 +646,7 @@ export default function Home(): ReactElement {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Newsletter Section */}
       <div className="bg-gray-50 py-12">

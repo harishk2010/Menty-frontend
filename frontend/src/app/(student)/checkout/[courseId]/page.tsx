@@ -49,7 +49,6 @@ const CourseCheckout: React.FC = () => {
 
   const userDetails = useSelector((state: RootState) => state.user)
   const { userId, name, email } = userDetails
-  console.log(name,email)
 
   const phone = '8248093223';
 
@@ -86,11 +85,9 @@ const CourseCheckout: React.FC = () => {
     const udf4 = '';
     const udf5 = '';
     const hashString = `${key}|${txnid}|${course.price}|${productinfo}|${firstname}|${userEmail}|${udf1}|${udf2}|${udf3}|${udf4}|${udf5}||||||${salt}`;
-   console.log(`${key}|${txnid}|${course.price}|${productinfo}|${firstname}|${userEmail}|${udf1}|${udf2}|${udf3}|${udf4}|${udf5}||||||${salt}`)
    
     setHash(CryptoJS.SHA512(hashString).toString());
   }, [txnid, course]);
-  console.log("hash,hash",hash)
 
 
   const handlePayment =async () => {
@@ -103,7 +100,6 @@ const CourseCheckout: React.FC = () => {
       
       return;
     }
-    console.log(userId,"userId")
     const response=await isBoughtCourse(userId,courseId)
     if(response.success){
       toast.error(response.message);
@@ -133,7 +129,6 @@ const CourseCheckout: React.FC = () => {
         furl,
         hash: hash,
       };
-      console.log(formData,"formdata")
 
       const form = document.createElement('form');
       form.method = 'POST';

@@ -164,9 +164,6 @@ const StudentBookings = () => {
         }
     };
 
-    const handleReschedule = (bookingId: string) => {
-        // Implement your reschedule navigation logic here
-    };
 
     const handleLeaveFeedback = (bookingId: string) => {
         setShowFeedbackForm(bookingId);
@@ -359,7 +356,7 @@ const StudentBookings = () => {
                                     </div>
                                 </div>
 
-                                {activeTab === 'completed' && (
+                                {/* {activeTab === 'completed' && (
                                     <div className="mt-6 flex items-center justify-end">
                                         {!booking.hasReview && showFeedbackForm !== booking._id && (
                                             <button 
@@ -377,7 +374,7 @@ const StudentBookings = () => {
                                     </div>
                                 )}
 
-                                {/* Feedback Form */}
+                           
                                 {showFeedbackForm === booking._id && (
                                     <div className="mt-6 p-6 bg-gray-50 rounded-lg">
                                         <h3 className="text-xl font-semibold text-gray-900 mb-4">
@@ -424,7 +421,7 @@ const StudentBookings = () => {
                                     <p className="text-sm text-gray-500">
                                         Transaction ID: {booking.txnid}
                                     </p>
-                                </div>
+                                </div> */}
                             </div>
                         ))
                     )}

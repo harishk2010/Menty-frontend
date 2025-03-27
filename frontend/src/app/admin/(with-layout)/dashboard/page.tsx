@@ -117,7 +117,6 @@ const AdminDashboard = () => {
   const [adminData,setAdminData]=useState<AdminDataInterface| null>()
   const [revenuseStatsOn,setRevenuseStatsOn]=useState<Boolean>(false)
   const adminDetails=useSelector((state:RootState)=>state.admin)
-  console.log(adminData,"adminData")
 
   // Fetch dashboard data from the backend
   useEffect(() => {

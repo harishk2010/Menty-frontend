@@ -38,7 +38,6 @@ const InstructorSlotsPage: React.FC = () => {
         const userData = await getInstructorData(instructorEmail);
         setInstructorData(userData || {});
       } catch (error) {
-        console.log(error);
         toast.error("Something Wrong!");
       }
     };

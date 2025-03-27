@@ -71,10 +71,8 @@ export const profileSidebar = [
 ];
 if (process.env.NODE_ENV === "production") {
   configDotenv({ path: ".env.production" });
-  console.log("prod")
 } else {
  configDotenv({ path: ".env" });
-  console.log("dev")
 }
 
 

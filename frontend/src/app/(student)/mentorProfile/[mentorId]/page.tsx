@@ -23,6 +23,7 @@ import { getSlots } from '@/api/bookingApi';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import InstructorCourses from '@/app/components/students/InstructorCoursesProps';
 
 interface Mentor {
   _id: string;
@@ -67,7 +68,7 @@ export default function MentorProfile() {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState<"profile" | "booking" | "reviews">("profile");
+  const [activeSection, setActiveSection] = useState<"profile" | "booking" | "reviews" | "courses">("profile");
   const [toggleReview, setToggleReview] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [ratingAverage, setRatingAverage] = useState(0);
@@ -248,7 +249,7 @@ export default function MentorProfile() {
             {/* Navigation Tabs */}
             <div className="mt-6 border-b pb-4">
               <div className="flex space-x-4">
-                {["profile", "booking", "reviews"].map((section) => (
+                {["profile", "booking", "reviews","courses"].map((section) => (
                   <button
                     key={section}
                     className={`capitalize px-4 py-2 rounded-lg ${
@@ -483,6 +484,10 @@ export default function MentorProfile() {
             </div>
           </div>
         )}
+        {activeSection === "courses" && (
+          <div className="bg-white rounded-xl shadow-sm p-8">
+            <InstructorCourses instructorId={mentorId} />
+            </div>)}
       </div>
     </div>
   );

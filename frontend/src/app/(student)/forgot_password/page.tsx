@@ -46,7 +46,6 @@ export default function ForgotPasswordPage(): ReactElement {
       // Perform the request to send reset link
       const response = await sendResetLink(data.email);
       setLoader(true)
-      console.log(response.message);
       if (response?.success) {
         localStorage.setItem("ForgotPassEmail", response.data.email);
         toast.success(response.message);

@@ -52,19 +52,12 @@ export default function LoginPage(): ReactElement {
   const googleSubmit = async (credentialResponse: any) => {
 
 
-    console.log('gooogle')
     try {
       const decoded: any = jwtDecode(credentialResponse.credential)
-      console.log("decoded", decoded);
       let response = await instructorGoogleLogin({ name: decoded.name, email: decoded.email, password: decoded.sub })
-      console.log(response,"responsee");
       const user = response?.user;
-      console.log("userrr",user)
       if (response.success) {
-        // console.log(response,user,"ll")
-        // localStorage.setItem('accesToken', response.token.accessToken)
-        // localStorage.setItem('refreshToken', response.token.refreshToken)
-        // localStorage.setItem('role', response.token.role)
+   
         dispatch((setUser({
           userId: user._id,
           name: user.name,
@@ -89,18 +82,13 @@ export default function LoginPage(): ReactElement {
     try {
       
       const response = await login(data.email,data.password); 
-      console.log("Response received:>", response.message);
 
       const user = response?.user;
 
       if (user) {
       
-        // localStorage.setItem("user", JSON.stringify(user));
-        // console.log(response,user,"ll")
-        // localStorage.setItem('accesToken', response.token.accesstoken)
-        // localStorage.setItem('refreshToken', response.token.refreshToken)
+       
         toast.success("Welcome to Menty");
-        console.log('user data ___________>', user)
 
         dispatch((setUser({
           userId: user._id,

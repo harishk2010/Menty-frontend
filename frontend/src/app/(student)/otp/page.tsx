@@ -13,7 +13,6 @@ export default function OtpPage() {
   const [resendAtive, setResendActive] = useState(false);
 
   const router = useRouter();
-  console.log(otp, "otp");
   useEffect(() => {
     if (counter > 0) {
       const timer = setInterval(() => {
@@ -30,7 +29,6 @@ export default function OtpPage() {
 
     let email = localStorage.getItem("email");
     let username = localStorage.getItem("username");
-    // console.log(email,username,"email,username")
     if (email && username) {
       const respone = await resendOtp(email, username);
       if (respone.success) {
@@ -72,9 +70,8 @@ export default function OtpPage() {
   };
   const handleSubmit = async () => {
     let OTP = otp.join("");
-    if (OTP.length == 4) {
-      console.log("submit Clicked");
-    } else {
+    if (OTP.length !== 4) {
+      
       toast.error("enter full OTP");
       return;
     }

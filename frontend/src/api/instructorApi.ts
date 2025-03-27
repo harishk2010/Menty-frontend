@@ -8,14 +8,12 @@ interface PaginatedMentorsResponse {
 }
 export const getInstructorData = async (email: string | null): Promise<any> => {
   try {
-    console.log("getInsssss",email)
     const response = await API.get(
       // `/user/instructors/${email}`
       `${InstructorRoutes.getInstructorData}${email}`,{
         withCredentials:true
       }
     );
-    console.log(response.data,"getInsssss")
     return response?.data;
   } catch (error) {
     console.log(error);
@@ -23,14 +21,12 @@ export const getInstructorData = async (email: string | null): Promise<any> => {
 };
 export const getInstructorDataById = async (instructorId: string | null): Promise<any> => {
   try {
-    console.log("getInsssss")
     const response = await API.get(
-      // `/user/instructors/${email}`
+    
       `${InstructorRoutes.getInstructorDataById}${instructorId}`,{
         withCredentials:true
       }
     );
-    console.log(response.data,"getInsssss")
     return response?.data;
   } catch (error) {
     console.log(error);
@@ -38,14 +34,12 @@ export const getInstructorDataById = async (instructorId: string | null): Promis
 };
 export const getInstructorTransactions = async (email: string | null,currentPage:number,itemsPerPage:number,searchTerm:string): Promise<any> => {
   try {
-    console.log("getInsssss")
     const response = await API.get(
       // `/user/instructors/${email}`
       `${InstructorRoutes.getInstructorTransactionsData}?email=${email}&page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,{
         withCredentials:true
       }
     );
-    console.log(response.data,"getInsssss")
     return response?.data;
   } catch (error) {
     console.log(error);
@@ -55,7 +49,6 @@ export const getInstructorTransactions = async (email: string | null,currentPage
 
 export const updateProfile = async (formData: FormData): Promise<any> => {
   try {
-    console.log("Inside updateProfile API call");
 
     const response = await API.post(InstructorRoutes.updateProfile, formData, {
       headers: {
@@ -63,7 +56,6 @@ export const updateProfile = async (formData: FormData): Promise<any> => {
       },
       withCredentials: true,
     });
-    console.log(response.data.user, "updateProfile response");
     return response?.data;
   } catch (error) {
     console.error("Error in updateProfile API call:", error);
@@ -75,7 +67,6 @@ export const updatePassword = async (data: any): Promise<any> => {
     const response = await API.patch(InstructorRoutes.updatePassword, data, {
       withCredentials: true,
     });
-    console.log(response, "response updatePassword");
     return response.data;
   } catch (error) {
     console.error("Error in updateProfile API call:", error);
@@ -86,7 +77,6 @@ export const updatePlanPrice = async (planPrice:number,instructorId:string): Pro
     const response = await API.put(`${InstructorRoutes.updatePlanProfile}${instructorId}`, {planPrice}, {
       withCredentials: true,
     });
-    console.log(response, "response updatePlanPrice");
     return response.data;
   } catch (error) {
     console.error("Error in updatePlanPrice API call:", error);
@@ -126,11 +116,9 @@ export async function getAllPaginatedMentors(
     if (!response) {
       throw new Error('Failed to fetch mentors');
     }
-    console.log(response,"response")
 
     return await response.data as unknown as PaginatedMentorsResponse
   } catch (error) {
-    console.error('Error fetching paginated mentors:', error);
     throw error;
   }
 }
@@ -147,11 +135,9 @@ export async function getMentorExpertise(): Promise<{success: boolean, data: str
     if (!response) {
       throw new Error('Failed to fetch mentor expertise');
     }
-    console.log(response,"expertisee")
 
     return await response.data as unknown as {success: boolean, data: string[]}
   } catch (error) {
-    console.error('Error fetching mentor expertise:', error);
     return { success: false, data: [] };
   }
 }
@@ -162,10 +148,8 @@ try {
   const response=await API.post(InstructorRoutes.addMentorReview,{mentorId,rating,comment},{
     withCredentials:true
   })
-  console.log(response.data,"respnse addMentorReview")
   return response.data
 } catch (error) {
-  console.error('Error add Mentor Review:', error);
   throw error
 }
 }
@@ -175,10 +159,8 @@ try {
   const response=await API.get(`${InstructorRoutes.getMentorReviews}${mentorId}`,{
     withCredentials:true
   })
-  console.log(response.data,"respnse getMentorReviews")
   return response.data
 } catch (error) {
-  console.error('Error get Mentor Reviews:', error);
   throw error
 }
 }

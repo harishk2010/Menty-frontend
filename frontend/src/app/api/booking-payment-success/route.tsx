@@ -1,35 +1,3 @@
-// import { payCourse } from "@/api/courseApi";
-// import { redirect } from "next/navigation";
-// // import { studentApis } from "../studentApi";
-
-// // POST function
-// export async function POST(req: Request, { params }: { params: Promise<{ productinfo: string }> }) {
-  
-//     const contentType = req.headers.get("content-type") || "";
-  
-//     const formData = await req.formData();
-  
-//     const data: { [key: string]: any } = {};
-//     formData.forEach((value: any, key: string) => {
-//       data[key] = value;
-//     });
-    
-//     console.log(data);
-//     // const response = await payCourse(
-//     //             String(data.courseId),
-//     //             String(data.txnid),
-//     //             Number(data.amountPaid),
-//     //             String(data.lastname)
-//     //         );
-//     //         console.log(response,"done and dusted")
-    
-
-
-//     const redirectUrl = `/BookingPaymentSuccess?mentorName=${data.lastname}&slotId=${data.productinfo}&txnid=${data.txnid}&amountPaid=${data.amount}&bankRefNum=${data.bank_ref_num}`
-  
-//     redirect(redirectUrl);
-
-//   }
 
 
 import { NextResponse } from 'next/server';
@@ -45,7 +13,6 @@ export async function POST(req: Request) {
       data[key] = value;
     });
 
-    console.log('Received PayU response:', data);
 
     // Validate the PayU response
     const isValidResponse = verifyPayUResponse(data);
@@ -64,7 +31,7 @@ export async function POST(req: Request) {
       Number(amount),
       String(lastname)
     );
-    console.log('Payment processed:', response);
+
 
     // Redirect to the success page with query parameters
     const redirectUrl = `/BookingPaymentSuccess?mentorName=${lastname}&slotId=${productinfo}&txnid=${txnid}&amountPaid=${amount}&bankRefNum=${bank_ref_num}`;

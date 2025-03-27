@@ -15,6 +15,7 @@ const CourseRoutes = {
   ///chapter
   ADD_NEW_CHAPTER: "/api/course/chapter/addChapter/",
   GET_ALL_CHAPTERS: "/api/course/chapter/chapters/",
+  GET_ALL_CHAPTERS_DETAILS: "/api/course/chapter/chapterDetails/",
   UPDATE_CHAPTER: "/api/course/chapter/updateChapter/",
   GET_CHAPTER: "/api/course/chapter/chapter/",
 

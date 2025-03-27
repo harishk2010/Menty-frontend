@@ -144,13 +144,12 @@ const CourseCreation: React.FC = () => {
   }, [courseId, Instructor.userId, setValue]);
 
   const onSubmit = async (data: CourseData) => {
-    console.log("Submitting Data:", data);
     setIsSubmitting(true);
   
     try {
       const formData = new FormData();
   
-      // ✅ Append files if they exist
+
       if (data.thumbnail && data.thumbnail.length > 0) {
         formData.append("thumbnail", data.thumbnail[0]);
       }
@@ -158,22 +157,16 @@ const CourseCreation: React.FC = () => {
         formData.append("demoVideos", data.demoVideos[0]);
       }
   
-      // ✅ Append all other fields dynamically
+  
       for (const key in data) {
         if (key !== "thumbnail" && key !== "demoVideos") {
           formData.append(key, data[key as keyof CourseData] as string);
         }
       }
   
-      // 🔍 Debug: Log FormData entries
-      console.log("FormData Before Sending:");
-      for (const pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
-      }
-  
-      // ✅ Send API request
+     
+    
       const response = await updateCourse(courseId, formData);
-      console.log("Server Response:", response);
   
       if (response?.success) {
         toast.success(response.message);

@@ -12,7 +12,6 @@ export async function POST(req: any) {
   });
 
   const { productinfo } = data;
-console.log(productinfo);
 
   const redirectUrl = `/BookingPaymentFailure`;
   redirect(redirectUrl);

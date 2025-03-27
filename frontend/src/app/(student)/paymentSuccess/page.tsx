@@ -36,8 +36,7 @@ const PaymentSuccess = () => {
             return
         }
         try {
-            console.log("inside try")
-            console.log(txnid,amountPaid,courseId,userId)
+         
             const response = await payCourse(
                 String(userId),
                 String(courseId),
@@ -45,7 +44,6 @@ const PaymentSuccess = () => {
                 Number(amountPaid),
                 String(courseName)
             );
-            console.log("done pay")
             if (response) {
                 toast.success('You have purchased the course');
             }

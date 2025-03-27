@@ -67,15 +67,7 @@ export default function CourseListing() {
       if (resetPage) {
         setCurrentPage(1);
       }
-      
-      console.log("Fetching courses with filters:", {
-        page: pageToFetch,
-        searchQuery,
-        sortBy,
-        itemsCount,
-        categories: selectedCategories,
-        levels: selectedLevels
-      });
+    
       
       const response = await getAllPaginatedCourses(
         pageToFetch,
@@ -133,7 +125,6 @@ export default function CourseListing() {
         ? prev.filter(c => c !== category)
         : [...prev, category];
       
-      console.log("Updated categories:", newCategories);
       return newCategories;
     });
     setFilterChanged(true);
@@ -146,7 +137,6 @@ export default function CourseListing() {
         ? prev.filter(l => l !== level)
         : [...prev, level];
       
-      console.log("Updated levels:", newLevels);
       return newLevels;
     });
     setFilterChanged(true);
@@ -154,12 +144,10 @@ export default function CourseListing() {
 
   // Handle sort change
   const handleSortChange = (newSortBy: SortOption) => {
-    console.log("Changing sort to:", newSortBy);
     setSortBy(newSortBy);
     setFilterChanged(true);
   };
   const handleItemsChange = (itemCount: number) => {
-    console.log("Changing itemCount to:", itemCount);
     setItemsCount(itemCount);
     setFilterChanged(true);
   };

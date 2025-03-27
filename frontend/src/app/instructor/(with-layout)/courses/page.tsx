@@ -63,7 +63,6 @@ const InstructorCourseTable = () => {
         const userData = await getInstructorDataById(userId);
         setInstructorData(userData || {});
       } catch (error) {
-        console.log(error);
         toast.error("Something went wrong!");
       }
     };

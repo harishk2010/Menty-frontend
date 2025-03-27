@@ -69,7 +69,6 @@ export default function SignupPage(): ReactElement {
       setLoader((prev) => !prev);
 
       const response = await signup(values);
-      console.log(response, "ressss");
       if (response.success) {
        
         localStorage.setItem("verificationToken",response.token);

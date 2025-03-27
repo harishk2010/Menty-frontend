@@ -6,10 +6,8 @@ import Router from "next/router";
 import dotenv from "dotenv"
 if (process.env.NODE_ENV === 'production') {
   dotenv.config({ path: '.env.production' });
-  console.log(process.env.MONGO_URI,"production")
 } else {
   dotenv.config({ path: '.env.development' });
-  console.log(process.env.MONGO_URI,"dev")
 }
 
 export const API = axios.create({
@@ -58,7 +56,6 @@ API.interceptors.response.use(
       }
 
       // Log the error message
-      console.log(error.response.data.message || "An error occurred");
     } else {
       console.log(error, "Axios error");
     }

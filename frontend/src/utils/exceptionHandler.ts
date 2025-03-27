@@ -21,13 +21,12 @@ export const authErrorHandler=async (error:Error)=>{
             }
             if(statusCode==401)  throw new ApiError(400,"eror"); 
       
-            // ✅ Accessing response data
+         
             console.log("Response Data:", error.response?.data);
       
             return statusCode; // Return status code if needed
           } else {
             throw error
-            console.log("Non-Axios Error:", error.message);
           }
         
     } catch (error) {

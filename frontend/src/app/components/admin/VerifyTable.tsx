@@ -39,7 +39,6 @@ const VerifyTable: React.FC = () => {
       try {
         setLoading(true);
         const fetchedData = await getAllRequests();
-        console.log("Fetched Data:", fetchedData);
         setRequests(fetchedData || []);
       } catch (error) {
         console.error("Error fetching instructor data:", error);
@@ -53,10 +52,8 @@ const VerifyTable: React.FC = () => {
 
   const handleVerify = async (email: string, comment: string = "") => {
     try {
-      console.log("Verifying:", email);
       const status = "approved";
       const response = await approveRequest(email, status, comment);
-      console.log("API Response (Verify):", response);
 
       if (response.success) {
         toast.success(response.message);
@@ -78,10 +75,8 @@ const VerifyTable: React.FC = () => {
 
   const handleReject = async (email: string, comment: string = "") => {
     try {
-      console.log("Rejecting:", email);
       const status = "rejected";
       const response = await approveRequest(email, status, comment);
-      console.log("API Response (Reject):", response);
 
       if (response.success) {
         toast.success(response.message);
@@ -91,7 +86,6 @@ const VerifyTable: React.FC = () => {
               ? { ...instructor, status: "rejected" as const, comment } // Explicitly cast the status
               : instructor
           );
-          console.log("Updated Instructors:", updatedInstructors);
           return updatedInstructors;
         });
       } else {

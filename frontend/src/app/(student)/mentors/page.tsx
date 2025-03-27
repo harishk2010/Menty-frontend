@@ -61,13 +61,6 @@ export default function MentorListing() {
         setCurrentPage(1);
       }
       
-      console.log("Fetching mentors with filters:", {
-        page: pageToFetch,
-        searchQuery,
-        sortBy,
-        itemsCount,
-        expertise: selectedExpertise
-      });
       
       const response = await getAllPaginatedMentors(
         pageToFetch,
@@ -76,7 +69,6 @@ export default function MentorListing() {
         sortBy,
         selectedExpertise.length > 0 ? selectedExpertise : undefined
       );
-      console.log(response,"responsee")
       
       setMentors(response.mentors);
       setTotalPages(response.totalPages);
@@ -124,7 +116,6 @@ export default function MentorListing() {
         ? prev.filter(e => e !== expertise)
         : [...prev, expertise];
       
-      console.log("Updated expertise:", newExpertise);
       return newExpertise;
     });
     setFilterChanged(true);
@@ -132,14 +123,12 @@ export default function MentorListing() {
 
   // Handle sort change
   const handleSortChange = (newSortBy: SortOption) => {
-    console.log("Changing sort to:", newSortBy);
     setSortBy(newSortBy);
     setFilterChanged(true);
   };
 
   // Handle items per page change
   const handleItemsChange = (itemCount: number) => {
-    console.log("Changing itemCount to:", itemCount);
     setItemsCount(itemCount);
     setFilterChanged(true);
   };

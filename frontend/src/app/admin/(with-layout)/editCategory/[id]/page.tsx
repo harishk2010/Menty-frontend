@@ -21,33 +21,27 @@ const MyForm = () => {
   const { id } = useParams<{ id: string }>();
 
   const router=useRouter()
-  console.log(id);
 
   useEffect(() => {
     try {
       const fetchData = async () => {
         if (id) {
           const response = await getCategory(id);
-          console.log(response,"resposee")
           setData({categoryName:response.categoryName||""});
-          console.log(data,"dataaaa")
         }
       };
       fetchData()
     } catch (error: any) {
-      console.log(error);
       toast.error(error.message);
     }
   }, []);
   const handleSubmit = async (values: { categoryName: string }) => {
     const { categoryName } = values;
-    console.log("Form Submitted with values:", values);
 
    
 
     try {
       const response = await editCategory(id,categoryName);
-      console.log(response, "response add category");
       if (response.success) {
         toast.success(response.message);
         router.replace('/admin/category')
@@ -55,7 +49,6 @@ const MyForm = () => {
         toast.error(response.message);
       }
     } catch (error: any) {
-      console.log(error, "servereroor");
       toast.error(error.message);
     }
   };

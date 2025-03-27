@@ -30,7 +30,6 @@ export default function OtpPage() {
   const [submitActive,setSubmitActive]=useState(false)
 
   const router=useRouter()
-  console.log(otp,"otp")
   useEffect(()=>{
     
      
@@ -87,9 +86,8 @@ export default function OtpPage() {
   }
   const handleSubmit=async ()=>{
     let OTP=otp.join("")
-    if(OTP.length==4){
-      console.log("submit Clicked")
-    }else{
+    if(OTP.length!==4){
+      
      toast.error("enter full OTP")
       return 
     }

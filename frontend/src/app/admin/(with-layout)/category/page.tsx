@@ -62,7 +62,6 @@ const Category = () => {
         toast.error(response.message);
       }
     } catch (error) {
-      console.log(error);
       toast.error("An error occurred while updating status");
     }
   };

@@ -62,7 +62,6 @@ const SlotCreationForm = () => {
         setInstructorData(userData || {});
         
       } catch (error) {
-        console.log(error);
         toast.error("something Wrong!");
       }
       finally {
@@ -124,7 +123,6 @@ const SlotCreationForm = () => {
         timezone: timezoneString, // Send the timezone offset
       };
   
-      console.log("Sending data to backend:", formattedData);
   
       const response = await createSlots(formattedData);
   

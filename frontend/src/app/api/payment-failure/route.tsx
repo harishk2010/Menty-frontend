@@ -12,7 +12,7 @@ export async function POST(req: any) {
   });
 
   const { productinfo } = data;
-console.log(productinfo);
+
 
   const redirectUrl = `/paymentFailure`;
   redirect(redirectUrl);

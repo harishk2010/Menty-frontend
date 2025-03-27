@@ -14,7 +14,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ product
       data[key] = value;
     });
     
-    console.log(data);
   
 
     const redirectUrl = `/paymentSuccess?courseName=${data.lastname}&courseId=${data.productinfo}&txnid=${data.txnid}&amountPaid=${data.amount}&bankRefNum=${data.bank_ref_num}`

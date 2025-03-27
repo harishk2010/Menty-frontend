@@ -12,13 +12,11 @@ export const signup = async (userData: userData): Promise<any> => {
         withCredentials: true, 
       }
     );
-    console.log(response.data, "response");
     return response.data;
   } catch (error: any) {
     if (error.response.status === 404) {
       throw error;
     }
-    console.log(error.message);
   }
 };
 
@@ -30,7 +28,6 @@ export const resendOtp = async (email: string,username:string): Promise<any> => 
     {
       withCredentials: true, 
     });
-    console.log(response.data, "response resendOtp");
     return response.data;
   } catch (error) {
     throw error;
@@ -45,7 +42,6 @@ export const verifyOtp = async (otp: string): Promise<any> => {
     {
       withCredentials: true,
     });
-    console.log(response.data, "response verifyOtp");
     return response.data;
   } catch (error) {
     throw error;
@@ -64,7 +60,6 @@ export const login = async (email: string, password: string): Promise<any> => {
         withCredentials: true, // Ensure that cookies are sent with the request
       }
     );
-    console.log(response.data, "response login");
     return response.data;
   } catch (error) {
     throw error;
@@ -78,7 +73,6 @@ export const logout = async (): Promise<any> => {
       {},
       { withCredentials: true }
     ); // 2 parameter is the request part
-    console.log(response.data, "response logout");
     return response.data;
   } catch (error) {
     throw error;
@@ -96,7 +90,6 @@ export const sendResetLink = async (email: string): Promise<any> => {
         withCredentials: true, // Ensure that cookies are sent with the request
       }
     ); // 2 parameter is the request part
-    console.log(response.data, "response sendRestLink");
     return response.data;
   } catch (error) {
     throw error;
@@ -118,7 +111,6 @@ export const verifyResetOtp = async (
         withCredentials: true, // Ensure that cookies are sent with the request
       }
     );
-    console.log(response.data, "response verifyRestOtp");
     return response.data;
   } catch (error) {
     throw error;
@@ -135,7 +127,6 @@ export const forgotResendOtp = async (email: string): Promise<any> => {
         withCredentials: true,
       }
     );
-    console.log(response.data, "response resendOtp");
     return response.data;
   } catch (error) {
     throw error;
@@ -153,7 +144,6 @@ export const resetPassword = async (password: string): Promise<any> => {
         withCredentials: true,
       }
     );
-    console.log(response.data, "response passwordReset");
     return response.data;
   } catch (error) {
     throw error;

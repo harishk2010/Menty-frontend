@@ -43,21 +43,7 @@ const InstructorChapterTable = () => {
     } catch (error) {}
   }, []);
 
-  // const togglePublish = async (id: string) => {
-  //   try {
-  //     const response = await handlePublish(id);
-  //     if (response.success) {
-  //       toast.success(response.message);
-  //       setChapters((prevCourses: IChapters[]) =>
-  //         prevCourses.map((course: IChapters) => {}
-  //           // course._id == id? { ...course, isPublished: course.isPublished! }  : course
-  //         )
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+ 
   
   if (!instructorData?.isVerified) return <GetVerified/>
   return (
@@ -113,11 +99,11 @@ const InstructorChapterTable = () => {
                       </div>
                     </td>
     
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {chapter.description}
-                      </div>
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap max-w-xs">
+  <div className="text-sm font-medium text-gray-900 line-clamp-2 overflow-hidden text-ellipsis">
+    {chapter.description}
+  </div>
+</td>
                    
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <Link href={`/instructor/editChapter/${chapter._id}`}>

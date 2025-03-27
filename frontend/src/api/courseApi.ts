@@ -19,7 +19,6 @@ export const addCouse = async (formData: FormData) => {
       },
       withCredentials: true,
     });
-    console.log(response, "response from add course");
     return response.data;
   } catch (error) {
     throw error;
@@ -33,7 +32,6 @@ export const isBoughtCourse = async (userId:string,coureId:string) => {
       },
       withCredentials: true,
     });
-    console.log(response, "response from isBoughtCourse");
     return response.data;
   } catch (error) {
     throw error;
@@ -41,7 +39,6 @@ export const isBoughtCourse = async (userId:string,coureId:string) => {
 };
 export const updateCourse = async (courseId: string, formData: FormData) => {
   try {
-    console.log("🚀 FormData Entries:", [...formData]);
 
     const response = await API.post(
       `${CourseRoutes.UPDATE_COURSE}${courseId}`,
@@ -53,7 +50,6 @@ export const updateCourse = async (courseId: string, formData: FormData) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from add course");
     return response.data;
   } catch (error) {
     throw error;
@@ -61,7 +57,6 @@ export const updateCourse = async (courseId: string, formData: FormData) => {
 };
 export const updateChapter = async (chapterId: string, formData: FormData) => {
   try {
-    console.log("🚀 FormData Entries:", [...formData]);
 
     const response = await API.post(
       `${CourseRoutes.UPDATE_CHAPTER}${chapterId}`,
@@ -73,7 +68,6 @@ export const updateChapter = async (chapterId: string, formData: FormData) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from updateChapter");
     return response.data;
   } catch (error) {
     throw error;
@@ -87,7 +81,6 @@ export const getChapter = async (chapterId: string) => {
       },
       withCredentials: true,
     });
-    console.log(response, "response from getChapter");
     return response.data;
   } catch (error) {
     throw error;
@@ -98,7 +91,6 @@ export const getAllCourses = async () => {
     const response = await API.get(CourseRoutes.GET_ALL_COURSES, {
       withCredentials: true,
     });
-    console.log(response.data, "response from getAllCourses");
     return response.data;
   } catch (error) {
     throw error;
@@ -112,7 +104,6 @@ export const getAllInstructorCourses = async (userId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response.data, "response from getAllCourses");
     return response.data;
   } catch (error) {
     throw error;
@@ -125,7 +116,6 @@ export const getAllFilteredInstructorCourses = async (instructorId:string,
   sortField:string,
   sortDirection:"asc" | "desc") => {
   try {
-    console.log(instructorId,currentPage,itemsPerPage,searchTerm,sortField,sortDirection,"uderidddd")
     
     const response = await API.get(
       `${CourseRoutes.GET_PAGINATED_INSTRUCTOR_COURSES}?instructorId=${instructorId}&page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}&sortField=${sortField}&sortDirection=${sortDirection}`,
@@ -228,6 +218,19 @@ export const getAllChapter = async (courseId: string) => {
     throw error;
   }
 };
+export const getAllChaptersDetails = async (courseId: string) => {
+  try {
+    const response = await API.get(
+      `${CourseRoutes.GET_ALL_CHAPTERS_DETAILS}${courseId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 export const getAllBoughtCourses = async (userId: string) => {
   try {
     const response = await API.get(
@@ -236,7 +239,6 @@ export const getAllBoughtCourses = async (userId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response.data, "response from getAllBoughtCourses");
     return response.data;
   } catch (error) {
     throw error;
@@ -250,7 +252,6 @@ export const getBoughtCourse = async (courseId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from getAllBoughtCourseee");
     return response.data;
   } catch (error) {
     throw error;
@@ -264,7 +265,6 @@ export const chapterCompleted = async (chapterId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response.data, "response from chapterCompleted");
     return response.data;
   } catch (error) {
     throw error;
@@ -278,7 +278,6 @@ export const getPlayCourse = async (courseId: string) => {
         withCredentials: true,
       }
     );
-    console.log(response, "response from getAllBoughtCourses");
     return response.data;
   } catch (error) {
     throw error;
@@ -297,14 +296,12 @@ export const payCourse = async (
     const response = await API.post(CourseRoutes.PAYMENT, data, {
       withCredentials: true,
     });
-    console.log(response, "response from payment");
     return response.data;
   } catch (error) {}
 };
 
 export const addQuizz = async (quizData: object) => {
   try {
-    console.log(quizData);
     const response = await API.post(CourseRoutes.ADD_QUIZZ, quizData, {
       withCredentials: true,
     });
@@ -316,7 +313,6 @@ export const addQuizz = async (quizData: object) => {
 };
 export const editQuiz = async (id: string, quizData: object) => {
   try {
-    console.log(quizData);
     const response = await API.put(
       `${CourseRoutes.EDIT_QUIZZ}${id}`,
       quizData,
@@ -332,11 +328,9 @@ export const editQuiz = async (id: string, quizData: object) => {
 };
 export const getQuizData = async (id: string) => {
   try {
-    console.log(id);
     const response = await API.get(`${CourseRoutes.GET_QUIZZ}${id}`, {
       withCredentials: true,
     });
-    console.log(response, "getQuizData");
 
     return response.data;
   } catch (error) {
@@ -345,11 +339,9 @@ export const getQuizData = async (id: string) => {
 };
 export const deleteCourse = async (id: string) => {
   try {
-    console.log(id);
     const response = await API.delete(`${CourseRoutes.DELETE_COURSE}${id}`, {
       withCredentials: true,
     });
-    console.log(response, "deletecourse");
 
     return response.data;
   } catch (error) {
@@ -362,7 +354,6 @@ export const getCourseCategories = async () => {
     const response = await API.get(CourseRoutes.COURSE_CATGEGORIES, {
       withCredentials: true,
     });
-    console.log(response.data, "getCourseCategories");
 
     return response.data;
   } catch (error) {
@@ -429,7 +420,6 @@ export const GetCourseReviews=async(courseId:string)=>{
     const response=await API.get(`${CourseRoutes.GET_REVIEW}${courseId}`,{
       withCredentials:true
     })
-    console.log(response.data.data,"reviews")
     return response.data
     
   } catch (error) {
@@ -441,7 +431,6 @@ export const getInstructorDashboard=async()=>{
     const response=await API.get(CourseRoutes.GET_INSTRUCTOR_DASHBOARD,{
       withCredentials:true
     })
-    console.log(response.data.data,"reviews")
     return response.data
     
   } catch (error) {
