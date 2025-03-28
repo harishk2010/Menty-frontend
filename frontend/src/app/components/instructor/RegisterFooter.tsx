@@ -2,7 +2,7 @@
 "use client"
 import { motion } from "framer-motion";
 import { div } from "framer-motion/client";
-export const RegisterFooter = () => {
+ const RegisterFooter = () => {
   return (
     <motion.footer
       initial={{ opacity: 0, y: 50 }}
@@ -21,3 +21,4 @@ export const RegisterFooter = () => {
     </motion.footer>
   );
 };
+export default RegisterFooter;

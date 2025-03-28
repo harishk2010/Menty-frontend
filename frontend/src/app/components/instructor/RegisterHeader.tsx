@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import React from "react";
 
 // RegisterHeader Component
-export const RegisterHeader = () => {
+ const RegisterHeader = () => {
   return (
     <motion.header
       initial={{ opacity: 0, y: -50 }}
@@ -16,23 +16,19 @@ export const RegisterHeader = () => {
     >
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
         <div className="flex items-center">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            className="w-10 h-10 text-white mr-3"
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2"
-          >
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
+        <img 
+              src="../MentyLogo.png" 
+              className="w-12 h-12 mr-3" 
+              alt="Menty Logo" 
+            />
+            
           <h1 className="text-white text-2xl font-bold tracking-wider">
-            Instructor Portal
+            Welcome Mentor
           </h1>
         </div>
       </div>
     </motion.header>
   );
 };
+
+export default RegisterHeader;

@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { RegisterFooter } from "./RegisterFooter";
+import  RegisterFooter  from "./RegisterFooter";
 
 
 type HeaderProps={
