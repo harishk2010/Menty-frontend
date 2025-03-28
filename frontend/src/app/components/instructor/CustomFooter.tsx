@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react";
-import RegisterHeader from "./RegisterHeader";
-import RegisterFooter from "./RegisterFooter";
+import { RegisterFooter } from "./RegisterFooter";
 
 
 type HeaderProps={
@@ -8,7 +7,7 @@ type HeaderProps={
 }
 export default function CustomFooter({ PropHeader }: HeaderProps) {
   return (
-    <header className="w-full">
+    <header className="w-full mt-10">
       {PropHeader ? <RegisterFooter /> : <div>Default Header</div>}
     </header>
   );

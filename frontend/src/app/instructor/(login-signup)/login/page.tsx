@@ -118,7 +118,7 @@ export default function LoginPage(): ReactElement {
   };
 
   return (
-    <div className="flex justify-evenly max-h-screen  items-center mt-10 py-3 px-5">
+    <div className="flex justify-evenly max-h-screen  items-center  ">
       {/* Lottie Animation */}
      
       
@@ -146,7 +146,7 @@ export default function LoginPage(): ReactElement {
           transition={{
             duration: 1, // Duration of the animation
             ease: "easeOut", // Smooth easing
-          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] h-s w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 ">
+          }} className="flex flex-col justify-center shadow-[10px_10px_0px_0px_rgb(88,22,135,0.5)] h-s w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-4">
         <h5 className="text-xl font-medium text-gray-900">
           Log In as{" "}
           <span className="text-purple-700 font-semibold">Instructor</span>

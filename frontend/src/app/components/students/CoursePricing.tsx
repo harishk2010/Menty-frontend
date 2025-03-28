@@ -17,7 +17,7 @@ const CoursePricing: React.FC<CoursePricingProps> = ({
 }) => {
   const router = useRouter();
   
-  const handleNavigate = () => router.push(`/coursePlay/${courseId}`);
+  const handleNavigate = () => router.push(`/myCourses`);
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -70,7 +70,7 @@ const CoursePricing: React.FC<CoursePricingProps> = ({
                     clipRule="evenodd" 
                   />
                 </svg>
-                Go to Course
+                Go to Courses
               </button>
             ) : (
               <Link href={`/checkout/${courseId}`} className="block">

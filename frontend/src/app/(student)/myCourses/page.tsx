@@ -591,11 +591,10 @@ const PurchasedCoursesPage = () => {
                   <div className="p-2 bg-purple-500 bg-opacity-30 rounded-full">
                     <UsersIcon className="h-5 w-5" />
                   </div>
-                  <h3 className="font-medium">Join Community</h3>
+                  <h3 className="font-medium">Mentorships</h3>
                 </div>
                 <p className="text-sm opacity-80">
-                  Connect with fellow learners and exchange knowledge and
-                  experiences.
+                  Connect with Great Experts and get one-on-one mentorships.
                 </p>
               </div>
             </div>

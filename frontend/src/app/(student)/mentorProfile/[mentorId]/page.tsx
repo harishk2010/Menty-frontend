@@ -139,11 +139,19 @@ export default function MentorProfile() {
   };
 
   const navigateWeek = (direction: 'prev' | 'next') => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() + (direction === 'next' ? 7 : -7));
+    
+    // Prevent navigating to dates before today
+    if (newDate < today) {
+      return;
+    }
+    
     setSelectedDate(newDate);
   };
-
   // Render stars function
   const renderStars = (rating: number, interactive = false, onStarClick?: (rating: number) => void) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -282,7 +290,7 @@ export default function MentorProfile() {
                       </p>
                       <p className="flex items-center text-gray-600">
                         <Phone className="h-5 w-5 mr-2" />
-                        {mentor.mobile}
+                        {mentor.mobile || "Mobile number not specified"}
                       </p>
                     </div>
                   </div>

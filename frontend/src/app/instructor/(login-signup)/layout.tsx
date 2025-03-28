@@ -1,32 +1,17 @@
+import { RegisterFooter } from "@/app/components/instructor/RegisterFooter";
+import { RegisterHeader } from "@/app/components/instructor/RegisterHeader";
 
-import CustomHeader from '@/app/components/instructor/CustomHeader';
-import RegisterHeader from '../../components/instructor/RegisterHeader';
-import RegisterFooter from '../../components/instructor/RegisterFooter';
-import CustomFooter from '@/app/components/instructor/CustomFooter';
-
-export const metadata = {
-  title: 'My Next.js App',
-  description: 'An example app with a header and collapsible sidebar',
-};
-
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+export const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    
-    <div className="bg-white h-screen w-full flex flex-col  items-center">
-      {/* <CustomHeader PropHeader={RegisterHeader}/> */}
+    <div className="bg-gray-50 min-h-screen w-full flex flex-col items-center">
+      <RegisterHeader />
       
+      <main className="flex-grow container mx-auto px-4 py-8">
+        {children}
+      </main>
       
-      <main className="">
-            
-              {children}
-            </main>
-            {/* <CustomFooter PropHeader={RegisterFooter}/> */}
-
-      
+      <RegisterFooter />
     </div>
-    
-        
-     
   );
 };
 
